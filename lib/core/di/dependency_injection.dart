@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rentora/core/network/firebase/bookings_firestore_service.dart';
+import 'package:rentora/core/network/firebase/chats_firestore_service.dart';
 import 'package:rentora/core/network/firebase/cloudinary_service.dart';
-import 'package:rentora/core/network/firebase/firestore_service.dart';
+import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
+import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
+import 'package:rentora/core/network/firebase/users_firestore_service.dart';
+import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,14 +18,33 @@ Future<void> initGetIt() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
-  /// Firebase Instances
+  /// Firebase Core Instances
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   getIt.registerLazySingleton<FirebaseFirestore>(
     () => FirebaseFirestore.instance,
   );
 
-  /// Network Services
-  getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
+  /// Firebase Feature Services
+  getIt.registerLazySingleton<FirebaseAuthService>(
+    () => FirebaseAuthService(getIt<FirebaseAuth>()),
+  );
+  getIt.registerLazySingleton<UsersFirestoreService>(
+    () => UsersFirestoreService(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<VerificationsFirestoreService>(
+    () => VerificationsFirestoreService(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<ListingsFirestoreService>(
+    () => ListingsFirestoreService(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<BookingsFirestoreService>(
+    () => BookingsFirestoreService(getIt<FirebaseFirestore>()),
+  );
+  getIt.registerLazySingleton<ChatsFirestoreService>(
+    () => ChatsFirestoreService(getIt<FirebaseFirestore>()),
+  );
+
+  /// Media Services
   getIt.registerLazySingleton<CloudinaryService>(() => CloudinaryService());
 
   /// Offline Mode

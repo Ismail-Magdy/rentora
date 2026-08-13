@@ -1,15 +1,15 @@
 import 'dart:io';
 import 'package:dio/dio.dart' as dio;
-import 'package:rentora/core/errors/firebase_error_handler.dart';
 
 class CloudinaryService {
   final dio.Dio _dio = dio.Dio();
 
-  // Put your Cloudinary credentials here. You can also use environment variables or a secure storage solution for better security
-  final String cloudName = "YOUR_CLOUD_NAME";
-  final String uploadPreset = "YOUR_UNSIGNED_UPLOAD_PRESET";
+  // It is highly recommended to use environment variables (.env) for security
+  final String cloudName = "xcjs2n7s";
+  final String uploadPreset = "rentora";
 
-  /// Function to upload an image to Cloudinary and return the secure URL of the uploaded image
+  /// Function to upload an image to Cloudinary and return the secure URL
+  /// Throws an Exception with a user-friendly message on failure
   Future<String?> uploadImage(File imageFile) async {
     try {
       String fileName = imageFile.path.split("/").last;
@@ -33,10 +33,14 @@ class CloudinaryService {
       }
       return null;
     } catch (error) {
-      // We are using the FirebaseErrorHandler to handle errors and provide user-friendly messages. This is a good practice to ensure that the UI can display clear error messages to the user
-      final String errorMessage = FirebaseErrorHandler.handle(error);
+      // Placeholder for handling:
+      String errorMessage = "Failed to upload image";
+      if (error is dio.DioException) {
+        // You can extract more details from DioException if needed
+        errorMessage = "Network error during upload: ${error.message}";
+      }
 
-      // You can log the error message or show it in the UI as needed. For now, we are throwing an exception with the error message
+      // Throwing an exception with the clear error message so Repo can catch it
       throw Exception(errorMessage);
     }
   }
