@@ -4,6 +4,84 @@ Rentora is a smart Peer-to-Peer (P2P) rental platform designed to promote the sh
 
 ---
 
+## Development Roadmap
+
+To ensure a streamlined development process and deliver a robust product, development is divided into two main phases, prioritizing Core/MVP functionality first.
+
+---
+
+### Phase 1: Core App & MVP (Building the Foundation)
+
+**Goal:** Establish the essential rental cycle. Focus on user onboarding, security through verification, and the basic listing/booking flow.
+
+1. **Core App + Splash:** Initial project setup, theming, and dependency injection layer.
+2. **Onboarding:** Initial user introduction screens.
+3. **Auth:** Sign up, Login, Forgot Password (Common, standard flow).
+4. **Profile Setup:** Mandatory location setting and interest (category) selection.
+5. **Verification System (Manual Flow):** **(Blocker Feature)** Implement the flow for uploading Selfie and ID (Front/Back) for admin review. Essential for security rules.
+6. **Home:** Displaying products based on categories.
+7. **Item Details:** Detailed view of listed items and images.
+8. **Add Item (Manual Flow):** Camera/Gallery integration, manual data entry for listing details, date selection via calendar, and publishing.
+9. **Rental Details:** Date selection, booking summary, and handover details.
+10. **Payment:** Standardizing the 'Cash on Delivery' selection flow.
+11. **Rental Request:** Flow for sending requests, owner acceptance, and rejection screens.
+
+### Phase 2: Advanced Features, AI Integration & Engagement
+
+**Goal:** Enhance user experience, introduce AI capabilities for automation, and build engagement tools.
+
+1.  **Smart Search + AI:** Implementing NLP-based search to find items based on natural language queries.
+2.  **Add Item (AI Auto-fill):** Integrating AI to automatically populate listing details (title, description, price) from the main image.
+3.  **Verification (AI Integration):** Adding Face Matching or ID OCR capabilities to automate the verification process.
+4.  **Show Map:** Interactive map view using GeoQueries to find nearby items.
+5.  **Real-Time Chat:** Implementing direct messaging between parties after a booking is accepted.
+6.  **Notifications:** Integrating Firebase Cloud Messaging (FCM) for real-time alerts (booking requests, chat messages).
+7.  **Favorite:** Ability to save items for later.
+8.  **Settings:** Detailed profile editing, Help center, and 'About Us' section.
+
+---
+
+## Software Architecture
+
+Rentora follows a **Lite Clean Architecture** approach, specifically modified for feature-based development (Feature-First). This provides a balance between structure and development speed, reducing boilerplate for standard features while maintaining maintainability.
+
+The layer structure within each feature is as follows:
+
+```text
+feature_name/
+├── data/
+│   ├── models/ # Data transfer objects (JSON serialization/deserialization)
+│   └── repos/  # Implementation of repositories handling data logic (interacting withFirebase Services)
+├── manager/
+│   └── cubit/ # BLoC (Cubit) implementation for state management, linking UI and Data logic
+└── presentation/
+    ├── screens/ # Main screen widgets
+    └── widgets/ # Component-level widgets specific to the feature
+```
+
+---
+
+## 🛠️ Core App Architecture (Cross-Feature)
+
+Outside of specific features, the core directory houses shared services and logic. Notably, the Network layer contains the generic services that features interact with through their Repositories.
+
+Generic Network Services (Wrappers)
+These services are registered as Lazy Singletons via GetIt (Dependency Injection) and accept Firebase instances via constructor injection for testability.
+
+FirebaseAuthService: Handles signup, login, password resets, and sign-out.
+
+UsersFirestoreService: Manages CRUD operations for user profiles and user subcollections.
+
+VerificationsFirestoreService: Handles sensitive ID upload data links and status checks.
+
+ListingsFirestoreService: Manages item creation, fetching for Home grids, and category filtering.
+
+BookingsFirestoreService: Manages the rental lifecycle (request creation, owner approval, status updates).
+
+ChatsFirestoreService: Handles real-time chat room creation and message streams.
+
+## CloudinaryService: Responsible for uploading raw image files to Cloudinary and returning secure URLs (using Dio).
+
 ## Business Flow & Core Features
 
 ### 1. Authentication & Onboarding
