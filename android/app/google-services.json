@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "653688654264",
+    "project_id": "rentora-67218",
+    "storage_bucket": "rentora-67218.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653688654264:android:462c12b9b43a3abf1d274d",
+        "android_client_info": {
+          "package_name": "com.example.rentora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR8ApmbkpsNS3Lm14BZyVbvgNqldajRLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
