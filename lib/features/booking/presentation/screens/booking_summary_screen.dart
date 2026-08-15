@@ -7,8 +7,9 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
-import 'package:rentora/features/booking/presentation/widgets/booking_summary_widgets.dart';
+import 'package:rentora/features/booking/presentation/widgets/booking_period_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
+import 'package:rentora/features/booking/presentation/widgets/price_details_card.dart';
 
 class BookingSummaryScreen extends StatelessWidget {
   final BookingSummaryArgs args;

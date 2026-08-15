@@ -10,6 +10,7 @@ import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
+import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/screens/booking_success_screen.dart';
 import 'package:rentora/features/booking/presentation/screens/booking_summary_screen.dart';
@@ -26,7 +27,7 @@ import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_sc
 import 'package:rentora/features/splash/screens/splash_screen.dart';
 
 class AppRouter {
-  /// Fucnction to wrap the screen with NetworkCubit and OfflineModeWidget
+  /// Function to wrap the screen with NetworkCubit and OfflineModeWidget
   Widget _withNetwork(Widget screen) {
     return BlocProvider.value(
       value: getIt<NetworkCubit>(),
@@ -144,7 +145,6 @@ class AppRouter {
           builder: (_) => _withNetwork(const UnknownRouteScreen()),
         );
 
-      /// 4. Payment Method Screen
       case Routes.paymentMethodScreen:
         if (args is BookingSummaryArgs) {
           final cubit = args.bookingCubit ?? getIt<BookingCubit>();
@@ -153,7 +153,41 @@ class AppRouter {
             builder: (_) => _withNetwork(
               BlocProvider.value(
                 value: cubit,
-                child: PaymentMethodScreen(args: args),
+                child: BlocListener<BookingCubit, BookingState>(
+                  bloc: cubit,
+                  listener: (context, state) {
+                    if (state is BookingSuccess) {
+                      showFeedbackDialog(
+                        context,
+                        icon: Icons.check_circle_outline,
+                        color: AppColors.successDark,
+                        title: 'Booking Confirmed!',
+                        message:
+                            'Your booking request has been sent successfully.',
+                        onFinish: () {
+                          context.pushReplacementNamed(
+                            Routes.bookingSuccessScreen,
+                            arguments: BookingSuccessArgs(
+                              orderCode: state.orderCode,
+                              bookingSummaryArgs: args,
+                            ),
+                          );
+                        },
+                      );
+                    }
+
+                    if (state is BookingError) {
+                      showFeedbackDialog(
+                        context,
+                        icon: Icons.error_outline,
+                        color: AppColors.error,
+                        title: 'Booking Failed',
+                        message: state.message,
+                      );
+                    }
+                  },
+                  child: PaymentMethodScreen(args: args),
+                ),
               ),
             ),
           );
@@ -206,13 +240,14 @@ class AppRouter {
       // Owner Flow Routes
       // ==========================================
 
-      /// Incoming Rental Request
       case Routes.incomingRentalRequestScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(
               create: (context) => getIt<BookingCubit>(),
-              child: const IncomingRentalRequestScreen(),
+              child: IncomingRentalRequestScreen(
+                booking: args is BookingModel ? args : null,
+              ),
             ),
           ),
         );
@@ -260,18 +295,6 @@ class AppRouter {
             ),
           ),
         );
-
-      /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
-      // /// Welcome AuthScreen
-      // case Routes.welcomeAuthScreen:
-      //   return MaterialPageRoute(
-      //     builder: (_) => _withNetwork(
-      //       BlocProvider(
-      //         create: (context) => getIt<SocialAuthBloc>(),
-      //         child: const WelcomeAuthScreen(),
-      //       ),
-      //     ),
-      //   );
 
       /// Default Case (Unknown Route)
       default:

@@ -7,6 +7,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
+import 'package:rentora/features/booking/presentation/widgets/info_notice_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/pickup_location_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/pickup_option_card.dart';
@@ -86,34 +87,10 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
                   onTap: () => setState(() => selectedMethod = 'delivery'),
                 ),
                 verticalSpace(16),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE8F7F9),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.info_outline,
-                        color: AppColors.primaryColor,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          selectedMethod == 'pickup'
-                              ? 'The exact pickup time will be arranged with the owner after your request is confirmed.'
-                              : 'Delivery charges may apply and will be confirmed after your request is approved.',
-                          style: const TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: 12,
-                            height: 1.4,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                InfoNoticeCard(
+                  message: selectedMethod == 'pickup'
+                      ? 'The exact pickup time will be arranged with the owner after your request is confirmed.'
+                      : 'Delivery charges may apply and will be confirmed after your request is approved.',
                 ),
               ],
             ),

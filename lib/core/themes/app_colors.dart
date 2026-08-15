@@ -14,8 +14,12 @@ class AppColors {
   static const Color errorLight = Color(0xFFFDE7E7);
   static const Color success = Colors.green;
   static const Color warning = Colors.orange;
+  static const Color amber = Colors.amber;
 
   static const Color scaffoldBackground = Color(0xFFF2F3F5);
   static const Color successLight = Color(0xFFEAF8EE);
   static const Color successDark = Color(0xFF1D8C62);
+
+  static const Color infoLight = Color(0xFFE8F7F9);
+  static const Color dividerColor = Color(0xFFEAEAEA);
 }

@@ -83,8 +83,8 @@ class ListingInfoCard extends StatelessWidget {
                 verticalSpace(8),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
-                    const SizedBox(width: 4),
+                    const Icon(Icons.star, color: AppColors.amber, size: 16),
+                    horizontalSpace(4),
                     const Text(
                       '(reviews 24)',
                       style: TextStyle(
@@ -93,7 +93,7 @@ class ListingInfoCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    horizontalSpace(8),
                     Text(
                       '4.9',
                       style: TextStyle(

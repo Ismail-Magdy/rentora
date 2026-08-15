@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 
@@ -40,7 +41,7 @@ class BookingActionBar extends StatelessWidget {
                   label,
                   style: const TextStyle(color: AppColors.grey, fontSize: 12),
                 ),
-                const SizedBox(height: 8),
+                verticalSpace(8),
                 Text(
                   totalText,
                   style: const TextStyle(

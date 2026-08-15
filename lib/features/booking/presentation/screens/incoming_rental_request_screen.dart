@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
-import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/incoming_request_action_buttons.dart';
 import 'package:rentora/features/booking/presentation/widgets/incoming_request_earnings_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/incoming_request_item_card.dart';
@@ -15,24 +12,11 @@ import 'package:rentora/features/booking/presentation/widgets/incoming_request_r
 class IncomingRentalRequestScreen extends StatelessWidget {
   final BookingModel? booking;
 
-  const IncomingRentalRequestScreen({
-    super.key,
-    this.booking,
-  });
+  const IncomingRentalRequestScreen({super.key, this.booking});
 
   @override
   Widget build(BuildContext context) {
-    try {
-      BlocProvider.of<BookingCubit>(context);
-      return _buildScreenContent(context);
-    } catch (_) {
-      return BlocProvider(
-        create: (context) => getIt<BookingCubit>(),
-        child: Builder(
-          builder: (context) => _buildScreenContent(context),
-        ),
-      );
-    }
+    return _buildScreenContent(context);
   }
 
   Widget _buildScreenContent(BuildContext context) {
@@ -90,13 +74,9 @@ class IncomingRentalRequestScreen extends StatelessWidget {
                 isVerified: true,
               ),
               verticalSpace(16),
-              IncomingRequestEarningsCard(
-                totalAmount: totalAmount,
-              ),
+              IncomingRequestEarningsCard(totalAmount: totalAmount),
               verticalSpace(24),
-              IncomingRequestActionButtons(
-                bookingId: bookingId,
-              ),
+              IncomingRequestActionButtons(bookingId: bookingId),
               verticalSpace(16),
             ],
           ),

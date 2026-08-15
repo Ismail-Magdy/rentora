@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class PickupOptionCard extends StatelessWidget {
@@ -56,7 +57,7 @@ class PickupOptionCard extends StatelessWidget {
                   ? const Icon(Icons.check, size: 14, color: AppColors.white)
                   : null,
             ),
-            const SizedBox(width: 12),
+            horizontalSpace(12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +70,7 @@ class PickupOptionCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  verticalSpace(4),
                   Text(
                     subtitle,
                     style: const TextStyle(color: AppColors.grey, fontSize: 12),

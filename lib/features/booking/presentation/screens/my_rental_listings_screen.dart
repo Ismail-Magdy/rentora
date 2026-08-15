@@ -8,6 +8,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
+import 'package:rentora/features/booking/presentation/widgets/custom_empty_state.dart';
 import 'package:rentora/features/booking/presentation/widgets/my_rental_listing_card.dart';
 
 class MyRentalListingsScreen extends StatelessWidget {
@@ -69,7 +70,11 @@ class MyRentalListingsScreen extends StatelessWidget {
             final docs = snapshot.data?.docs ?? [];
 
             if (docs.isEmpty) {
-              return _buildEmptyState();
+              return const CustomEmptyState(
+                icon: Icons.inventory_2_outlined,
+                title: 'No Listings Available',
+                message: 'You haven\'t added any items for rent yet.',
+              );
             }
 
             return ListView.separated(
@@ -101,39 +106,6 @@ class MyRentalListingsScreen extends StatelessWidget {
               },
             );
           },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.inventory_2_outlined,
-              size: 64.sp,
-              color: AppColors.grey,
-            ),
-            verticalSpace(12),
-            Text(
-              'No Listings Available',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black,
-              ),
-            ),
-            verticalSpace(6),
-            Text(
-              'You haven\'t added any items for rent yet.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13.sp, color: AppColors.grey),
-            ),
-          ],
         ),
       ),
     );

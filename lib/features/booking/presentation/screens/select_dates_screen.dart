@@ -10,6 +10,7 @@ import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
 import 'package:rentora/features/booking/presentation/widgets/calendar_widget.dart';
+import 'package:rentora/features/booking/presentation/widgets/date_range_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
 
 class SelectDatesScreen extends StatefulWidget {
@@ -108,77 +109,11 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
                 ),
                 verticalSpace(16),
                 if (startDate != null && endDate != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Pickup Date',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.grey,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _formatDateLabel(startDate),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            const Icon(
-                              Icons.arrow_forward,
-                              color: AppColors.primaryColor,
-                              size: 20,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '${endDate!.difference(startDate!).inDays + 1} Days',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Text(
-                              'Return Date',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.grey,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _formatDateLabel(endDate),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  DateRangeCard(
+                    pickupDate: _formatDateLabel(startDate),
+                    returnDate: _formatDateLabel(endDate),
+                    totalDaysText:
+                        '${endDate!.difference(startDate!).inDays + 1} Days',
                   ),
                   verticalSpace(16),
                 ],
