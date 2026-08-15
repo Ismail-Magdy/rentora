@@ -26,38 +26,20 @@ class BookingSuccessActionsBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: double.infinity,
+            CustomButton(
+              text: 'View Booking Details',
               height: 52,
-              child: CustomButton(
-                text: 'View Booking Details',
-                onPressed: onViewDetails,
-              ),
+              borderRadius: 12,
+              onPressed: onViewDetails,
             ),
             verticalSpace(12),
-            SizedBox(
-              width: double.infinity,
+            CustomButton(
+              text: 'Back to Home',
+              color: AppColors.white,
+              textColor: AppColors.primaryColor,
               height: 52,
-              child: OutlinedButton(
-                onPressed: onBackToHome,
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                    color: AppColors.primaryColor,
-                    width: 1.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Back to Home',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ),
+              borderRadius: 12,
+              onPressed: onBackToHome,
             ),
           ],
         ),

@@ -58,7 +58,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
           onPressed: () => context.pop(),
         ),
         title: const Text(

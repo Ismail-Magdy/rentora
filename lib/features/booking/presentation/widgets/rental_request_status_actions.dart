@@ -22,26 +22,14 @@ class RentalRequestStatusActions extends StatelessWidget {
               context.pushReplacementNamed(Routes.myRentalListingsScreen),
         ),
         verticalSpace(12),
-        SizedBox(
-          width: double.infinity,
+        CustomButton(
+          text: 'Go to Home',
+          color: AppColors.white,
+          textColor: AppColors.primaryColor,
           height: 50.h,
-          child: OutlinedButton(
-            onPressed: () => context.pushReplacementNamed(Routes.rootScreen),
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14.r),
-              ),
-            ),
-            child: Text(
-              'Go to Home',
-              style: TextStyle(
-                color: AppColors.primaryColor,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
+          fontSize: 15.sp,
+          borderRadius: 14,
+          onPressed: () => context.pushReplacementNamed(Routes.rootScreen),
         ),
       ],
     );

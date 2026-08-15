@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
@@ -33,8 +34,8 @@ class RenterOrderDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
+          onPressed: () => context.pop(),
         ),
         title: const Text(
           'Booking Details',

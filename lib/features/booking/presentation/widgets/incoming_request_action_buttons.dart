@@ -41,35 +41,26 @@ class IncomingRequestActionButtons extends StatelessWidget {
           style: TextStyle(fontSize: 14.sp, color: AppColors.darkGrey),
         ),
         actions: [
-          TextButton(
+          CustomButton(
+            text: 'Cancel',
+            width: 80.w,
+            height: 38.h,
+            color: Colors.transparent,
+            textColor: AppColors.grey,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(
-              'Cancel',
-              style: TextStyle(
-                color: AppColors.grey,
-                fontWeight: FontWeight.w600,
-                fontSize: 14.sp,
-              ),
-            ),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isAccepting
-                  ? AppColors.primaryColor
-                  : AppColors.error,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
+          CustomButton(
+            text: 'Confirm',
+            width: 90.w,
+            height: 38.h,
+            borderRadius: 8,
+            color: isAccepting ? AppColors.primaryColor : AppColors.error,
+            textColor: AppColors.white,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.bold,
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(
-              'Confirm',
-              style: TextStyle(
-                color: AppColors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
-              ),
-            ),
           ),
         ],
       ),
@@ -115,28 +106,19 @@ class IncomingRequestActionButtons extends StatelessWidget {
         return Row(
           children: [
             Expanded(
-              child: OutlinedButton(
+              child: CustomButton(
+                text: 'Reject',
+                color: AppColors.white,
+                textColor: AppColors.error,
+                height: 48.h,
+                fontSize: 15.sp,
+                borderRadius: 14,
                 onPressed: () => _handleDecision(
                   context,
                   isAccepting: false,
                   title: 'Reject Request',
                   message:
                       'Are you sure you want to reject this rental request?',
-                ),
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
-                  side: const BorderSide(color: AppColors.error, width: 1.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14.r),
-                  ),
-                ),
-                child: Text(
-                  'Reject',
-                  style: TextStyle(
-                    color: AppColors.error,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
               ),
             ),
