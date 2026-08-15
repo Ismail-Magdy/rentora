@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
@@ -32,14 +35,48 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     final serviceFee = double.parse((dailyPrice * 0.1).toStringAsFixed(2));
     final totalAmount = (dailyPrice * totalDays) + serviceFee + securityDeposit;
 
-    return _buildScaffold(
-      context,
-      dailyPrice,
-      totalDays,
-      securityDeposit,
-      serviceFee,
-      totalAmount,
-      cubit,
+    return BlocListener<BookingCubit, BookingState>(
+      listenWhen: (previous, current) =>
+          current is BookingSuccess || current is BookingError,
+      listener: (context, state) {
+        if (state is BookingSuccess) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.check_circle_outline,
+            color: AppColors.successDark,
+            title: 'Booking Confirmed!',
+            message: 'Your booking request has been sent successfully.',
+            onFinish: () {
+              context.pushReplacementNamed(
+                Routes.bookingSuccessScreen,
+                arguments: BookingSuccessArgs(
+                  orderCode: state.orderCode,
+                  bookingSummaryArgs: widget.args,
+                ),
+              );
+            },
+          );
+        }
+
+        if (state is BookingError) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.error_outline,
+            color: AppColors.error,
+            title: 'Booking Failed',
+            message: state.message,
+          );
+        }
+      },
+      child: _buildScaffold(
+        context,
+        dailyPrice,
+        totalDays,
+        securityDeposit,
+        serviceFee,
+        totalAmount,
+        cubit,
+      ),
     );
   }
 

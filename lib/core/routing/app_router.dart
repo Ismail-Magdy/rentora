@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
-import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
@@ -90,31 +87,7 @@ class AppRouter {
             builder: (_) => _withNetwork(
               BlocProvider.value(
                 value: cubit,
-                child: BlocListener<BookingCubit, BookingState>(
-                  bloc: cubit,
-                  listener: (context, state) {
-                    if (state is BookingSuccess) {
-                      context.pushNamed(
-                        Routes.bookingSuccessScreen,
-                        arguments: BookingSuccessArgs(
-                          orderCode: state.orderCode,
-                          bookingSummaryArgs: args,
-                        ),
-                      );
-                    }
-
-                    if (state is BookingError) {
-                      showFeedbackDialog(
-                        context,
-                        icon: Icons.error_outline,
-                        color: AppColors.error,
-                        title: 'Booking Failed',
-                        message: state.message,
-                      );
-                    }
-                  },
-                  child: BookingSummaryScreen(args: args),
-                ),
+                child: BookingSummaryScreen(args: args),
               ),
             ),
           );
@@ -153,41 +126,7 @@ class AppRouter {
             builder: (_) => _withNetwork(
               BlocProvider.value(
                 value: cubit,
-                child: BlocListener<BookingCubit, BookingState>(
-                  bloc: cubit,
-                  listener: (context, state) {
-                    if (state is BookingSuccess) {
-                      showFeedbackDialog(
-                        context,
-                        icon: Icons.check_circle_outline,
-                        color: AppColors.successDark,
-                        title: 'Booking Confirmed!',
-                        message:
-                            'Your booking request has been sent successfully.',
-                        onFinish: () {
-                          context.pushReplacementNamed(
-                            Routes.bookingSuccessScreen,
-                            arguments: BookingSuccessArgs(
-                              orderCode: state.orderCode,
-                              bookingSummaryArgs: args,
-                            ),
-                          );
-                        },
-                      );
-                    }
-
-                    if (state is BookingError) {
-                      showFeedbackDialog(
-                        context,
-                        icon: Icons.error_outline,
-                        color: AppColors.error,
-                        title: 'Booking Failed',
-                        message: state.message,
-                      );
-                    }
-                  },
-                  child: PaymentMethodScreen(args: args),
-                ),
+                child: PaymentMethodScreen(args: args),
               ),
             ),
           );

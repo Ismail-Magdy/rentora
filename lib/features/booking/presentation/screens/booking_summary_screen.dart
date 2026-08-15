@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
@@ -30,62 +32,87 @@ class BookingSummaryScreen extends StatelessWidget {
     final serviceFee = double.parse((dailyPrice * 0.1).toStringAsFixed(2));
     final totalAmount = (dailyPrice * totalDays) + serviceFee + securityDeposit;
 
-    return Scaffold(
-      backgroundColor: AppColors.lightGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-          onPressed: () => context.pop(),
-        ),
-        title: const Text(
-          'Booking Summary',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
+    return BlocListener<BookingCubit, BookingState>(
+      listenWhen: (previous, current) =>
+          current is BookingSuccess || current is BookingError,
+      listener: (context, state) {
+        if (state is BookingSuccess) {
+          context.pushNamed(
+            Routes.bookingSuccessScreen,
+            arguments: BookingSuccessArgs(
+              orderCode: state.orderCode,
+              bookingSummaryArgs: args,
+            ),
+          );
+        }
+
+        if (state is BookingError) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.error_outline,
+            color: AppColors.error,
+            title: 'Booking Failed',
+            message: state.message,
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.lightGrey,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
+            onPressed: () => context.pop(),
           ),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                ListingInfoCard(
-                  title: args.listingTitle,
-                  imageUrl: args.listingImageUrl,
-                  dailyPrice: dailyPrice,
-                ),
-                verticalSpace(16),
-                BookingPeriodCard(
-                  startDate: _formatDate(cubit.startDate),
-                  endDate: _formatDate(cubit.endDate),
-                  totalDays: '$totalDays days',
-                ),
-                verticalSpace(16),
-                PriceDetailsCard(
-                  dailyPrice: dailyPrice,
-                  totalDays: totalDays,
-                  serviceFee: serviceFee,
-                  securityDeposit: securityDeposit,
-                ),
-              ],
+          title: const Text(
+            'Booking Summary',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor,
             ),
           ),
-          BookingActionBar(
-            label: 'Total Due',
-            totalText: '${totalAmount.toStringAsFixed(0)} SAR',
-            buttonText: 'Send Rental Request',
-            buttonWidth: 170,
-            onPressed: () {
-              context.pushNamed(Routes.pickupOptionsScreen, arguments: args);
-            },
-          ),
-        ],
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  ListingInfoCard(
+                    title: args.listingTitle,
+                    imageUrl: args.listingImageUrl,
+                    dailyPrice: dailyPrice,
+                  ),
+                  verticalSpace(16),
+                  BookingPeriodCard(
+                    startDate: _formatDate(cubit.startDate),
+                    endDate: _formatDate(cubit.endDate),
+                    totalDays: '$totalDays days',
+                  ),
+                  verticalSpace(16),
+                  PriceDetailsCard(
+                    dailyPrice: dailyPrice,
+                    totalDays: totalDays,
+                    serviceFee: serviceFee,
+                    securityDeposit: securityDeposit,
+                  ),
+                ],
+              ),
+            ),
+            BookingActionBar(
+              label: 'Total Due',
+              totalText: '${totalAmount.toStringAsFixed(0)} SAR',
+              buttonText: 'Send Rental Request',
+              buttonWidth: 170,
+              onPressed: () {
+                context.pushNamed(Routes.pickupOptionsScreen, arguments: args);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
