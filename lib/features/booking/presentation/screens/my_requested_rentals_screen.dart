@@ -1,226 +1,131 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/features/booking/data/model/booking_model.dart';
+import 'package:rentora/features/booking/presentation/widgets/my_requested_rental_card.dart';
 
 class MyRequestedRentalsScreen extends StatelessWidget {
   const MyRequestedRentalsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final rentals = [
-      _RentalRequestModel(
-        title: 'Canon EOS 250D',
-        dates: '15 - 18 October',
-        status: 'Pending',
-        statusColor: const Color(0xFFB97A00),
-        amount: '1,215 SAR',
-      ),
-      _RentalRequestModel(
-        title: 'Sony A7 Camera',
-        dates: '5 - 8 November',
-        status: 'Accepted',
-        statusColor: const Color(0xFF1D8C62),
-        amount: '980 SAR',
-      ),
-      _RentalRequestModel(
-        title: 'GoPro Hero 11',
-        dates: '22 - 24 November',
-        status: 'Rejected',
-        statusColor: const Color(0xFFE74C3C),
-        amount: '540 SAR',
-      ),
-    ];
+    final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
+    final Query<Map<String, dynamic>> query = currentUserId != null
+        ? FirebaseFirestore.instance
+            .collection('bookings')
+            .where('renterId', isEqualTo: currentUserId)
+        : FirebaseFirestore.instance.collection('bookings');
 
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          'My Requests',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      backgroundColor: AppColors.scaffoldBackground,
+      appBar: const CustomAppBar(text: 'My Requested Rentals'),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'My Requested Rentals',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w800,
+        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: query.snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
                   color: AppColors.primaryColor,
                 ),
-              ),
-              verticalSpace(16),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: rentals.length,
-                  separatorBuilder: (_, _) => verticalSpace(12),
-                  itemBuilder: (context, index) {
-                    final item = rentals[index];
+              );
+            }
 
-                    return _RequestCard(
-                      title: item.title,
-                      dates: item.dates,
-                      status: item.status,
-                      statusColor: item.statusColor,
-                      amount: item.amount,
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'Error loading requests: ${snapshot.error}',
+                  style: TextStyle(
+                    color: AppColors.error,
+                    fontSize: 14.sp,
+                  ),
+                ),
+              );
+            }
+
+            final docs = snapshot.data?.docs ?? [];
+
+            if (docs.isEmpty) {
+              return _buildEmptyState();
+            }
+
+            final bookingList = docs.map((doc) {
+              final data = doc.data();
+              return BookingModel.fromJson(data);
+            }).toList();
+
+            return ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+              itemCount: bookingList.length,
+              separatorBuilder: (context, index) => verticalSpace(12),
+              itemBuilder: (context, index) {
+                final booking = bookingList[index];
+                return MyRequestedRentalCard(
+                  title: 'Order #${booking.orderCode}',
+                  dates: '${booking.startDate} - ${booking.endDate}',
+                  status: _capitalize(booking.status),
+                  amount: '${booking.totalAmount} SAR',
+                  imageUrl:
+                      'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=600',
+                  onTap: () {
+                    context.pushNamed(
+                      Routes.renterOrderDetailsScreen,
+                      arguments: booking,
                     );
                   },
-                ),
-              ),
-            ],
-          ),
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
-}
 
-class _RentalRequestModel {
-  final String title;
-  final String dates;
-  final String status;
-  final Color statusColor;
-  final String amount;
+  String _capitalize(String s) {
+    if (s.isEmpty) return s;
+    return s[0].toUpperCase() + s.substring(1);
+  }
 
-  const _RentalRequestModel({
-    required this.title,
-    required this.dates,
-    required this.status,
-    required this.statusColor,
-    required this.amount,
-  });
-}
-
-class _RequestCard extends StatelessWidget {
-  final String title;
-  final String dates;
-  final String status;
-  final Color statusColor;
-  final String amount;
-
-  const _RequestCard({
-    required this.title,
-    required this.dates,
-    required this.status,
-    required this.statusColor,
-    required this.amount,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              'https://images.unsplash.com/photo-1516035069371-29a1b244cc32',
-              width: 72,
-              height: 72,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                width: 72,
-                height: 72,
-                color: AppColors.lightGrey,
-                child: const Icon(Icons.camera_alt, color: AppColors.grey),
+  Widget _buildEmptyState() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.shopping_bag_outlined,
+              size: 64.sp,
+              color: AppColors.grey,
+            ),
+            verticalSpace(12),
+            Text(
+              'No Rental Requests',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
               ),
             ),
-          ),
-          horizontalSpace(12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.black,
-                  ),
-                ),
-                verticalSpace(8),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_today,
-                      size: 15,
-                      color: AppColors.grey,
-                    ),
-                    horizontalSpace(6),
-                    Text(
-                      dates,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                verticalSpace(12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: 0.14),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: statusColor,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      amount,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            verticalSpace(6),
+            Text(
+              'You haven\'t made any rental requests yet.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: AppColors.grey,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

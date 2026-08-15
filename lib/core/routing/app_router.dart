@@ -5,10 +5,11 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
+import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
-// BookingSuccessArgs is imported from booking_arg.dart
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/screens/booking_success_screen.dart';
 import 'package:rentora/features/booking/presentation/screens/booking_summary_screen.dart';
@@ -102,9 +103,13 @@ class AppRouter {
                     }
 
                     if (state is BookingError) {
-                      ScaffoldMessenger.of(
+                      showFeedbackDialog(
                         context,
-                      ).showSnackBar(SnackBar(content: Text(state.message)));
+                        icon: Icons.error_outline,
+                        color: AppColors.error,
+                        title: 'Booking Failed',
+                        message: state.message,
+                      );
                     }
                   },
                   child: BookingSummaryScreen(args: args),
@@ -165,12 +170,18 @@ class AppRouter {
                 orderCode: 'RNTR-0000',
                 bookingSummaryArgs: BookingSummaryArgs(),
               );
+        final cubit =
+            successArgs.bookingSummaryArgs.bookingCubit ??
+            getIt<BookingCubit>();
 
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BookingSuccessScreen(
-              orderCode: successArgs.orderCode,
-              bookingArgs: successArgs.bookingSummaryArgs,
+            BlocProvider.value(
+              value: cubit,
+              child: BookingSuccessScreen(
+                orderCode: successArgs.orderCode,
+                bookingArgs: successArgs.bookingSummaryArgs,
+              ),
             ),
           ),
         );
@@ -180,10 +191,15 @@ class AppRouter {
         final bookingArgs = settings.arguments is BookingSummaryArgs
             ? settings.arguments as BookingSummaryArgs
             : BookingSummaryArgs();
+        final cubit = bookingArgs.bookingCubit ?? getIt<BookingCubit>();
 
         return MaterialPageRoute(
-          builder: (_) =>
-              _withNetwork(RenterOrderDetailsScreen(args: bookingArgs)),
+          builder: (_) => _withNetwork(
+            BlocProvider.value(
+              value: cubit,
+              child: RenterOrderDetailsScreen(args: bookingArgs),
+            ),
+          ),
         );
 
       // ==========================================
@@ -193,17 +209,32 @@ class AppRouter {
       /// Incoming Rental Request
       case Routes.incomingRentalRequestScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const IncomingRentalRequestScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const IncomingRentalRequestScreen(),
+            ),
+          ),
         );
 
       case Routes.requestAcceptedStatusScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const RequestAcceptedStatusScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const RequestAcceptedStatusScreen(),
+            ),
+          ),
         );
 
       case Routes.requestRejectedStatusScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const RequestRejectedStatusScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const RequestRejectedStatusScreen(),
+            ),
+          ),
         );
 
       // ==========================================
@@ -212,12 +243,22 @@ class AppRouter {
 
       case Routes.myRequestedRentalsScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const MyRequestedRentalsScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const MyRequestedRentalsScreen(),
+            ),
+          ),
         );
 
       case Routes.myRentalListingsScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const MyRentalListingsScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const MyRentalListingsScreen(),
+            ),
+          ),
         );
 
       /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget

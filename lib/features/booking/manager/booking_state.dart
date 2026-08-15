@@ -22,6 +22,12 @@ class BookingSuccess extends BookingState {
   BookingSuccess({required this.orderCode});
 }
 
+class BookingStatusUpdated extends BookingState {
+  final String bookingId;
+  final String status;
+  BookingStatusUpdated({required this.bookingId, required this.status});
+}
+
 class BookingError extends BookingState {
   final String message;
   BookingError({required this.message});

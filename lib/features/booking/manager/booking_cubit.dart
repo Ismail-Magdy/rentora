@@ -76,4 +76,21 @@ class BookingCubit extends Cubit<BookingState> {
       emit(BookingError(message: errorMessage));
     }
   }
+
+  Future<void> updateBookingStatus({
+    required String bookingId,
+    required String status,
+  }) async {
+    emit(BookingLoading());
+    try {
+      await bookingRepository.updateStatus(
+        bookingId: bookingId,
+        newStatus: status,
+      );
+      emit(BookingStatusUpdated(bookingId: bookingId, status: status));
+    } catch (e) {
+      final errorMessage = e is Failure ? e.message : e.toString();
+      emit(BookingError(message: errorMessage));
+    }
+  }
 }

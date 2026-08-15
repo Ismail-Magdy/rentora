@@ -10,6 +10,7 @@ import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final BookingSummaryArgs args;
@@ -36,19 +37,32 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       bloc: cubit,
       listener: (context, state) {
         if (state is BookingSuccess) {
-          context.pushReplacementNamed(
-            Routes.bookingSuccessScreen,
-            arguments: BookingSuccessArgs(
-              orderCode: state.orderCode,
-              bookingSummaryArgs: widget.args,
-            ),
+          showFeedbackDialog(
+            context,
+            icon: Icons.check_circle_outline,
+            color: AppColors.successDark,
+            title: 'Booking Confirmed!',
+            message: 'Your booking request has been sent successfully.',
+            onFinish: () {
+              context.pushReplacementNamed(
+                Routes.bookingSuccessScreen,
+                arguments: BookingSuccessArgs(
+                  orderCode: state.orderCode,
+                  bookingSummaryArgs: widget.args,
+                ),
+              );
+            },
           );
         }
 
         if (state is BookingError) {
-          ScaffoldMessenger.of(
+          showFeedbackDialog(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+            icon: Icons.error_outline,
+            color: AppColors.error,
+            title: 'Booking Failed',
+            message: state.message,
+          );
         }
       },
       child: _buildScaffold(
