@@ -12,6 +12,8 @@ import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/features/setup_profile/data/repos/setup_profile_repo.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
+import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -64,6 +66,12 @@ Future<void> initGetIt() async {
 
   getIt.registerFactory<InterestsCubit>(
     () => InterestsCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  // Booking
+  getIt.registerLazySingleton<BookingRepository>(
+    () => BookingRepository(getIt<BookingsFirestoreService>()),
+  );
+  getIt.registerFactory<BookingCubit>(
+    () => BookingCubit(bookingRepository: getIt<BookingRepository>()),
   );
 
   // Example at Auth Feature To do as this
