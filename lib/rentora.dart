@@ -19,7 +19,7 @@ class Rentora extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: "Poppins"),
           onGenerateRoute: appRouter.generateRoute,
-          initialRoute: Routes.splashScreen,
+          initialRoute: Routes.rootScreen,
         ),
       ),
     );

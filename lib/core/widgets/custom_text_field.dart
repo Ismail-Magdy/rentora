@@ -48,6 +48,9 @@ class CustomTextFormField extends StatefulWidget {
   /// Controls auto validation behavior.
   final AutovalidateMode autovalidateMode;
 
+  final TextInputAction? textInputAction;
+  final void Function(String)? onFieldSubmitted;
+
   const CustomTextFormField({
     super.key,
     required this.controller,
@@ -60,6 +63,8 @@ class CustomTextFormField extends StatefulWidget {
     this.maxLength,
     this.inputFormatters,
     this.autovalidateMode = .onUserInteraction,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -175,6 +180,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
 
       /// Use custom validator if provided, otherwise fallback to default validator.
       validator: widget.validator ?? _defaultValidator,

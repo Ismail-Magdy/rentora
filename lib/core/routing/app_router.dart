@@ -7,6 +7,11 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
+import 'package:rentora/features/root/presentation/screens/root_screen.dart';
+import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
+import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
+import 'package:rentora/features/setup_profile/presentation/screens/location_screen.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
 
 class AppRouter {
@@ -36,6 +41,33 @@ class AppRouter {
       /// OnBoarding Screen
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
+
+      /// Setup Profile
+      // Location Screen
+      case Routes.locationScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<LocationCubit>(),
+              child: const LocationScreen(),
+            ),
+          ),
+        );
+
+      // Interests Screen
+      case Routes.interestsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<InterestsCubit>(),
+              child: const InterestsScreen(),
+            ),
+          ),
+        );
+
+      /// Root
+      case Routes.rootScreen:
+        return MaterialPageRoute(builder: (_) => const RootScreen());
 
       /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
       // /// Welcome AuthScreen

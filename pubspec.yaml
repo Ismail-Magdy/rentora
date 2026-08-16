@@ -49,6 +49,14 @@ dependencies:
 
   # Networking
   dio: ^5.11.0
+  dartz: ^0.10.1
+
+  # Location & Maps
+  flutter_map: ^8.3.1
+  geocoding: ^4.0.0
+  latlong2: ^0.10.1
+  geolocator: ^14.0.2
+  dart_geohash: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +69,8 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/svgs/
+    - assets/svgs/logo/
+    - assets/svgs/categories/
     - assets/icons/
     - assets/lottie/
 
