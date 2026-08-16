@@ -9,6 +9,12 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
+import 'package:rentora/features/home/data/repos/home_repo.dart';
+import 'package:rentora/features/home/data/repos/home_repo_impl.dart';
+import 'package:rentora/features/home/manager/home_cubit.dart';
+import 'package:rentora/features/item_details/data/repos/item_details_repo.dart';
+import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
+import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/setup_profile/data/repos/setup_profile_repo.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
@@ -67,7 +73,22 @@ Future<void> initGetIt() async {
   getIt.registerFactory<InterestsCubit>(
     () => InterestsCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
   );
-  // Booking
+
+  /// Home
+  getIt.registerLazySingleton<HomeRepo>(
+    () => HomeRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
+  );
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+
+  /// Item Details
+  getIt.registerLazySingleton<ItemDetailsRepo>(() => ItemDetailsRepoImpl());
+
+  //
+  getIt.registerFactory<ItemDetailsCubit>(
+    () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
+  );
+
+  /// Booking
   getIt.registerLazySingleton<BookingRepository>(
     () => BookingRepository(getIt<BookingsFirestoreService>()),
   );

@@ -38,7 +38,7 @@ class FirebaseAuthService {
     await _firebaseAuth.signOut();
   }
 
-  /// Gets the current logged-in user's ID
+  /// Gets the current logged in user's ID
   String? getCurrentUserId() {
     return _firebaseAuth.currentUser?.uid;
   }
