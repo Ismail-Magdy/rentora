@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -10,26 +11,26 @@ class BookingNextStepsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.infoLight,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.info_outline,
                 color: AppColors.primaryColor,
-                size: 20,
+                size: 20.r,
               ),
               horizontalSpace(8),
-              const Text(
+              Text(
                 "What's next",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
                 ),
@@ -51,20 +52,20 @@ class BookingNextStepsCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 20,
-          height: 20,
+          width: 20.w,
+          height: 20.h,
           decoration: const BoxDecoration(
             color: AppColors.primaryColor,
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.check, color: AppColors.white, size: 12),
+          child: Icon(Icons.check, color: AppColors.white, size: 12.r),
         ),
         horizontalSpace(12),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(
-              fontSize: 13,
+            style: TextStyle(
+              fontSize: 13.sp,
               color: AppColors.primaryColor,
               height: 1.4,
             ),

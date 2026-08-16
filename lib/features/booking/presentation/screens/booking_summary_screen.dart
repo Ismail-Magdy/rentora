@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -58,28 +60,12 @@ class BookingSummaryScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: AppColors.lightGrey,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-            onPressed: () => context.pop(),
-          ),
-          title: const Text(
-            'Booking Summary',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor,
-            ),
-          ),
-          centerTitle: true,
-        ),
+        appBar: const CustomAppBar(text: 'Booking Summary'),
         body: Column(
           children: [
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.r),
                 children: [
                   ListingInfoCard(
                     title: args.listingTitle,
@@ -106,7 +92,7 @@ class BookingSummaryScreen extends StatelessWidget {
               label: 'Total Due',
               totalText: '${totalAmount.toStringAsFixed(0)} SAR',
               buttonText: 'Send Rental Request',
-              buttonWidth: 170,
+              buttonWidth: 170.w,
               onPressed: () {
                 context.pushNamed(Routes.pickupOptionsScreen, arguments: args);
               },

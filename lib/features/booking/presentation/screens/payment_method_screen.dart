@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -91,28 +93,12 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   ) {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-          onPressed: () => context.pop(),
-        ),
-        title: const Text(
-          'Payment Method',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(text: 'Payment Method'),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.r),
               children: [
                 ListingInfoCard(
                   title: widget.args.listingTitle,
@@ -120,10 +106,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   dailyPrice: dailyPrice,
                 ),
                 verticalSpace(16),
-                const Text(
+                Text(
                   'Choose a payment method',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.black,
                   ),
@@ -144,7 +130,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         label: 'Total',
         totalText: '${totalAmount.toStringAsFixed(0)} SAR',
         buttonText: 'Confirm Payment',
-        buttonWidth: 170,
+        buttonWidth: 170.w,
         onPressed: () {
           final firebaseAuthService = getIt<FirebaseAuthService>();
           final currentUserId =

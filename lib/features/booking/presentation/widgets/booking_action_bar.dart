@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
@@ -22,10 +23,10 @@ class BookingActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       child: SafeArea(
         top: false,
@@ -39,14 +40,14 @@ class BookingActionBar extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(color: AppColors.grey, fontSize: 12),
+                  style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
                 ),
                 verticalSpace(8),
                 Text(
                   totalText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 20,
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -55,7 +56,7 @@ class BookingActionBar extends StatelessWidget {
             CustomButton(
               text: buttonText,
               width: buttonWidth,
-              height: 52,
+              height: 52.h,
               borderRadius: 12,
               onPressed: onPressed,
             ),

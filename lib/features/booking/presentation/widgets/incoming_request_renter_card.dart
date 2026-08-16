@@ -88,9 +88,9 @@ class IncomingRequestRenterCard extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.verified,
-                                  size: 12,
+                                  size: 12.r,
                                   color: AppColors.successDark,
                                 ),
                                 horizontalSpace(3),
@@ -110,9 +110,9 @@ class IncomingRequestRenterCard extends StatelessWidget {
                     verticalSpace(4),
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.star_rounded,
-                          size: 16,
+                          size: 16.r,
                           color: AppColors.warning,
                         ),
                         horizontalSpace(4),

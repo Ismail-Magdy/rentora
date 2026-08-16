@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -17,10 +18,10 @@ class ListingInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(18.r),
         boxShadow: [
           BoxShadow(
             color: AppColors.black.withValues(alpha: 0.04),
@@ -32,15 +33,15 @@ class ListingInfoCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(14.r),
             child: Image.network(
               imageUrl,
-              width: 82,
-              height: 82,
+              width: 82.w,
+              height: 82.h,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
-                width: 82,
-                height: 82,
+                width: 82.w,
+                height: 82.h,
                 color: AppColors.lightGrey,
                 child: const Icon(Icons.camera_alt, color: AppColors.grey),
               ),
@@ -52,19 +53,19 @@ class ListingInfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 4,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 4.h,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Available',
                     style: TextStyle(
                       color: AppColors.primaryColor,
-                      fontSize: 11,
+                      fontSize: 11.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -72,8 +73,8 @@ class ListingInfoCard extends StatelessWidget {
                 verticalSpace(8),
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 20,
+                  style: TextStyle(
+                    fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.black,
                   ),
@@ -83,12 +84,12 @@ class ListingInfoCard extends StatelessWidget {
                 verticalSpace(8),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: AppColors.amber, size: 16),
+                    Icon(Icons.star, color: AppColors.amber, size: 16.r),
                     horizontalSpace(4),
-                    const Text(
+                    Text(
                       '(reviews 24)',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: AppColors.grey,
                         fontWeight: FontWeight.w500,
                       ),
@@ -97,7 +98,7 @@ class ListingInfoCard extends StatelessWidget {
                     Text(
                       '4.9',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
@@ -107,8 +108,8 @@ class ListingInfoCard extends StatelessWidget {
                 verticalSpace(8),
                 Text(
                   '${dailyPrice.toStringAsFixed(0)} SAR / day',
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor,
                   ),

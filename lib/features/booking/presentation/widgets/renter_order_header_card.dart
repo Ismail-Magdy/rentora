@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -17,10 +18,10 @@ class RenterOrderHeaderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryColor.withValues(alpha: 0.05),
@@ -32,15 +33,15 @@ class RenterOrderHeaderCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             child: Image.network(
               imageUrl,
-              width: 76,
-              height: 76,
+              width: 76.w,
+              height: 76.h,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
-                width: 76,
-                height: 76,
+                width: 76.w,
+                height: 76.h,
                 color: AppColors.lightGrey,
                 child: const Icon(Icons.camera_alt, color: AppColors.grey),
               ),
@@ -53,8 +54,8 @@ class RenterOrderHeaderCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: TextStyle(
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
                   ),
@@ -63,9 +64,9 @@ class RenterOrderHeaderCard extends StatelessWidget {
                 ),
                 verticalSpace(6),
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 6.h,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor.withValues(alpha: 0.08),
@@ -73,8 +74,8 @@ class RenterOrderHeaderCard extends StatelessWidget {
                   ),
                   child: Text(
                     statusText,
-                    style: const TextStyle(
-                      fontSize: 11,
+                    style: TextStyle(
+                      fontSize: 11.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor,
                     ),

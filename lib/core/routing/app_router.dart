@@ -52,11 +52,18 @@ class AppRouter {
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
 
-      // ==========================================
-      // Renter Flow Routes
-      // ==========================================
+      /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
+      // /// Welcome AuthScreen
+      // case Routes.welcomeAuthScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) => _withNetwork(
+      //       BlocProvider(
+      //         create: (context) => getIt<SocialAuthBloc>(),
+      //         child: const WelcomeAuthScreen(),
+      //       ),
+      //     ),
+      //   );
 
-      /// 1. Select Dates Screen (Booking Screen)
       case Routes.selectedDatesScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
@@ -78,7 +85,6 @@ class AppRouter {
           ),
         );
 
-      /// 2. Booking Summary Screen
       case Routes.bookingSummaryScreen:
         if (args is BookingSummaryArgs) {
           final cubit = args.bookingCubit ?? getIt<BookingCubit>();
@@ -97,7 +103,6 @@ class AppRouter {
           builder: (_) => _withNetwork(const UnknownRouteScreen()),
         );
 
-      /// 3. Pickup Options Screen
       case Routes.pickupOptionsScreen:
         if (args is BookingSummaryArgs) {
           final cubit = args.bookingCubit ?? getIt<BookingCubit>();
@@ -135,7 +140,6 @@ class AppRouter {
           builder: (_) => _withNetwork(const UnknownRouteScreen()),
         );
 
-      /// 5. Booking Success Screen
       case Routes.bookingSuccessScreen:
         final successArgs = args is BookingSuccessArgs
             ? args
@@ -159,7 +163,6 @@ class AppRouter {
           ),
         );
 
-      /// Renter Order Details
       case Routes.renterOrderDetailsScreen:
         final bookingArgs = settings.arguments is BookingSummaryArgs
             ? settings.arguments as BookingSummaryArgs
@@ -174,10 +177,6 @@ class AppRouter {
             ),
           ),
         );
-
-      // ==========================================
-      // Owner Flow Routes
-      // ==========================================
 
       case Routes.incomingRentalRequestScreen:
         return MaterialPageRoute(
@@ -210,10 +209,6 @@ class AppRouter {
             ),
           ),
         );
-
-      // ==========================================
-      // Management Routes
-      // ==========================================
 
       case Routes.myRequestedRentalsScreen:
         return MaterialPageRoute(

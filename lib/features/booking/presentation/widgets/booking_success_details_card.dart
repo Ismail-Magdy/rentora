@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -21,10 +22,10 @@ class BookingSuccessDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,15 +33,15 @@ class BookingSuccessDetailsCard extends StatelessWidget {
           Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
                 child: Image.network(
                   listingImageUrl,
-                  width: 60,
-                  height: 60,
+                  width: 60.w,
+                  height: 60.h,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
-                    width: 60,
-                    height: 60,
+                    width: 60.w,
+                    height: 60.h,
                     color: AppColors.lightGrey,
                     child: const Icon(Icons.camera_alt, color: AppColors.grey),
                   ),
@@ -53,8 +54,8 @@ class BookingSuccessDetailsCard extends StatelessWidget {
                   children: [
                     Text(
                       listingTitle,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: AppColors.black,
                       ),
@@ -64,24 +65,24 @@ class BookingSuccessDetailsCard extends StatelessWidget {
                     verticalSpace(4),
                     Text(
                       'Booking ID: $orderCode',
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: TextStyle(
+                        fontSize: 12.sp,
                         color: AppColors.grey,
                       ),
                     ),
                     verticalSpace(4),
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.calendar_today,
-                          size: 14,
+                          size: 14.r,
                           color: AppColors.grey,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4.w),
                         Text(
                           dateRange,
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: TextStyle(
+                            fontSize: 12.sp,
                             color: AppColors.grey,
                           ),
                         ),
@@ -93,19 +94,19 @@ class BookingSuccessDetailsCard extends StatelessWidget {
             ],
           ),
           verticalSpace(12),
-          Container(height: 1, color: AppColors.lightGrey),
+          Container(height: 1.h, color: AppColors.lightGrey),
           verticalSpace(12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Total',
-                style: TextStyle(fontSize: 12, color: AppColors.grey),
+                style: TextStyle(fontSize: 12.sp, color: AppColors.grey),
               ),
               Text(
                 '$totalAmount SAR',
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
                 ),

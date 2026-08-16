@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
@@ -66,29 +68,13 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-          onPressed: () => context.pop(),
-        ),
-        title: const Text(
-          "Select Dates",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(text: 'Select Dates'),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
+                padding: EdgeInsets.all(16.r),
+                children: [
                 ListingInfoCard(
                   title: widget.listingTitle,
                   imageUrl: widget.listingImageUrl,
@@ -140,7 +126,7 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
       label: 'Total ($totalDays days)',
       totalText: '${totalAmount.toStringAsFixed(0)} SAR',
       buttonText: 'Confirm Dates',
-      buttonWidth: 160,
+      buttonWidth: 160.w,
       onPressed: () {
         final bookingCubit = context.read<BookingCubit>();
         context.pushNamed(

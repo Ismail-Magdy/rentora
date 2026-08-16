@@ -17,9 +17,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.white,
       scrolledUnderElevation: 0,
       elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-        onPressed: () => context.pop(),
+      leading: GestureDetector(
+        onTap: () => context.pop(),
+        child: const Icon(
+          Icons.arrow_back_ios_new,
+          color: AppColors.primaryColor,
+        ),
       ),
       title: Text(
         text,

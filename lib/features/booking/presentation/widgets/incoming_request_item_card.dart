@@ -69,9 +69,9 @@ class IncomingRequestItemCard extends StatelessWidget {
                 verticalSpace(8),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.calendar_today_outlined,
-                      size: 15,
+                      size: 15.r,
                       color: AppColors.primaryColor,
                     ),
                     horizontalSpace(6),

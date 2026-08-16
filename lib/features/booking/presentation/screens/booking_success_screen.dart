@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_next_steps_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_success_actions_bar.dart';
@@ -54,46 +56,43 @@ class BookingSuccessScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
-        child: AppBar(backgroundColor: Colors.transparent, elevation: 0),
-      ),
+      appBar: const CustomAppBarWithNoLeading(text: 'Booking Confirmed'),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.r),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   verticalSpace(24),
                   Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
+                    width: 80.w,
+                    height: 80.h,
+                    decoration: const BoxDecoration(
                       color: AppColors.primaryColor,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.check,
                       color: AppColors.white,
-                      size: 48,
+                      size: 48.r,
                     ),
                   ),
                   verticalSpace(16),
-                  const Text(
+                  Text(
                     'Booking Confirmed !',
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   verticalSpace(8),
-                  const Text(
+                  Text(
                     "We've sent your booking request to the owner.",
-                    style: TextStyle(fontSize: 14, color: AppColors.grey),
+                    style: TextStyle(fontSize: 14.sp, color: AppColors.grey),
                     textAlign: TextAlign.center,
                   ),
                   verticalSpace(24),

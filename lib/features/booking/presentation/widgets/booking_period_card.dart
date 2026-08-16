@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -17,10 +18,10 @@ class BookingPeriodCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
           color: AppColors.primaryColor.withValues(alpha: 0.18),
         ),
@@ -30,17 +31,17 @@ class BookingPeriodCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.calendar_month_outlined,
                 color: AppColors.primaryColor,
-                size: 18,
+                size: 18.r,
               ),
               horizontalSpace(8),
-              const Text(
+              Text(
                 "Selected Dates",
                 style: TextStyle(
                   color: AppColors.primaryColor,
-                  fontSize: 17,
+                  fontSize: 17.sp,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -53,48 +54,48 @@ class BookingPeriodCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Pickup",
-                    style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
                   ),
                   verticalSpace(4),
                   Text(
                     startDate,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.black,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                     ),
                   ),
                   verticalSpace(4),
-                  const Text(
+                  Text(
                     "10:00 PM",
-                    style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
                   ),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.w,
+                  vertical: 6.h,
                 ),
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Row(
                   children: [
                     Text(
                       totalDays,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                       ),
                     ),
-                    const Icon(
+                    Icon(
                       Icons.arrow_forward,
-                      size: 16,
+                      size: 16.r,
                       color: AppColors.primaryColor,
                     ),
                   ],
@@ -103,23 +104,23 @@ class BookingPeriodCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Return",
-                    style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
                   ),
                   verticalSpace(4),
                   Text(
                     endDate,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.black,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                     ),
                   ),
                   verticalSpace(4),
-                  const Text(
+                  Text(
                     "10:00 AM",
-                    style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
                   ),
                 ],
               ),

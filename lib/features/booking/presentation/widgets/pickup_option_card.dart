@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -20,17 +21,17 @@ class PickupOptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(16.r),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
             color: isSelected
                 ? AppColors.primaryColor
                 : AppColors.grey.withValues(alpha: 0.25),
-            width: isSelected ? 2 : 1,
+            width: isSelected ? 2.w : 1.w,
           ),
           boxShadow: [
             BoxShadow(
@@ -43,18 +44,18 @@ class PickupOptionCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 24,
-              height: 24,
+              width: 24.w,
+              height: 24.h,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: isSelected ? AppColors.primaryColor : AppColors.grey,
-                  width: 2,
+                  width: 2.w,
                 ),
                 color: isSelected ? AppColors.primaryColor : AppColors.white,
               ),
               child: isSelected
-                  ? const Icon(Icons.check, size: 14, color: AppColors.white)
+                  ? Icon(Icons.check, size: 14.r, color: AppColors.white)
                   : null,
             ),
             horizontalSpace(12),
@@ -64,23 +65,23 @@ class PickupOptionCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.black,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   verticalSpace(4),
                   Text(
                     subtitle,
-                    style: const TextStyle(color: AppColors.grey, fontSize: 12),
+                    style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
                   ),
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
-              size: 16,
+              size: 16.r,
               color: AppColors.grey,
             ),
           ],

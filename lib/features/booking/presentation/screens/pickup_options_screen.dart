@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_action_bar.dart';
@@ -36,29 +38,13 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.black),
-          onPressed: () => context.pop(),
-        ),
-        title: const Text(
-          'Pickup Method',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(text: 'Pickup Method'),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
+                padding: EdgeInsets.all(16.r),
+                children: [
                 ListingInfoCard(
                   title: widget.args.listingTitle,
                   imageUrl: widget.args.listingImageUrl,
@@ -101,7 +87,7 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
         label: 'Total',
         totalText: '${totalAmount.toStringAsFixed(0)} SAR',
         buttonText: 'Confirm Method',
-        buttonWidth: 170,
+        buttonWidth: 170.w,
         onPressed: () {
           context.pushNamed(Routes.paymentMethodScreen, arguments: widget.args);
         },

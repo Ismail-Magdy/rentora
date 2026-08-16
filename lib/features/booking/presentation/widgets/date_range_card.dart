@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -21,10 +22,10 @@ class DateRangeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,13 +35,13 @@ class DateRangeCard extends StatelessWidget {
             children: [
               Text(
                 pickupLabel!,
-                style: const TextStyle(fontSize: 12, color: AppColors.grey),
+                style: TextStyle(fontSize: 12.sp, color: AppColors.grey),
               ),
               verticalSpace(4),
               Text(
                 pickupDate,
-                style: const TextStyle(
-                  fontSize: 14,
+                style: TextStyle(
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.black,
                 ),
@@ -49,16 +50,16 @@ class DateRangeCard extends StatelessWidget {
           ),
           Column(
             children: [
-              const Icon(
+              Icon(
                 Icons.arrow_forward,
                 color: AppColors.primaryColor,
-                size: 20,
+                size: 20.r,
               ),
               verticalSpace(4),
               Text(
                 totalDaysText,
-                style: const TextStyle(
-                  fontSize: 12,
+                style: TextStyle(
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
                 ),
@@ -70,13 +71,13 @@ class DateRangeCard extends StatelessWidget {
             children: [
               Text(
                 returnLabel!,
-                style: const TextStyle(fontSize: 12, color: AppColors.grey),
+                style: TextStyle(fontSize: 12.sp, color: AppColors.grey),
               ),
               verticalSpace(4),
               Text(
                 returnDate,
-                style: const TextStyle(
-                  fontSize: 14,
+                style: TextStyle(
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: AppColors.black,
                 ),

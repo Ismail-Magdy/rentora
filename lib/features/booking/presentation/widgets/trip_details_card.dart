@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -23,10 +24,10 @@ class TripDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: AppColors.black.withValues(alpha: 0.03),
@@ -38,10 +39,10 @@ class TripDetailsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Trip Details',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w700,
               color: AppColors.primaryColor,
             ),
@@ -69,16 +70,16 @@ class TripDetailsCard extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 13,
+          style: TextStyle(
+            fontSize: 13.sp,
             color: AppColors.grey,
             fontWeight: FontWeight.w500,
           ),
         ),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 13,
+          style: TextStyle(
+            fontSize: 13.sp,
             fontWeight: FontWeight.w700,
             color: AppColors.black,
           ),

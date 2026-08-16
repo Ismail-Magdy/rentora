@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -15,20 +16,20 @@ class PaymentMethodOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: isSelected ? AppColors.primaryColor : Colors.transparent,
-          width: 2,
+          width: 2.w,
         ),
       ),
       child: Row(
         children: [
           Container(
-            width: 24,
-            height: 24,
+            width: 24.w,
+            height: 24.h,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: AppColors.primaryColor,
@@ -36,8 +37,8 @@ class PaymentMethodOptionCard extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Container(
-                width: 12,
-                height: 12,
+                width: 12.w,
+                height: 12.h,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColors.white,
@@ -48,8 +49,8 @@ class PaymentMethodOptionCard extends StatelessWidget {
           horizontalSpace(12),
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: AppColors.black,
             ),
