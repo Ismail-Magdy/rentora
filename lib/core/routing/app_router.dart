@@ -20,8 +20,13 @@ import 'package:rentora/features/booking/presentation/screens/renter_order_detai
 import 'package:rentora/features/booking/presentation/screens/request_accepted_status_screen.dart';
 import 'package:rentora/features/booking/presentation/screens/request_rejected_status_screen.dart';
 import 'package:rentora/features/booking/presentation/screens/select_dates_screen.dart';
+import 'package:rentora/features/home/manager/home_cubit.dart';
+import 'package:rentora/features/home/presentation/screens/category_details_screen.dart';
+import 'package:rentora/features/home/presentation/screens/home_screen.dart';
+import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
+import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
-import 'package:rentora/features/root/presentation/screens/root_screen.dart';
+import 'package:rentora/features/root/screens/root_screen.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
@@ -82,20 +87,41 @@ class AppRouter {
 
       /// Root
       case Routes.rootScreen:
-        return MaterialPageRoute(builder: (_) => const RootScreen());
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => getIt<HomeCubit>()),
+                // BlocProvider(
+                //   create: (context) => getIt<ChatCubit>(),
+                // ),
+              ],
+              child: const RootScreen(),
+            ),
+          ),
+        );
 
-      /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
-      // /// Welcome AuthScreen
-      // case Routes.welcomeAuthScreen:
-      //   return MaterialPageRoute(
-      //     builder: (_) => _withNetwork(
-      //       BlocProvider(
-      //         create: (context) => getIt<SocialAuthBloc>(),
-      //         child: const WelcomeAuthScreen(),
-      //       ),
-      //     ),
-      //   );
+      /// Home Screen
+      case Routes.homeScreen:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
 
+      /// Category Details Screen
+      case Routes.categoryDetailsScreen:
+        return MaterialPageRoute(builder: (_) => const CategoryDetailsScreen());
+
+      /// Item Details Screen
+      case Routes.itemDetailsScreen:
+        final itemId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<ItemDetailsCubit>(),
+              child: ItemDetailsScreen(itemId: itemId),
+            ),
+          ),
+        );
+
+      /// Booking Screens
       case Routes.selectedDatesScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
@@ -261,6 +287,18 @@ class AppRouter {
             ),
           ),
         );
+
+      /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
+      // /// Welcome AuthScreen
+      // case Routes.welcomeAuthScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) => _withNetwork(
+      //       BlocProvider(
+      //         create: (context) => getIt<SocialAuthBloc>(),
+      //         child: const WelcomeAuthScreen(),
+      //       ),
+      //     ),
+      //   );
 
       /// Default Case (Unknown Route)
       default:

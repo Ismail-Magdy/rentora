@@ -72,6 +72,8 @@ flutter:
     - assets/images/
     - assets/svgs/logo/
     - assets/svgs/categories/
+    - assets/svgs/root/
+    - assets/svgs/home/
     - assets/icons/
     - assets/lottie/
 
