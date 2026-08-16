@@ -12,4 +12,21 @@ class Routes {
   static const String homeScreen = "/homeScreen";
   //
   static const String notificationsScreen = "/notificationsScreen";
+  //
+  static const String selectedDatesScreen = "/selectedDatesScreen";
+  static const String bookingSummaryScreen = "/bookingSummaryScreen";
+  static const String pickupOptionsScreen = "/pickupOptionsScreen";
+  static const String paymentMethodScreen = "/paymentMethodScreen";
+  static const String bookingSuccessScreen = "/bookingSuccessScreen";
+  static const String renterOrderDetailsScreen = "/renterOrderDetailsScreen";
+
+  static const String incomingRentalRequestScreen =
+      "/incomingRentalRequestScreen";
+  static const String requestAcceptedStatusScreen =
+      "/requestAcceptedStatusScreen";
+  static const String requestRejectedStatusScreen =
+      "/requestRejectedStatusScreen";
+
+  static const String myRequestedRentalsScreen = "/myRequestedRentalsScreen";
+  static const String myRentalListingsScreen = "/myRentalListingsScreen";
 }
