@@ -66,6 +66,7 @@ Future<void> initGetIt() async {
 
   getIt.registerFactory<InterestsCubit>(
     () => InterestsCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  );
   // Booking
   getIt.registerLazySingleton<BookingRepository>(
     () => BookingRepository(getIt<BookingsFirestoreService>()),
