@@ -9,6 +9,9 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
+import 'package:rentora/features/setup_profile/data/repos/setup_profile_repo.dart';
+import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
+import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,6 +55,17 @@ Future<void> initGetIt() async {
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
 
+  /// Setup Profile
+  getIt.registerLazySingleton<SetupProfileRepo>(
+    () => SetupProfileRepo(getIt<UsersFirestoreService>()),
+  );
+
+  getIt.registerFactory<LocationCubit>(
+    () => LocationCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  );
+
+  getIt.registerFactory<InterestsCubit>(
+    () => InterestsCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
   // Booking
   getIt.registerLazySingleton<BookingRepository>(
     () => BookingRepository(getIt<BookingsFirestoreService>()),
