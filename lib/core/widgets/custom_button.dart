@@ -13,6 +13,9 @@ class CustomButton extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final double? elevation;
+  final Color? borderColor;
+  final double? borderWidth;
+  final Widget? icon;
 
   const CustomButton({
     super.key,
@@ -26,6 +29,10 @@ class CustomButton extends StatelessWidget {
     this.fontSize,
     this.fontWeight = .bold,
     this.elevation = 0,
+
+    this.borderColor,
+    this.borderWidth,
+    this.icon,
   });
 
   @override
@@ -36,14 +43,30 @@ class CustomButton extends StatelessWidget {
       minWidth: width ?? .infinity,
       height: height ?? 50.h,
       elevation: elevation,
-      shape: RoundedRectangleBorder(borderRadius: .circular(borderRadius.r)),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: fontSize ?? 16.sp,
-          fontWeight: fontWeight,
+      shape: RoundedRectangleBorder(
+        borderRadius: .circular(borderRadius.r),
+        side: BorderSide(
+          color: borderColor ?? Colors.transparent,
+          width: borderWidth ?? 0,
         ),
+      ),
+
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) ...[
+            icon!,
+            SizedBox(width: 10.w), // مسافة بين اللوجو والنص
+          ],
+          Text(
+            text,
+            style: TextStyle(
+              color: textColor,
+              fontSize: fontSize ?? 16.sp,
+              fontWeight: fontWeight,
+            ),
+          ),
+        ],
       ),
     );
   }

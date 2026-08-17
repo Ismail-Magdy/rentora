@@ -6,11 +6,15 @@ import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
+import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
+import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
+import 'package:rentora/features/auth/presentation/screens/login_screen.dart';
+import 'package:rentora/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:rentora/features/auth/presentation/screens/welcome_auth_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
 
 class AppRouter {
-  /// Fucnction to wrap the screen with NetworkCubit and OfflineModeWidget
   Widget _withNetwork(Widget screen) {
     return BlocProvider.value(
       value: getIt<NetworkCubit>(),
@@ -27,29 +31,38 @@ class AppRouter {
     );
   }
 
+  Widget _withAuth(Widget screen) {
+    return BlocProvider(create: (_) => getIt<AuthCubit>(), child: screen);
+  }
+
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      /// Splash Screen
       case Routes.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
 
-      /// OnBoarding Screen
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
 
-      /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
-      // /// Welcome AuthScreen
-      // case Routes.welcomeAuthScreen:
-      //   return MaterialPageRoute(
-      //     builder: (_) => _withNetwork(
-      //       BlocProvider(
-      //         create: (context) => getIt<SocialAuthBloc>(),
-      //         child: const WelcomeAuthScreen(),
-      //       ),
-      //     ),
-      //   );
+      case Routes.welcomeAuthScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const WelcomeAuthScreen()),
+        );
 
-      /// Default Case (Unknown Route)
+      case Routes.signupScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(_withAuth(const SignUpScreen())),
+        );
+
+      case Routes.loginScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(_withAuth(const LoginScreen())),
+        );
+
+      case Routes.forgotPasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(_withAuth(const ForgetPasswordScreen())),
+        );
+
       default:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(const UnknownRouteScreen()),
