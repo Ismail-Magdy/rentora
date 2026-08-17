@@ -6,8 +6,13 @@ import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
+import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
+import 'package:rentora/features/create_listing/presentation/screens/add_photos_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/item_details_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/choose_category_screens.dart';
 
 class AppRouter {
   /// Fucnction to wrap the screen with NetworkCubit and OfflineModeWidget
@@ -36,7 +41,25 @@ class AppRouter {
       /// OnBoarding Screen
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
+        case Routes.categoryScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ChooseCategoryScreen(),
+        );
 
+      case Routes.itemDetailsScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ItemDetailsScreen(),
+        );
+
+      case Routes.addPhotosScreen:
+        return MaterialPageRoute(
+          builder: (_) => const AddPhotosScreen(),
+        );
+
+      case Routes.reviewScreen:
+        return MaterialPageRoute(
+          builder: (_) => const ReviewAndPublishScreen(),
+        );
       /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
       // /// Welcome AuthScreen
       // case Routes.welcomeAuthScreen:

@@ -9,6 +9,10 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
+import 'package:rentora/features/create_listing/data/datasources/listing_remote_data_source.dart';
+import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
+import 'package:rentora/features/create_listing/manager/repositories/listing_repository.dart';
+import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -45,23 +49,35 @@ Future<void> initGetIt() async {
   );
 
   /// Media Services
-  getIt.registerLazySingleton<CloudinaryService>(() => CloudinaryService());
+  getIt.registerLazySingleton<CloudinaryService>(
+    () => CloudinaryService(),
+  );
 
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
 
-  // Example at Auth Feature To do as this
-  // /// Signup
-  // getIt.registerLazySingleton<SignupRepo>(() => SignupRepo());
-  // getIt.registerFactory<SignupBloc>(() => SignupBloc(getIt<SignupRepo>()));
+  // =========================================================
+  // Create Listing Feature
+  // =========================================================
 
-  // /// Login
-  // getIt.registerLazySingleton<LoginRepo>(() => LoginRepo());
-  // getIt.registerFactory<LoginBloc>(() => LoginBloc(getIt<LoginRepo>()));
+  // Data Source
+  getIt.registerLazySingleton<ListingRemoteDataSource>(
+    () => ListingRemoteDataSourceImpl(getIt<FirebaseFirestore>()),
+  );
 
-  // /// Forgot Password
-  // getIt.registerLazySingleton<ForgotPasswordRepo>(() => ForgotPasswordRepo());
-  // getIt.registerFactory<ForgotPasswordBloc>(
-  //   () => ForgotPasswordBloc(getIt<ForgotPasswordRepo>()),
-  // );
+  // Repository
+  getIt.registerLazySingleton<ListingRepository>(
+    () => ListingRepositoryImpl(
+      getIt<ListingRemoteDataSource>(),
+      getIt<CloudinaryService>(),
+    ),
+  );
+
+  // Cubit
+ getIt.registerFactory<ListingCubit>(
+  () => ListingCubit(
+    getIt<ListingRepository>(),
+    getIt<FirebaseAuth>(),
+  ),
+);
 }
