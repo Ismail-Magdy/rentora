@@ -51,10 +51,12 @@ class ItemInfoSection extends StatelessWidget {
           ],
         ),
         verticalSpace(12),
+        //
         Row(
           crossAxisAlignment: .baseline,
           textBaseline: .alphabetic,
           children: [
+            //
             Text(
               '${item.price.toInt()}',
               style: TextStyle(
@@ -63,6 +65,7 @@ class ItemInfoSection extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
             ),
+            //
             Text(
               ' LE / day',
               style: TextStyle(
@@ -71,9 +74,11 @@ class ItemInfoSection extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
             ),
+            //
           ],
         ),
         verticalSpace(20),
+        //
         Container(
           padding: .all(12.r),
           decoration: BoxDecoration(
@@ -82,10 +87,15 @@ class ItemInfoSection extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.location_on_outlined, color: Colors.red, size: 24.sp),
-
+              //
+              Icon(
+                Icons.location_on_outlined,
+                color: AppColors.error,
+                size: 24.sp,
+              ),
+              //
               horizontalSpace(12),
-
+              //
               Expanded(
                 child: Column(
                   crossAxisAlignment: .start,

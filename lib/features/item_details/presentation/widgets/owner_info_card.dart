@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
 
 class OwnerInfoCard extends StatelessWidget {
@@ -61,22 +62,17 @@ class OwnerInfoCard extends StatelessWidget {
               ],
             ),
           ),
-          ElevatedButton(
+
+          //
+          CustomButton(
+            borderRadius: 10,
+            text: "Contact",
+            width: 100,
+            height: 41,
             onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.teal,
-              elevation: 0,
-              side: BorderSide(color: Colors.teal.shade200),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-            ),
-            child: Text(
-              'Contact',
-              style: TextStyle(fontSize: 12.sp, fontWeight: .bold),
-            ),
           ),
+
+          //
         ],
       ),
     );
