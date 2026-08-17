@@ -9,6 +9,9 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
+import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
+import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
+import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
 import 'package:rentora/features/home/data/repos/home_repo.dart';
 import 'package:rentora/features/home/data/repos/home_repo_impl.dart';
 import 'package:rentora/features/home/manager/home_cubit.dart';
@@ -86,6 +89,15 @@ Future<void> initGetIt() async {
   //
   getIt.registerFactory<ItemDetailsCubit>(
     () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
+  );
+
+  /// Category Details
+  getIt.registerLazySingleton<CategoryDetailsRepo>(
+    () => CategoryDetailsRepoImpl(),
+  );
+
+  getIt.registerFactory<CategoryDetailsCubit>(
+    () => CategoryDetailsCubit(getIt<CategoryDetailsRepo>()),
   );
 
   /// Booking

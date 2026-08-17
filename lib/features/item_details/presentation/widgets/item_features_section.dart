@@ -13,11 +13,14 @@ class ItemFeaturesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
+        //
         Text(
-          'Key Features',
+          "Key Features",
           style: TextStyle(fontSize: 16.sp, fontWeight: .bold),
         ),
+        //
         verticalSpace(12),
+        //
         Wrap(
           spacing: 12.w,
           runSpacing: 12.h,
@@ -25,7 +28,7 @@ class ItemFeaturesSection extends StatelessWidget {
             return Container(
               padding: .symmetric(horizontal: 12.w, vertical: 8.h),
               decoration: BoxDecoration(
-                border: .all(color: Colors.grey.shade200),
+                border: .all(color: AppColors.grey.withValues(alpha: 0.4)),
                 borderRadius: .circular(8.r),
               ),
               child: Row(
@@ -43,6 +46,7 @@ class ItemFeaturesSection extends StatelessWidget {
             );
           }).toList(),
         ),
+        //
       ],
     );
   }

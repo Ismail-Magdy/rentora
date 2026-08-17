@@ -20,8 +20,9 @@ import 'package:rentora/features/booking/presentation/screens/renter_order_detai
 import 'package:rentora/features/booking/presentation/screens/request_accepted_status_screen.dart';
 import 'package:rentora/features/booking/presentation/screens/request_rejected_status_screen.dart';
 import 'package:rentora/features/booking/presentation/screens/select_dates_screen.dart';
+import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
 import 'package:rentora/features/home/manager/home_cubit.dart';
-import 'package:rentora/features/home/presentation/screens/category_details_screen.dart';
+import 'package:rentora/features/category_details/presentation/screens/category_details_screen.dart';
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
@@ -107,7 +108,15 @@ class AppRouter {
 
       /// Category Details Screen
       case Routes.categoryDetailsScreen:
-        return MaterialPageRoute(builder: (_) => const CategoryDetailsScreen());
+        final categoryName = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<CategoryDetailsCubit>(),
+              child: CategoryDetailsScreen(categoryName: categoryName),
+            ),
+          ),
+        );
 
       /// Item Details Screen
       case Routes.itemDetailsScreen:
