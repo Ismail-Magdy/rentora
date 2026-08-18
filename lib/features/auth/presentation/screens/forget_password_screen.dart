@@ -8,8 +8,8 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_auth_card.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_state.dart';
+import 'package:rentora/features/auth/manager/auth_cubit.dart';
+import 'package:rentora/features/auth/manager/auth_state.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -76,7 +76,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
                     CustomTextFormField(
                       controller: emailController,
-                      label: 'Email Address',
                       hintText: 'Enter your email address',
                       prefixIcon: Icons.mail_outline,
                       fieldType: FieldType.email,

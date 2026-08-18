@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/errors/exceptions.dart';
 import 'package:rentora/core/errors/failure.dart';
 import 'package:rentora/features/auth/data/repos/auth_repo.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_state.dart';
+import 'package:rentora/features/auth/manager/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepo _authRepo;
@@ -25,6 +25,20 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
         agreedToTerms: agreedToTerms,
       );
+      emit(AuthSuccess(user));
+    } on ServerException catch (e) {
+      emit(AuthError(ServerFailure(e.message)));
+    } on OfflineException catch (e) {
+      emit(AuthError(OfflineFailure(e.message)));
+    } catch (e) {
+      emit(AuthError(ServerFailure(e.toString())));
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    emit(AuthLoading());
+    try {
+      final user = await _authRepo.signInWithGoogle();
       emit(AuthSuccess(user));
     } on ServerException catch (e) {
       emit(AuthError(ServerFailure(e.message)));
