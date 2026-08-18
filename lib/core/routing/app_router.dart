@@ -6,6 +6,11 @@ import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
+import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
+import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
+import 'package:rentora/features/auth/presentation/screens/login_screen.dart';
+import 'package:rentora/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:rentora/features/auth/presentation/screens/welcome_auth_screen.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -62,6 +67,10 @@ class AppRouter {
     );
   }
 
+  Widget _withAuth(Widget screen) {
+    return BlocProvider(create: (_) => getIt<AuthCubit>(), child: screen);
+  }
+
   Widget _withVerificationCubit(Widget screen, Object? args) {
     if (args is VerificationRouteArgs) {
       return BlocProvider.value(value: args.verificationCubit, child: screen);
@@ -76,13 +85,31 @@ class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     final args = settings.arguments;
     switch (settings.name) {
-      /// Splash Screen
       case Routes.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
 
-      /// OnBoarding Screen
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
+
+      case Routes.welcomeAuthScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const WelcomeAuthScreen()),
+        );
+
+      case Routes.signupScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(_withAuth(const SignUpScreen())),
+        );
+
+      case Routes.loginScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(_withAuth(const LoginScreen())),
+        );
+
+      case Routes.forgotPasswordScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(_withAuth(const ForgetPasswordScreen())),
+        );
 
       /// Setup Profile
       // Location Screen
