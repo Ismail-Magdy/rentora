@@ -6,7 +6,7 @@ import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
+import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:rentora/features/auth/presentation/screens/login_screen.dart';
 import 'package:rentora/features/auth/presentation/screens/sign_up_screen.dart';
@@ -88,29 +88,39 @@ class AppRouter {
       case Routes.splashScreen:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
 
+      /// OnBoarding Screens
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
 
+      /// Welcome Auth Screen
       case Routes.welcomeAuthScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(const WelcomeAuthScreen()),
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<AuthCubit>(),
+              child: const WelcomeAuthScreen(),
+            ),
+          ),
         );
 
+      /// Sign Up Screen
       case Routes.signupScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(_withAuth(const SignUpScreen())),
         );
 
+      /// Login Screen
       case Routes.loginScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(_withAuth(const LoginScreen())),
         );
 
+      /// Forgot Password Screen
       case Routes.forgotPasswordScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(_withAuth(const ForgetPasswordScreen())),
         );
-
+      //
       /// Setup Profile
       // Location Screen
       case Routes.locationScreen:

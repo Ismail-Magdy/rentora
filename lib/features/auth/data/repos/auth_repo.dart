@@ -24,6 +24,44 @@ class AuthRepo {
     }
   }
 
+  ///
+  Future<UserModel> signInWithGoogle() async {
+    await _checkConnection();
+    try {
+      final credential = await _authService.signInWithGoogle();
+
+      final userDoc = await _usersService.getUserProfile(
+        userId: credential.user!.uid,
+      );
+
+      if (userDoc.exists) {
+        return UserModel.fromFirestore(userDoc);
+      } else {
+        final newUser = UserModel(
+          userId: credential.user!.uid,
+          name: credential.user!.displayName ?? 'Google User',
+          email: credential.user!.email ?? '',
+          phoneNumber: credential.user!.phoneNumber ?? '',
+          avatarUrl: credential.user!.photoURL,
+          agreedToTerms: true,
+          createdAt: DateTime.now(),
+        );
+
+        await _usersService.createUserProfile(
+          userId: newUser.userId,
+          userData: newUser.toFirestore(),
+        );
+        return newUser;
+      }
+    } on FirebaseAuthException catch (e) {
+      throw ServerException(FirebaseErrorHandler.handle(e));
+    } on SocketException {
+      throw const OfflineException("No internet connection");
+    } catch (e) {
+      throw ServerException(FirebaseErrorHandler.handle(e));
+    }
+  }
+
   Future<UserModel> signUp({
     required String name,
     required String email,

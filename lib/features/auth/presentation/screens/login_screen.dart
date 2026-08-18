@@ -8,8 +8,8 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_auth_card.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_state.dart';
+import 'package:rentora/features/auth/manager/auth_cubit.dart';
+import 'package:rentora/features/auth/manager/auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -104,7 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     CustomTextFormField(
                       controller: emailController,
-                      label: 'Email Address',
                       hintText: 'Enter your email address',
                       prefixIcon: Icons.mail_outline,
                       fieldType: FieldType.email,
@@ -189,13 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.w400,
                       color: AppColors.white,
                       textColor: AppColors.black,
-                      borderColor: AppColors.darkGrey,
-                      borderWidth: 1,
-                      icon: SvgPicture.asset(
-                        'assets/svgs/Google.svg',
-                        width: 22.w,
-                        height: 22.h,
-                      ),
+
                       onPressed: () {
                         // Google Sign-In هنا بعدين
                       },

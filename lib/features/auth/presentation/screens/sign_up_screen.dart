@@ -8,8 +8,8 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_auth_card.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
-import 'package:rentora/features/auth/manager/cubit/auth_state.dart';
+import 'package:rentora/features/auth/manager/auth_cubit.dart';
+import 'package:rentora/features/auth/manager/auth_state.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -147,14 +147,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       children: [
                         CustomTextFormField(
                           controller: nameController,
-                          label: 'Full Name',
                           hintText: 'Enter your full name',
                           prefixIcon: Icons.person_outline,
                         ),
                         SizedBox(height: 24.h),
                         CustomTextFormField(
                           controller: emailController,
-                          label: 'Email Address',
                           hintText: 'name@example.com',
                           prefixIcon: Icons.mail_outline,
                           fieldType: FieldType.email,
@@ -162,7 +160,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         SizedBox(height: 24.h),
                         CustomTextFormField(
                           controller: phoneController,
-                          label: 'Phone Number',
                           hintText: '+966 5X XXX XXXX',
                           prefixIcon: Icons.phone_android,
                           fieldType: FieldType.phoneNumber,
@@ -170,7 +167,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         SizedBox(height: 24.h),
                         CustomTextFormField(
                           controller: passwordController,
-                          label: 'Password',
                           hintText: '********',
                           prefixIcon: Icons.lock_outline,
                           fieldType: FieldType.password,
