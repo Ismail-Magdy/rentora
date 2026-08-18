@@ -38,6 +38,16 @@ import 'package:rentora/features/setup_profile/manager/location/location_cubit.d
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/location_screen.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
+import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
+import 'package:rentora/features/verification/manager/verification_cubit.dart';
+import 'package:rentora/features/verification/data/model/verification_route_args.dart';
+import 'package:rentora/features/verification/presentation/screens/verification_face_scan_screen.dart';
+import 'package:rentora/features/verification/presentation/screens/verification_id_back_upload_screen.dart';
+import 'package:rentora/features/verification/presentation/screens/verification_id_front_upload_screen.dart';
+import 'package:rentora/features/verification/presentation/screens/verification_intro_screen.dart';
+import 'package:rentora/features/verification/presentation/screens/verification_pending_screen.dart';
 
 class AppRouter {
   /// Function to wrap the screen with NetworkCubit and OfflineModeWidget
@@ -59,6 +69,17 @@ class AppRouter {
 
   Widget _withAuth(Widget screen) {
     return BlocProvider(create: (_) => getIt<AuthCubit>(), child: screen);
+  }
+
+  Widget _withVerificationCubit(Widget screen, Object? args) {
+    if (args is VerificationRouteArgs) {
+      return BlocProvider.value(value: args.verificationCubit, child: screen);
+    }
+
+    return BlocProvider(
+      create: (context) => getIt<VerificationCubit>(),
+      child: screen,
+    );
   }
 
   Route? generateRoute(RouteSettings settings) {
@@ -331,6 +352,112 @@ class AppRouter {
               create: (context) => getIt<BookingCubit>(),
               child: const MyRentalListingsScreen(),
             ),
+          ),
+        );
+
+      /// Verification Screens
+      case Routes.verificationIntroScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            _withVerificationCubit(const VerificationIntroScreen(), args),
+          ),
+        );
+
+      case Routes.verificationFaceScanScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            _withVerificationCubit(
+              BlocConsumer<VerificationCubit, VerificationState>(
+                listenWhen: (previous, current) => current is VerificationError,
+                listener: (context, state) {
+                  if (state is VerificationError) {
+                    showFeedbackDialog(
+                      context,
+                      icon: Icons.error_outline,
+                      color: AppColors.error,
+                      title: "Scan Failed",
+                      message: state.message,
+                    );
+                  }
+                },
+                builder: (context, state) => const VerificationFaceScanScreen(),
+              ),
+              args,
+            ),
+          ),
+        );
+
+      case Routes.verificationIdFrontUploadScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            _withVerificationCubit(
+              BlocConsumer<VerificationCubit, VerificationState>(
+                listenWhen: (previous, current) => current is VerificationError,
+                listener: (context, state) {
+                  if (state is VerificationError) {
+                    showFeedbackDialog(
+                      context,
+                      icon: Icons.error_outline,
+                      color: AppColors.error,
+                      title: "Upload Failed",
+                      message: state.message,
+                    );
+                  }
+                },
+                builder: (context, state) =>
+                    const VerificationIdFrontUploadScreen(),
+              ),
+              args,
+            ),
+          ),
+        );
+
+      case Routes.verificationIdBackUploadScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            _withVerificationCubit(
+              BlocConsumer<VerificationCubit, VerificationState>(
+                listenWhen: (previous, current) =>
+                    current is VerificationSuccess ||
+                    current is VerificationError,
+                listener: (context, state) {
+                  if (state is VerificationSuccess) {
+                    showFeedbackDialog(
+                      context,
+                      icon: Icons.check_circle_outline,
+                      color: AppColors.successDark,
+                      title: "Documents Received",
+                      message:
+                          "Your verification documents were submitted successfully.",
+                      onFinish: () => context.pushNamedAndRemoveUntil(
+                        Routes.verificationPendingScreen,
+                        predicate: (route) => false,
+                      ),
+                    );
+                  }
+
+                  if (state is VerificationError) {
+                    showFeedbackDialog(
+                      context,
+                      icon: Icons.error_outline,
+                      color: AppColors.error,
+                      title: "Verification Failed",
+                      message: state.message,
+                    );
+                  }
+                },
+                builder: (context, state) =>
+                    const VerificationIdBackUploadScreen(),
+              ),
+              args,
+            ),
+          ),
+        );
+
+      case Routes.verificationPendingScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            _withVerificationCubit(const VerificationPendingScreen(), args),
           ),
         );
 

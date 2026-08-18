@@ -37,4 +37,13 @@ class Routes {
 
   static const String myRequestedRentalsScreen = "/myRequestedRentalsScreen";
   static const String myRentalListingsScreen = "/myRentalListingsScreen";
+
+  // Verification
+  static const String verificationIntroScreen = "/verificationIntroScreen";
+  static const String verificationFaceScanScreen = "/verificationFaceScanScreen";
+  static const String verificationIdFrontUploadScreen =
+      "/verificationIdFrontUploadScreen";
+  static const String verificationIdBackUploadScreen =
+      "/verificationIdBackUploadScreen";
+  static const String verificationPendingScreen = "/verificationPendingScreen";
 }
