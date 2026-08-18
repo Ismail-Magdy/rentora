@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 class SmallImageAction extends StatelessWidget {
    const SmallImageAction({
@@ -19,18 +21,18 @@ class SmallImageAction extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 34,
-        height: 34,
+        width: 34.w,
+        height: 34.h,
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           shape: BoxShape.circle,
         ),
         child: Icon(
           icon,
-          size: 17,
+          size: 17.sp,
           color: isDelete
-              ? Colors.red
-              : const Color(0xFF202020),
+              ? AppColors.error
+              : AppColors.darkGrey,
         ),
       ),
     );

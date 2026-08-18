@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class ReviewCard extends StatelessWidget {
@@ -21,10 +23,10 @@ class ReviewCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFFE3E7E8),
+          color: AppColors.lightGrey,
         ),
         boxShadow: [
           BoxShadow(
@@ -39,8 +41,8 @@ class ReviewCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 38,
-                height: 38,
+                width: 38.sp,
+                height: 38.sp,
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor
                       .withOpacity(.08),
@@ -51,7 +53,7 @@ class ReviewCard extends StatelessWidget {
                   icon,
                   color:
                       AppColors.primaryColor,
-                  size: 20,
+                  size: 20.sp,
                 ),
               ),
 
@@ -60,8 +62,8 @@ class ReviewCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  style: TextStyle(
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -71,9 +73,9 @@ class ReviewCard extends StatelessWidget {
                 InkWell(
                   onTap: onEdit,
                   borderRadius:
-                      BorderRadius.circular(20),
-                  child: const Padding(
-                    padding: EdgeInsets.all(6),
+                      BorderRadius.circular(20.sp),
+                  child:  Padding(
+                    padding: EdgeInsets.all(6.sp),
                     child: Icon(
                       Icons.edit_outlined,
                       size: 20,
@@ -85,7 +87,7 @@ class ReviewCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 17),
+   verticalSpace(7),
 
           child,
         ],

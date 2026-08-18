@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 class InfoRow extends StatelessWidget {
     const InfoRow({
@@ -22,14 +25,14 @@ class InfoRow extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(
-              fontSize: 13,
-              color: Color(0xFF777F82),
+            style:  TextStyle(
+              fontSize: 13.sp,
+              color: AppColors.grey,
             ),
           ),
         ),
 
-        const SizedBox(width: 15),
+        horizontalSpace(8),
 
         Expanded(
           flex: 2,
@@ -37,11 +40,11 @@ class InfoRow extends StatelessWidget {
             value,
             textAlign: TextAlign.right,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: valueBold
                   ? FontWeight.w800
                   : FontWeight.w600,
-              color: const Color(0xFF202020),
+              color: AppColors.black,
             ),
           ),
         ),

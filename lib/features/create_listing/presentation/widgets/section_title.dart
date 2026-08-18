@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class SectionTitle extends StatelessWidget {
@@ -18,10 +19,10 @@ class SectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 15,
+          style: TextStyle(
+            fontSize: 15.sp,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF202020),
+            color: AppColors.black,
           ),
         ),
         if (required)

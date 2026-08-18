@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 class ImageCard extends StatelessWidget {
   final String imagePath;
@@ -18,19 +20,19 @@ class ImageCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Image.asset(
             imagePath,
-            width: 130,
-            height: 120,
+            width: 130.w,
+            height: 120.h,
             fit: BoxFit.cover,
 
             errorBuilder: (_, __, ___) {
               return Container(
-                width: 130,
-                height: 120,
-                color: const Color(0xFFE8EFF0),
+                width: 130.w,
+                height: 120.h,
+                color: AppColors.lightGrey,
                 child: const Icon(
                   Icons.image_outlined,
                   size: 38,
-                  color: Color(0xFF008B9B),
+                  color: AppColors.primaryColor,
                 ),
               );
             },
@@ -46,13 +48,13 @@ class ImageCard extends StatelessWidget {
               width: 28,
               height: 28,
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.close_rounded,
                 size: 18,
-                color: Color(0xFFD64545),
+                color: AppColors.error,
               ),
             ),
           ),

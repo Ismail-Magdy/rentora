@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
 import 'package:rentora/features/create_listing/presentation/screens/item_details_screen.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/category_card.dart';
@@ -112,9 +116,14 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
 
 void onNext() {
   if (selectedIndex == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select a category first')),
-    );
+    showFeedbackDialog(
+  context,
+  icon: Icons.category_outlined,
+  color: AppColors.warning,
+  title: 'Category Required',
+  message: 'Please select a category first.',
+);
+    
     return;
   }
 
@@ -124,15 +133,11 @@ void onNext() {
     categories[selectedIndex!].id,
   );
 
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => BlocProvider.value(
-        value: listingCubit,
-        child: const ItemDetailsScreen(),
-      ),
-    ),
-  );
+ Navigator.pushNamed(
+  context,
+  Routes.itemDetailsScreen,
+  arguments: context.read<ListingCubit>(),
+);
 }
 
   @override
@@ -176,8 +181,8 @@ void onNext() {
               child: Align(
                 alignment: Alignment.center,
                 child: Container(
-                  width: 160,
-                  height: 5,
+                  width: 160.w,
+                  height: 5.h,
                   decoration: BoxDecoration(
                     color: const Color(0xFFE7E9EA),
                     borderRadius: BorderRadius.circular(20),
@@ -186,7 +191,7 @@ void onNext() {
                     alignment: Alignment.centerLeft,
                     child: Container(
                       width: 70,
-                      height: 5,
+                      height: 5.h,
                       decoration: BoxDecoration(
                         color: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(20),
@@ -216,7 +221,7 @@ void onNext() {
                                   fontSize: 27,
                                   height: 1.2,
                                   fontWeight: FontWeight.w800,
-                                  color: Color(0xFF171717),
+                                  color: AppColors.black,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -225,7 +230,7 @@ void onNext() {
                                 style: TextStyle(
                                   fontSize: 15,
                                   height: 1.4,
-                                  color: Color(0xFF6D7478),
+                                  color: AppColors.grey,
                                 ),
                               ),
                             ],
@@ -233,7 +238,8 @@ void onNext() {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 25),
+                  
+                    verticalSpace(25),
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -254,7 +260,8 @@ void onNext() {
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
+                   verticalSpace(20),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
@@ -273,7 +280,7 @@ void onNext() {
                             color: AppColors.success,
                             size: 20,
                           ),
-                          const SizedBox(width: 8),
+                        horizontalSpace( 8),
                           const Text(
                             'You can only choose one category.',
                             style: TextStyle(
@@ -305,7 +312,7 @@ void onNext() {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -315,7 +322,7 @@ void onNext() {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      horizontalSpace(10),
                       Icon(Icons.arrow_forward_rounded),
                     ],
                   ),

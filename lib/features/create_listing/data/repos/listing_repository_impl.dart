@@ -1,24 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/errors/failure.dart';
 import 'package:rentora/core/errors/firebase_error_handler.dart';
+import 'package:rentora/core/helpers/constants.dart';
 import 'package:rentora/core/network/firebase/cloudinary_service.dart';
-import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
-
-import 'package:rentora/features/create_listing/data/datasources/listing_remote_data_source.dart';
 import 'package:rentora/features/create_listing/data/models/listing_entity.dart';
-import 'package:rentora/features/create_listing/manager/repositories/listing_repository.dart';
+// import 'package:rentora/features/create_listing/data/repos/listing_repository.dart';
 
-class ListingRepositoryImpl implements ListingRepository {
-  final ListingRemoteDataSource _dataSource;
+class ListingRepositoryImpl  {
+  // final ListingRemoteDataSource _dataSource;
   final CloudinaryService _cloudinaryService;
- 
+  final FirebaseFirestore _firestore ;
 
-  ListingRepositoryImpl(this._dataSource, this._cloudinaryService);
+  ListingRepositoryImpl(this._firestore, this._cloudinaryService);
 
-  @override
+
   Future<ListingEntity> fetchListing(String listingId) async {
     try {
-      final doc = await _dataSource.getListing(listingId);
+      final doc = await _firestore.collection(AppConstants.listingsCollection).doc(listingId).get();
       if (!doc.exists) throw ServerFailure('Listing not found');
       return ListingEntity.fromMap(doc.id, doc.data() as Map<String, dynamic>);
     } catch (e) {
@@ -26,7 +25,7 @@ class ListingRepositoryImpl implements ListingRepository {
     }
   }
 
-  @override
+
   Future<void> saveListing({
     required ListingEntity listing,
     List<XFile>? newImages,
@@ -50,10 +49,11 @@ class ListingRepositoryImpl implements ListingRepository {
 
       if (listing.id.isEmpty) {
         // New listing
-        await _dataSource.createListing(data);
+        // await _dataSource.createListing(data);
+        await _firestore.collection('listings').add(data);
       } else {
         // Update existing
-        await _dataSource.updateListing(listing.id, data);
+        await _firestore.collection('listings').doc(listing.id).update(data);
       }
     } catch (e) {
       throw ServerFailure(FirebaseErrorHandler.handle(e));

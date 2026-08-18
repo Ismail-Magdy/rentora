@@ -9,9 +9,7 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
-import 'package:rentora/features/create_listing/data/datasources/listing_remote_data_source.dart';
 import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
-import 'package:rentora/features/create_listing/manager/repositories/listing_repository.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -56,28 +54,24 @@ Future<void> initGetIt() async {
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
 
-  // =========================================================
-  // Create Listing Feature
-  // =========================================================
 
-  // Data Source
-  getIt.registerLazySingleton<ListingRemoteDataSource>(
-    () => ListingRemoteDataSourceImpl(getIt<FirebaseFirestore>()),
-  );
+  // Create Listing Add Iteam
 
-  // Repository
-  getIt.registerLazySingleton<ListingRepository>(
+getIt.registerLazySingleton<ListingRepositoryImpl>(
     () => ListingRepositoryImpl(
-      getIt<ListingRemoteDataSource>(),
+      getIt<FirebaseFirestore>(),
       getIt<CloudinaryService>(),
     ),
   );
 
-  // Cubit
- getIt.registerFactory<ListingCubit>(
+getIt.registerFactory<ListingCubit>(
   () => ListingCubit(
-    getIt<ListingRepository>(),
+    getIt<ListingRepositoryImpl>(),
     getIt<FirebaseAuth>(),
   ),
 );
+
+  // Repository
+
+
 }

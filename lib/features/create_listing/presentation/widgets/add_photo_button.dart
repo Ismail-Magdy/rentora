@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class AddPhotoButton extends StatelessWidget {
@@ -15,8 +17,8 @@ class AddPhotoButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 105,
-        height: 105,
+        width: 105.w,
+        height: 105.h,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius:
@@ -27,7 +29,7 @@ class AddPhotoButton extends StatelessWidget {
             width: 1.5,
           ),
         ),
-        child: const Column(
+        child:  Column(
           mainAxisAlignment:
               MainAxisAlignment.center,
           children: [
@@ -36,7 +38,8 @@ class AddPhotoButton extends StatelessWidget {
               color: AppColors.primaryColor,
               size: 27,
             ),
-            SizedBox(height: 6),
+            verticalSpace(6),
+            
             Text(
               'Add',
               style: TextStyle(

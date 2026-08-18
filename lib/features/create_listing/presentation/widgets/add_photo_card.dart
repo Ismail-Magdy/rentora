@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class AddPhotoCard extends StatelessWidget {
@@ -21,24 +23,24 @@ class AddPhotoCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: const Color(0xFFCBD6D8),
-            width: 1.5,
+            width: 1.5.w,
           ),
         ),
         child: Column(
           mainAxisAlignment:
               MainAxisAlignment.center,
           children: [
-            const Icon(
+             Icon(
               Icons.add_a_photo_outlined,
               color: AppColors.primaryColor,
               size: 30,
             ),
-            const SizedBox(height: 8),
+            verticalSpace(8),
             Text(
               'Add photo',
               style: TextStyle(
                 color: AppColors.primaryColor,
-                fontSize: 13,
+                fontSize: 13.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),

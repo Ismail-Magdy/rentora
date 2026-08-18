@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 class ImageActionButton extends StatelessWidget {
 
@@ -19,7 +21,7 @@ class ImageActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: AppColors.white,
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,
@@ -28,10 +30,10 @@ class ImageActionButton extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Icon(
             icon,
-            size: 20,
+            size: 20.sp,
             color: isDelete
-                ? Colors.red.shade600
-                : const Color(0xFF202020),
+                ? AppColors.error
+                : AppColors.darkGrey,
           ),
         ),
       ),

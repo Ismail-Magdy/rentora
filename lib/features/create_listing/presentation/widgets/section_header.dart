@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -20,8 +21,8 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: 16.sp,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -34,9 +35,9 @@ class SectionHeader extends StatelessWidget {
                   AppColors.primaryColor,
               padding: EdgeInsets.zero,
             ),
-            icon: const Icon(
+            icon:  Icon(
               Icons.edit_outlined,
-              size: 17,
+              size: 17.sp,
             ),
             label: const Text(
               'Edit',

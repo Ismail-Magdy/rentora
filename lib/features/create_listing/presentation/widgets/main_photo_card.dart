@@ -7,7 +7,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/image_action_button.dart';
 
 class MainPhotoCard extends StatelessWidget {
@@ -26,7 +29,7 @@ class MainPhotoCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: SizedBox(
-        height: 210,
+        height: 210.h,
         width: double.infinity,
         child: Stack(
           fit: StackFit.expand,
@@ -43,9 +46,9 @@ class MainPhotoCard extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(.15),
-                    Colors.transparent,
-                    Colors.black.withOpacity(.55),
+                    AppColors.black.withOpacity(.15),
+                    AppColors.darkGrey.withOpacity(.15),
+                    AppColors.black.withOpacity(.55),
                   ],
                 ),
               ),
@@ -57,19 +60,19 @@ class MainPhotoCard extends StatelessWidget {
               bottom: 12,
               child: Container(
                 padding:
-                    const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 7,
+                     EdgeInsets.symmetric(
+                  horizontal: 12.w,
+                  vertical: 7.h,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.white,
                   borderRadius:
                       BorderRadius.circular(20),
                 ),
-                child: const Text(
+                child:  Text(
                   'Main photo',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -86,7 +89,8 @@ class MainPhotoCard extends StatelessWidget {
                     icon: Icons.edit_outlined,
                     onTap: onEdit,
                   ),
-                  const SizedBox(width: 8),
+                
+                  horizontalSpace(8),
                   ImageActionButton(
                     icon: Icons.delete_outline,
                     onTap: onRemove,

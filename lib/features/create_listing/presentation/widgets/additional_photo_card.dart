@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/small_image_action.dart';
 
 class AdditionalPhotoCard extends StatelessWidget {
@@ -37,7 +38,7 @@ class AdditionalPhotoCard extends StatelessWidget {
                   icon: Icons.edit_outlined,
                   onTap: onEdit,
                 ),
-                const SizedBox(width: 5),
+               horizontalSpace(8),
                 SmallImageAction(
                   icon: Icons.delete_outline,
                   onTap: onRemove,

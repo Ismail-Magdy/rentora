@@ -2,6 +2,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 
@@ -17,7 +19,7 @@ class MainPhotoEmpty extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 210,
+        height: 210.h,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -31,8 +33,8 @@ class MainPhotoEmpty extends StatelessWidget {
               MainAxisAlignment.center,
           children: [
             Container(
-              width: 62,
-              height: 62,
+              width: 62.w,
+              height: 62.h,
               decoration: BoxDecoration(
                 color: AppColors.primaryColor
                     .withOpacity(.10),
@@ -45,23 +47,24 @@ class MainPhotoEmpty extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 12),
+            // const SizedBox(height: 12),
+            verticalSpace(12),
 
-            const Text(
+             Text(
               'Add main photo',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),
 
-            const SizedBox(height: 5),
+            verticalSpace(5),
 
-            const Text(
+            Text(
               'Choose a clear photo of your item',
               style: TextStyle(
-                fontSize: 12,
-                color: Color(0xFF7A8184),
+                fontSize: 12.sp,
+                color: AppColors.grey,
               ),
             ),
           ],

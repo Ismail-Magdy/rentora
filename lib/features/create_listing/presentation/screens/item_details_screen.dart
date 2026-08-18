@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
-import 'package:rentora/features/create_listing/presentation/screens/add_photos_screen.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/custom_text_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/widgets/custom_text_field.dart';
+// C:\Users\DELL\Desktop\ieee\rentora\lib\core\widgets\custom_text_field.dart
 import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/price_field.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/section_title.dart';
@@ -62,11 +65,13 @@ void onNext() {
       price <= 0 ||
       deposit < 0 ||
       selectedCondition == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please complete all required fields'),
-      ),
-    );
+  showFeedbackDialog(
+  context,
+  icon: Icons.warning_amber_rounded,
+  color: AppColors.warning,
+  title: 'Incomplete Information',
+  message: 'Please complete all required fields.',
+);
     return;
   }
 
@@ -78,35 +83,36 @@ void onNext() {
   cubit.updateSecurityDeposit(deposit);
   cubit.updateCondition(selectedCondition!);
 
-  Navigator.pushNamed(
-    context,
-    Routes.addPhotosScreen,
-  );
+Navigator.pushNamed(
+  context,
+  Routes.addPhotosScreen,
+  arguments: context.read<ListingCubit>(),
+);
 }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFA),
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Column(
           children: [
             // Header (unchanged)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Row(
                 children: [
                   HeaderButton(
                     icon: Icons.arrow_back,
                     onTap: () => Navigator.pop(context),
                   ),
-                  const Expanded(
+                   Expanded(
                     child: Center(
                       child: Text(
                         'Add New Listing',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF171717),
+                          color: AppColors.black,
                         ),
                       ),
                     ),
@@ -120,31 +126,31 @@ void onNext() {
             ),
             // Progress (unchanged)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: EdgeInsets.symmetric(horizontal: 32.w),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         'Item details',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF6D7478),
+                          color: AppColors.grey,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         'Step 2 of 4',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  verticalSpace(10),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Row(
@@ -152,15 +158,15 @@ void onNext() {
                         Expanded(
                           flex: 2,
                           child: Container(
-                            height: 6,
+                            height: 6.h,
                             color: AppColors.primaryColor,
                           ),
                         ),
                         Expanded(
                           flex: 2,
                           child: Container(
-                            height: 6,
-                            color: const Color(0xFFE5E8E9),
+                            height: 6.h,
+                            color: AppColors.grey.withOpacity(0.3),
                           ),
                         ),
                       ],
@@ -176,51 +182,49 @@ void onNext() {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                     Text(
                       'Tell us about your item',
                       style: TextStyle(
-                        fontSize: 27,
+                        fontSize: 27.sp,
                         height: 1.2,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF171717),
+                        color: AppColors.black,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                
+                    verticalSpace(8),
+                   Text(
                       'Add some details to help renters understand what you are offering.',
                       style: TextStyle(
-                        fontSize: 14,
-                        height: 1.45,
-                        color: Color(0xFF6D7478),
+                        fontSize: 14.sp,
+                        height: 1.45.h,
+                        color: AppColors.grey,
                       ),
                     ),
-                    const SizedBox(height: 22),
-                    // Note: Main photo placeholder - we'll handle in add_photos_screen
-                    // So we remove the main photo section here to avoid duplication.
-                    // Actually, we can keep a placeholder but it's better to have it only in photos step.
-                    // We'll skip it here to streamline.
+                   
+                    verticalSpace(22),
                     const SectionTitle(
                       title: 'Item name',
                       required: true,
                     ),
-                    const SizedBox(height: 8),
-                    CustomTextField(
+                    verticalSpace(8),
+                    CustomTextFormField (
                       controller: nameController,
                       hintText: 'e.g. Canon EOS R50 Camera',
                       icon: Icons.title_outlined,
                     ),
-                    const SizedBox(height: 18),
+                    verticalSpace(18),
                     const SectionTitle(
                       title: 'Description',
                       required: true,
                     ),
-                    const SizedBox(height: 8),
-                    CustomTextField(
+                    verticalSpace(8),
+                    CustomTextFormField (
                       controller: descriptionController,
                       hintText: 'Describe the item, its features and condition...',
                       maxLines: 4,
                     ),
-                    const SizedBox(height: 18),
+                    verticalSpace(18),
                     Row(
                       children: [
                         Expanded(
@@ -231,7 +235,7 @@ void onNext() {
                                 title: 'Daily price',
                                 required: true,
                               ),
-                              const SizedBox(height: 8),
+                              verticalSpace(8),
                               PriceField(
                                 controller: priceController,
                                 hintText: '0',
@@ -248,7 +252,7 @@ void onNext() {
                                 title: 'Security deposit',
                                 required: true,
                               ),
-                              const SizedBox(height: 8),
+                              verticalSpace(8),
                               PriceField(
                                 controller: depositController,
                                 hintText: '0',
@@ -258,19 +262,19 @@ void onNext() {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 18),
+                    verticalSpace(18),
                     const SectionTitle(
                       title: 'Item condition',
                       required: true,
                     ),
-                    const SizedBox(height: 8),
+                    verticalSpace(8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding:  EdgeInsets.symmetric(horizontal: 16.w),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: const Color(0xFFDDE2E3),
+                          color: AppColors.grey.withOpacity(0.3),
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -280,7 +284,7 @@ void onNext() {
                           hint: const Text(
                             'Select condition',
                             style: TextStyle(
-                              color: Color(0xFF969C9F),
+                              color: AppColors.grey,
                             ),
                           ),
                           icon: const Icon(
@@ -300,9 +304,9 @@ void onNext() {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    verticalSpace(18),
                     Container(
-                      padding: const EdgeInsets.all(14),
+                      padding: EdgeInsets.all(14),
                       decoration: BoxDecoration(
                         color: AppColors.primaryColor.withOpacity(.06),
                         borderRadius: BorderRadius.circular(16),
@@ -315,14 +319,14 @@ void onNext() {
                             color: AppColors.primaryColor,
                             size: 20,
                           ),
-                          const SizedBox(width: 10),
+                          horizontalSpace( 10),
                           Expanded(
                             child: Text(
                               'The security deposit is held as protection against damage or loss and may be returned after the rental.',
                               style: TextStyle(
                                 color: AppColors.primaryColor,
-                                fontSize: 12,
-                                height: 1.4,
+                                fontSize: 12.sp,
+                                height: 1.4.h,
                               ),
                             ),
                           ),
@@ -341,55 +345,55 @@ void onNext() {
                   Expanded(
                     flex: 1,
                     child: SizedBox(
-                      height: 56,
+                      height: 56.h,
                       child: OutlinedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE9EBEC),
+                          backgroundColor: AppColors.white,
                           side: BorderSide.none,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        child: const Text(
+                        child:  Text(
                           'Back',
                           style: TextStyle(
-                            color: Color(0xFF202020),
-                            fontSize: 16,
+                            color: AppColors.black,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  horizontalSpace(10),
                   Expanded(
                     flex: 2,
                     child: SizedBox(
-                      height: 56,
+                      height: 56.h,
                       child: ElevatedButton(
                         onPressed: onNext,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppColors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               'Next',
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 17.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(width: 8),
+                            horizontalSpace(8),
                             Icon(
                               Icons.arrow_forward_rounded,
                             ),

@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class PriceRow extends StatelessWidget {
@@ -23,9 +24,9 @@ class PriceRow extends StatelessWidget {
         Expanded(
           child: Text(
             label,
-            style: const TextStyle(
-              fontSize: 13,
-              color: Color(0xFF777F82),
+            style:  TextStyle(
+              fontSize: 13.sp,
+              color: AppColors.grey,
             ),
           ),
         ),
@@ -33,11 +34,11 @@ class PriceRow extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
-            fontSize: highlighted ? 18 : 15,
+            fontSize: highlighted ? 18.sp : 15.sp,
             fontWeight: FontWeight.w800,
             color: highlighted
                 ? AppColors.primaryColor
-                : const Color(0xFF202020),
+                : AppColors.darkGrey,
           ),
         ),
       ],

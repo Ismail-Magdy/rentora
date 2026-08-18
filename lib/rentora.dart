@@ -30,7 +30,7 @@ class Rentora extends StatelessWidget {
               fontFamily: "Poppins",
             ),
             onGenerateRoute: appRouter.generateRoute,
-            initialRoute: Routes.splashScreen,
+            initialRoute: Routes.categoryScreen,
           ),
         ),
       ),

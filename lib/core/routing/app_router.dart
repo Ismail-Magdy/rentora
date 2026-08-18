@@ -41,25 +41,49 @@ class AppRouter {
       /// OnBoarding Screen
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
-        case Routes.categoryScreen:
-        return MaterialPageRoute(
-          builder: (_) => const ChooseCategoryScreen(),
-        );
+case Routes.categoryScreen:
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider(
+        create: (_) => getIt<ListingCubit>(),
+        child: const ChooseCategoryScreen(),
+      ),
+    ),
+  );
+  case Routes.itemDetailsScreen:
+  final cubit = settings.arguments as ListingCubit;
 
-      case Routes.itemDetailsScreen:
-        return MaterialPageRoute(
-          builder: (_) => const ItemDetailsScreen(),
-        );
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider.value(
+        value: cubit,
+        child: const ItemDetailsScreen(),
+      ),
+    ),
+  );
+  case Routes.addPhotosScreen:
+  final cubit = settings.arguments as ListingCubit;
 
-      case Routes.addPhotosScreen:
-        return MaterialPageRoute(
-          builder: (_) => const AddPhotosScreen(),
-        );
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider.value(
+        value: cubit,
+        child: const AddPhotosScreen(),
+      ),
+    ),
+  );
+  case Routes.reviewScreen:
+  final cubit = settings.arguments as ListingCubit;
 
-      case Routes.reviewScreen:
-        return MaterialPageRoute(
-          builder: (_) => const ReviewAndPublishScreen(),
-        );
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider.value(
+        value: cubit,
+        child: const ReviewAndPublishScreen(),
+      ),
+    ),
+  );
+
       /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
       // /// Welcome AuthScreen
       // case Routes.welcomeAuthScreen:

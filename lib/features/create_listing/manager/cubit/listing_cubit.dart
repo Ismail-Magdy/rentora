@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rentora/core/di/dependency_injection.dart';
-import 'package:rentora/core/errors/failure.dart';
+// import 'package:rentora/core/di/dependency_injection.dart';
+// import 'package:rentora/core/errors/failure.dart';
 import 'package:rentora/features/create_listing/data/models/listing_entity.dart';
-import 'package:rentora/features/create_listing/manager/repositories/listing_repository.dart';
+import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_state.dart';
 
 class ListingCubit extends Cubit<ListingState> {
-  final ListingRepository _repository;
+  final  ListingRepositoryImpl _repository;
   final FirebaseAuth _auth;
 
   ListingCubit(this._repository, this._auth) : super(const ListingState());

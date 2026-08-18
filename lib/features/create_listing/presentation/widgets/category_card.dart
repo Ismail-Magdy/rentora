@@ -2,6 +2,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -32,7 +34,7 @@ class CategoryCard extends StatelessWidget {
             color: isSelected
                 ? categoryColor
                 : const Color(0xFFE9ECEE),
-            width: isSelected ? 2 : 1,
+            width: isSelected ? 2.w : 1.w,
           ),
           boxShadow: [
             BoxShadow(
@@ -52,8 +54,8 @@ class CategoryCard extends StatelessWidget {
               right: 0,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 180),
-                width: 27,
-                height: 27,
+                width: 27.w,
+                height: 27.h,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isSelected
@@ -67,10 +69,10 @@ class CategoryCard extends StatelessWidget {
                   ),
                 ),
                 child: isSelected
-                    ? const Icon(
+                    ?  Icon(
                         Icons.check,
                         color: Colors.white,
-                        size: 17,
+                        size: 17.sp,
                       )
                     : null,
               ),
@@ -95,7 +97,7 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 14),
+                  verticalSpace(8),
 
                   Text(
                     category.title,
@@ -113,16 +115,16 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 5),
+                 verticalSpace(4),
 
                   Text(
                     category.subtitle,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      height: 1.25,
+                    style:  TextStyle(
+                      fontSize: 11.sp,
+                      height: 1.25.h,
                       color: Color(0xFF777E82),
                     ),
                   ),

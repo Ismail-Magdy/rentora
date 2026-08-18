@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 
 class HeaderButton extends StatelessWidget {
@@ -18,20 +20,20 @@ class HeaderButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 42,
-        height: 42,
+        width: 42.w,
+        height: 42.h,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           shape: BoxShape.circle,
           border: Border.all(
-            color: const Color(0xFFE8EBEC),
+            color: AppColors.white,
           ),
         ),
         child: Icon(
           icon,
-          color: const Color(0xFF171717),
-          size: 22,
+          color: AppColors.darkGrey,
+          size: 22.sp,
         ),
       ),
     );

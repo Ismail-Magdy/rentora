@@ -1,5 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 class DescriptionRow extends StatelessWidget {
     const DescriptionRow({
@@ -15,23 +18,23 @@ class DescriptionRow extends StatelessWidget {
       crossAxisAlignment:
           CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Description',
           style: TextStyle(
-            fontSize: 13,
-            color: Color(0xFF777F82),
+            fontSize: 13.sp,
+            color: AppColors.grey,
           ),
         ),
 
-        const SizedBox(height: 7),
+        verticalSpace(7),
 
         Text(
           description,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 14,
-            height: 1.45,
+          style: TextStyle(
+            fontSize: 14.sp,
+            height: 1.45.h,
             fontWeight: FontWeight.w500,
           ),
         ),

@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_state.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/add_photo_button.dart';
@@ -27,9 +30,13 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
     return BlocConsumer<ListingCubit, ListingState>(
       listener: (context, state) {
         if (state.status == ListingStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage ?? 'An error occurred')),
-          );
+         showFeedbackDialog(
+  context,
+  icon: Icons.error_outline,
+  color: AppColors.error,
+  title: 'Something Went Wrong',
+  message: state.errorMessage ?? 'An error occurred.',
+);
         }
         if (state.isPublished) {
           _showSuccessDialog(context);
@@ -45,19 +52,19 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
               children: [
                 // Header (unchanged)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                   child: Row(
                     children: [
                       HeaderButton(
                         icon: Icons.close_rounded,
                         onTap: () => Navigator.pop(context),
                       ),
-                      const Expanded(
+                       Expanded(
                         child: Center(
                           child: Text(
                             'Add New Listing',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w800,
                               color: AppColors.primaryColor,
                             ),
@@ -73,23 +80,23 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                 ),
                 // Progress (full)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  padding:  EdgeInsets.symmetric(horizontal: 32.w),
                   child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
                             'Review & Publish',
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               color: Color(0xFF6D7478),
                             ),
                           ),
                           Text(
                             'Step 4 of 4',
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 13.sp,
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w700,
                             ),
@@ -103,7 +110,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           (index) => Expanded(
                             child: Container(
                               margin: EdgeInsets.only(right: index == 3 ? 0 : 5),
-                              height: 6,
+                              height: 6.h,
                               decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
                                 borderRadius: BorderRadius.circular(20),
@@ -130,16 +137,16 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             color: Color(0xFF171717),
                           ),
                         ),
-                        const SizedBox(height: 7),
-                        const Text(
+                        verticalSpace( 7),
+                         Text(
                           'Make sure everything looks good before publishing.',
                           style: TextStyle(
-                            fontSize: 14,
-                            height: 1.4,
+                            fontSize: 14.sp ,
+                            height: 1.4.h,
                             color: Color(0xFF6D7478),
                           ),
                         ),
-                        const SizedBox(height: 24),
+                        verticalSpace(24),
                         // Photos
                         SectionHeader(
                           title: 'Photos',
@@ -147,9 +154,9 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             Navigator.pop(context); // go back to photos
                           },
                         ),
-                        const SizedBox(height: 12),
+                        verticalSpace(12),
                         _buildPhotos(state),
-                        const SizedBox(height: 24),
+                        verticalSpace(24),
                         // Item Details
                         ReviewCard(
                           title: 'Item Details',
@@ -160,19 +167,19 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           child: Column(
                             children: [
                               InfoRow(label: 'Category', value: state.categoryId),
-                              const Divider(height: 24),
+                              Divider(height: 24.h),
                               InfoRow(label: 'Title', value: state.title, valueBold: true),
-                              const Divider(height: 24),
+                              Divider(height: 24.h),
                               DescriptionRow(description: state.description),
-                              const Divider(height: 24),
+                              Divider(height: 24.h),
                               InfoRow(label: 'Condition', value: state.condition),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        verticalSpace(16.h),
                         // AI suggestion (placeholder)
                         _buildAiSuggestion(),
-                        const SizedBox(height: 16),
+                        verticalSpace(16.h),
                         // Rental Details
                         ReviewCard(
                           title: 'Rental Details',
@@ -195,7 +202,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        verticalSpace(16.h),
                         // Location
                         ReviewCard(
                           title: 'Location',
@@ -206,8 +213,8 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           child: Row(
                             children: [
                               Container(
-                                width: 42,
-                                height: 42,
+                                width: 42.w,
+                                height: 42.h,
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryColor.withOpacity(.08),
                                   borderRadius: BorderRadius.circular(12),
@@ -217,7 +224,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                   color: AppColors.primaryColor,
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              horizontalSpace(12),
                               Expanded(
                                 child: Text(
                                   state.location.isNotEmpty ? state.location : 'No location set',
@@ -230,7 +237,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        verticalSpace(20),
                         // Confirmation checkbox
                         GestureDetector(
                           onTap: () {
@@ -253,14 +260,14 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                               children: [
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 180),
-                                  width: 24,
-                                  height: 24,
+                                  width: 24.w,
+                                  height: 24.h,
                                   decoration: BoxDecoration(
                                     color: _isConfirmed ? AppColors.success : Colors.transparent,
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
                                       color: _isConfirmed ? AppColors.success : const Color(0xFFBFC7C9),
-                                      width: 1.5,
+                                      width: 1.5.w,
                                     ),
                                   ),
                                   child: _isConfirmed
@@ -322,7 +329,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Row(
+                          :  Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -332,7 +339,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                     fontWeight: FontWeight.w800,
                                   ),
                                 ),
-                                SizedBox(width: 9),
+                                horizontalSpace(12),
                                 Icon(Icons.arrow_upward_rounded),
                               ],
                             ),
@@ -366,8 +373,8 @@ void _showSuccessDialog(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 72,
-                height: 72,
+                width: 72.w,
+                height: 72.h,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColors.success.withOpacity(.12),
@@ -378,28 +385,29 @@ void _showSuccessDialog(BuildContext context) {
                   size: 42,
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
+              // const SizedBox(height: 20),
+              verticalSpace(20),
+              Text(
                 'Listing Published!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 22.sp,
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              const SizedBox(height: 10),
-              const Text(
+              verticalSpace(10),
+              Text(
                 'Your item is now available for renters to discover.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  height: 1.5,
+                  height: 1.5.h,
                   color: Color(0xFF6D7478),
                 ),
               ),
-              const SizedBox(height: 24),
+              verticalSpace(24),
               SizedBox(
                 width: double.infinity,
-                height: 50,
+                height: 50.h,
                 child: ElevatedButton(
                onPressed: () {
   cubit.reset();
@@ -448,8 +456,8 @@ void _showSuccessDialog(BuildContext context) {
           borderRadius: BorderRadius.circular(16),
           child: Image.file(
             File(image.path),
-            width: 105,
-            height: 105,
+            width: 105.w,
+            height: 105.h,
             fit: BoxFit.cover,
           ),
         ),
@@ -463,11 +471,11 @@ void _showSuccessDialog(BuildContext context) {
           borderRadius: BorderRadius.circular(16),
           child: Image.network(
             url,
-            width: 105,
-            height: 105,
+            width: 105.w,
+            height: 105.h,
             fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => Container(
-              color: Colors.grey[300],
+              color: AppColors.grey.withOpacity(.1),
               child: const Icon(Icons.broken_image),
             ),
           ),
@@ -480,15 +488,15 @@ void _showSuccessDialog(BuildContext context) {
         height: 120,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: const Color(0xFFE2E7E8)),
+          border: Border.all(color: AppColors.white),
         ),
         child: const Center(
           child: Text(
             'No photos added',
             style: TextStyle(
-              color: Color(0xFF7A8184),
+              color: AppColors.grey,
             ),
           ),
         ),
@@ -507,11 +515,11 @@ void _showSuccessDialog(BuildContext context) {
     }
 
     return SizedBox(
-      height: 105,
+      height: 105.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: widgets.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 10),
+        separatorBuilder: (_, __) =>  horizontalSpace( 10.w),
         itemBuilder: (context, index) {
           // Mark first as "Main"
           if (index == 0 && widgets.isNotEmpty) {
@@ -522,15 +530,15 @@ void _showSuccessDialog(BuildContext context) {
                   left: 7,
                   bottom: 7,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Main',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -564,20 +572,20 @@ void _showSuccessDialog(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 42,
-            height: 42,
+            width: 42.w,
+            height: 42.h,
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.auto_awesome,
-              color: Colors.white,
+              color: AppColors.white,
               size: 21,
             ),
           ),
-          const SizedBox(width: 12),
-          const Expanded(
+          horizontalSpace(12),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -589,13 +597,13 @@ void _showSuccessDialog(BuildContext context) {
                     color: AppColors.primaryColor,
                   ),
                 ),
-                SizedBox(height: 5),
+                verticalSpace(5),
                 Text(
                   'Some listing details were suggested by AI based on your item photo. You can edit them before publishing.',
                   style: TextStyle(
                     fontSize: 12,
                     height: 1.45,
-                    color: Color(0xFF5F686B),
+                    color: AppColors.grey,
                   ),
                 ),
               ],

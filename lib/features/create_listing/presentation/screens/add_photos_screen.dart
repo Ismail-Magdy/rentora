@@ -1,12 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_state.dart';
-import 'package:rentora/features/create_listing/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/add_photo_card.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/additional_photo_card.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
@@ -32,36 +33,31 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
         final images = state.images;
         final existingImageUrls = state.existingImageUrls;
 
-        // For edit mode, we display existing images as well.
-        // But we can't directly display remote URLs as XFile.
-        // We'll show them as network images alongside local ones.
-        // We'll manage a combined list for display.
-        // For simplicity, we'll just show local images and rely on the review screen to show both.
-        // But the user should be able to add/remove local images.
-        // We'll keep the current logic: only manage local images.
-
         return Scaffold(
-          backgroundColor: const Color(0xFFF9FAFA),
+          backgroundColor: AppColors.white,
           body: SafeArea(
             child: Column(
               children: [
                 // Header (unchanged)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 12.h,
+                  ),
                   child: Row(
                     children: [
                       HeaderButton(
                         icon: Icons.arrow_back,
                         onTap: () => Navigator.pop(context),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Center(
                           child: Text(
                             'Add New Listing',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF171717),
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ),
@@ -75,31 +71,33 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                 ),
                 // Progress (unchanged)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
                   child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
                             'Photos',
                             style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF6D7478),
+                              fontSize: 14.sp,
+
+                              color: AppColors.grey.withOpacity(0.7),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
                             'Step 3 of 4',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+
+                      verticalSpace(10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Row(
@@ -107,15 +105,15 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                             Expanded(
                               flex: 3,
                               child: Container(
-                                height: 6,
+                                height: 6.h,
                                 color: AppColors.primaryColor,
                               ),
                             ),
                             Expanded(
                               flex: 1,
                               child: Container(
-                                height: 6,
-                                color: const Color(0xFFE5E8E9),
+                                height: 6.h,
+                                color: AppColors.grey.withOpacity(0.3),
                               ),
                             ),
                           ],
@@ -131,69 +129,67 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Add photos of your item',
                           style: TextStyle(
-                            fontSize: 27,
-                            height: 1.2,
+                            fontSize: 27.sp,
+                            height: 1.2.h,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF171717),
+                            color: AppColors.black,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
+
+                        verticalSpace(8),
+                        Text(
                           'Good photos help renters understand your item and increase your chances of getting booked.',
                           style: TextStyle(
-                            fontSize: 14,
-                            height: 1.45,
-                            color: Color(0xFF6D7478),
+                            fontSize: 14.sp,
+                            height: 1.45.h,
+                            color: AppColors.grey,
                           ),
                         ),
-                        const SizedBox(height: 22),
-                        // Main photo
-                        const SectionTitle(
-                          title: 'Main photo',
-                          required: true,
-                        ),
-                        const SizedBox(height: 10),
+
+                        verticalSpace(22),
+                        // // Main photo
+                        const SectionTitle(title: 'Main photo', required: true),
+                        // const SizedBox(height: 10),
                         images.isEmpty
-                            ? MainPhotoEmpty(
-                                onTap: () => _pickImage(context),
-                              )
+                            ? MainPhotoEmpty(onTap: () => _pickImage(context))
                             : MainPhotoCard(
                                 image: images[0],
                                 onRemove: () => _removeImage(context, 0),
-                                onEdit: () => _pickImage(context, replaceIndex: 0),
+                                onEdit: () =>
+                                    _pickImage(context, replaceIndex: 0),
                               ),
-                        const SizedBox(height: 25),
+                        verticalSpace(25),
                         // Additional photos
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SectionTitle(
-                              title: 'Additional photos',
-                            ),
+                            const SectionTitle(title: 'Additional photos'),
                             Text(
                               '${images.length}/$maxImages',
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: Color(0xFF7A8184),
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                color: AppColors.grey,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        const Text(
+
+                        verticalSpace(5),
+                        Text(
                           'Add more photos from different angles.',
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF7A8184),
+                            fontSize: 12.sp,
+                            color: AppColors.grey,
                           ),
                         ),
-                        const SizedBox(height: 12),
+
+                        verticalSpace(12),
                         _buildAdditionalPhotos(context),
-                        const SizedBox(height: 20),
+                        verticalSpace(20),
                         // Tip
                         Container(
                           padding: const EdgeInsets.all(15),
@@ -204,19 +200,20 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.tips_and_updates_outlined,
                                 color: AppColors.primaryColor,
-                                size: 21,
+                                size: 21.sp,
                               ),
-                              const SizedBox(width: 10),
+
+                              horizontalSpace(10),
                               Expanded(
                                 child: Text(
                                   'Tip: Use clear photos in good lighting and show the item from different angles.',
                                   style: TextStyle(
                                     color: AppColors.primaryColor,
-                                    fontSize: 12,
-                                    height: 1.4,
+                                    fontSize: 12.sp,
+                                    height: 1.4.h,
                                   ),
                                 ),
                               ),
@@ -225,22 +222,23 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         ),
                         // Show existing remote images if in edit mode
                         if (existingImageUrls.isNotEmpty) ...[
-                          const SizedBox(height: 20),
+                          verticalSpace(20),
                           const SectionTitle(title: 'Existing photos'),
-                          const SizedBox(height: 10),
+                          verticalSpace(10),
                           SizedBox(
                             height: 100,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemCount: existingImageUrls.length,
-                              separatorBuilder: (_, __) => const SizedBox(width: 10),
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 10),
                               itemBuilder: (ctx, index) {
                                 return ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: Image.network(
                                     existingImageUrls[index],
-                                    width: 100,
-                                    height: 100,
+                                    width: 100.w,
+                                    height: 100.h,
                                     fit: BoxFit.cover,
                                     errorBuilder: (_, __, ___) => Container(
                                       color: Colors.grey[300],
@@ -272,20 +270,18 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                           borderRadius: BorderRadius.circular(18),
                         ),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Continue',
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 17.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          SizedBox(width: 8),
-                          Icon(
-                            Icons.arrow_forward_rounded,
-                          ),
+                          horizontalSpace(8),
+                          Icon(Icons.arrow_forward_rounded),
                         ],
                       ),
                     ),
@@ -314,8 +310,12 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
       if (cubit.state.images.length < maxImages) {
         cubit.addImage(image);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Maximum 6 photos allowed')),
+        showFeedbackDialog(
+          context,
+          icon: Icons.photo_library_outlined,
+          color: AppColors.warning,
+          title: 'Maximum Photos Reached.',
+          message: 'The maximum number of photos has been reached.',
         );
       }
     }
@@ -325,24 +325,32 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     context.read<ListingCubit>().removeImage(index);
   }
 
-void _onContinue(BuildContext context) {
-  final listingCubit = context.read<ListingCubit>();
-  final state = listingCubit.state;
+  void _onContinue(BuildContext context) {
+    final listingCubit = context.read<ListingCubit>();
+    final state = listingCubit.state;
 
-  if (state.images.isEmpty && state.existingImageUrls.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please add at least one photo'),
-      ),
+    if (state.images.isEmpty && state.existingImageUrls.isEmpty) {
+      showFeedbackDialog(
+        context,
+     icon:  Icons.photo_library_outlined ,
+        color: AppColors.warning,
+        title: 'No Photos Added',
+        message: 'Please add at least one photo.',
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Please add at least one photo'),
+      //   ),
+      // );
+      return;
+    }
+
+    Navigator.pushNamed(
+      context,
+      Routes.reviewScreen,
+      arguments: context.read<ListingCubit>(),
     );
-    return;
   }
-
-Navigator.pushNamed(
-  context,
-  Routes.reviewScreen,
-);
-}
 
   Widget _buildAdditionalPhotos(BuildContext context) {
     final images = context.watch<ListingCubit>().state.images;
@@ -361,11 +369,7 @@ Navigator.pushNamed(
 
     // Add button
     if (images.length < maxImages) {
-      items.add(
-        AddPhotoCard(
-          onTap: () => _pickImage(context),
-        ),
-      );
+      items.add(AddPhotoCard(onTap: () => _pickImage(context)));
     }
 
     return GridView.builder(
