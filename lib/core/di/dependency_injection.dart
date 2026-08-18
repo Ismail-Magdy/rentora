@@ -24,6 +24,8 @@ import 'package:rentora/features/setup_profile/manager/location/location_cubit.d
 import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rentora/features/auth/data/repos/auth_repo.dart';
+import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -64,6 +66,14 @@ Future<void> initGetIt() async {
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
 
+  //auth Feature
+  getIt.registerLazySingleton<AuthRepo>(
+    () => AuthRepo(
+      authService: getIt<FirebaseAuthService>(),
+      usersService: getIt<UsersFirestoreService>(),
+    ),
+  );
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<AuthRepo>()));
   /// Setup Profile
   getIt.registerLazySingleton<SetupProfileRepo>(
     () => SetupProfileRepo(getIt<UsersFirestoreService>()),

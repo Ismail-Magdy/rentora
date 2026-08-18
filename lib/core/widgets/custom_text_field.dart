@@ -1,36 +1,15 @@
-import "package:flutter/material.dart";
-import "package:flutter/services.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
-import "package:rentora/core/helpers/app_regex.dart";
-import "package:rentora/core/themes/app_colors.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
-/// Defines the type of the input field.
-/// This controls validation, keyboard type, and password behavior.
-enum FieldType {
-  firstName,
-  lastName,
-  phoneNumber,
-  userName,
-  email,
-  password,
-  normal,
-  number,
-}
+enum FieldType { text, email, phoneNumber, password }
 
 class CustomTextFormField extends StatefulWidget {
-  /// Controller used to manage the input text.
-  final TextEditingController controller;
-
-  /// Hint text displayed inside the field.
-  final String hintText;
-
-  /// Defines the field behavior.
-  final FieldType fieldType;
-
-  /// Optional icon displayed at the start of the field.
+  final TextEditingController? controller;
+  final String? label;
+  final String? hintText;
   final IconData? prefixIcon;
-
-  /// Optional custom validator if you want to override default validation.
+  final FieldType fieldType;
   final String? Function(String?)? validator;
 
   /// Called whenever the text changes.
@@ -53,10 +32,11 @@ class CustomTextFormField extends StatefulWidget {
 
   const CustomTextFormField({
     super.key,
-    required this.controller,
-    required this.hintText,
-    this.fieldType = .normal,
+    this.controller,
+    this.label,
+    this.hintText,
     this.prefixIcon,
+    this.fieldType = FieldType.text,
     this.validator,
     this.onChanged,
     this.keyboardType,
@@ -72,108 +52,46 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  /// Controls password visibility for password fields.
-  late bool obscureText;
+  bool _obscureText = true;
 
-  @override
-  void didUpdateWidget(covariant CustomTextFormField oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.fieldType != widget.fieldType) {
-      setState(() {
-        obscureText = widget.fieldType == .password;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    /// Initialize password visibility only if the field is a password.
-    obscureText = widget.fieldType == .password;
-  }
-
-  /// Default validation logic based on field type.
-  String? _defaultValidator(String? value) {
-    final trimmedValue = value?.trim() ?? "";
-
+  TextInputType get _keyboardType {
     switch (widget.fieldType) {
-      case .firstName:
-        if (trimmedValue.isEmpty) {
-          return "Please enter your first name";
-        }
-        break;
-
-      case .lastName:
-        if (trimmedValue.isEmpty) {
-          return "Please enter your last name";
-        }
-        break;
-
-      case .phoneNumber:
-        if (trimmedValue.isEmpty ||
-            !AppRegex.isPhoneNumberValid(trimmedValue)) {
-          return "Please enter a valid phone number";
-        }
-        break;
-
-      case .userName:
-        if (trimmedValue.isEmpty) {
-          return "Please enter a username";
-        }
-        // if (trimmedValue.contains(" ")) {
-        //   return "Username must not contain spaces";
-        // }
-        break;
-
-      case .email:
-        if (trimmedValue.isEmpty || !AppRegex.isEmailValid(trimmedValue)) {
-          return "Please enter a valid email address";
-        }
-        break;
-
-      case .password:
-        if (trimmedValue.isEmpty) {
-          return "Please enter a password";
-        }
-        if (!AppRegex.isPasswordValid(trimmedValue)) {
-          return "Must contain at least 8 characters, including uppercase, lowercase, a number, and a symbol";
-        }
-        break;
-
-      case .number:
-        if (trimmedValue.isEmpty) {
-          return "Please enter a value";
-        }
-        break;
-
-      case .normal:
-        return null;
-    }
-
-    return null;
-  }
-
-  /// Returns keyboard type based on field type.
-  TextInputType _getKeyboardType() {
-    if (widget.keyboardType != null) {
-      return widget.keyboardType!;
-    }
-
-    switch (widget.fieldType) {
-      case .phoneNumber:
-        return .phone;
-
-      case .email:
+      case FieldType.email:
         return TextInputType.emailAddress;
-
-      case .number:
-        return const TextInputType.numberWithOptions(decimal: true);
-
+      case FieldType.phoneNumber:
+        return TextInputType.phone;
       default:
         return TextInputType.text;
     }
+  }
+
+  String? _validate(String? value) {
+    if (widget.validator != null) return widget.validator!(value);
+
+    if (value == null || value.trim().isEmpty) {
+      return 'This field is required';
+    }
+
+    switch (widget.fieldType) {
+      case FieldType.email:
+        if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value.trim())) {
+          return 'Please enter a valid email address';
+        }
+        break;
+      case FieldType.phoneNumber:
+        if (!RegExp(r'^\+?[0-9\s]{8,15}$').hasMatch(value.trim())) {
+          return 'Please enter a valid phone number';
+        }
+        break;
+      case FieldType.password:
+        if (value.length < 8) {
+          return 'Password must be at least 8 characters';
+        }
+        break;
+      default:
+        break;
+    }
+    return null;
   }
 
   @override
@@ -235,22 +153,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           borderRadius: .circular(14),
           borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
-
-        /// Password visibility toggle button.
-        suffixIcon: widget.fieldType == .password
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    obscureText = !obscureText;
-                  });
-                },
-                icon: Icon(
-                  obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: AppColors.grey,
-                ),
-              )
-            : null,
-      ),
+      ],
     );
   }
 }
