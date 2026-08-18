@@ -12,6 +12,24 @@ class CustomTextFormField extends StatefulWidget {
   final FieldType fieldType;
   final String? Function(String?)? validator;
 
+  /// Called whenever the text changes.
+  final void Function(String)? onChanged;
+
+  /// Keyboard type override (optional).
+  final TextInputType? keyboardType;
+
+  /// Maximum number of characters allowed.
+  final int? maxLength;
+
+  /// Input formatters (useful for phone numbers, digits, etc).
+  final List<TextInputFormatter>? inputFormatters;
+
+  /// Controls auto validation behavior.
+  final AutovalidateMode autovalidateMode;
+
+  final TextInputAction? textInputAction;
+  final void Function(String)? onFieldSubmitted;
+
   const CustomTextFormField({
     super.key,
     this.controller,
@@ -20,6 +38,13 @@ class CustomTextFormField extends StatefulWidget {
     this.prefixIcon,
     this.fieldType = FieldType.text,
     this.validator,
+    this.onChanged,
+    this.keyboardType,
+    this.maxLength,
+    this.inputFormatters,
+    this.autovalidateMode = .onUserInteraction,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -71,80 +96,62 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isPassword = widget.fieldType == FieldType.password;
+    return TextFormField(
+      controller: widget.controller,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // السر هنا: الليبل بقى Text عادي فوق الـ TextFormField
-        if (widget.label != null) ...[
-          Text(
-            widget.label!,
-            style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFF3B4A5A),
-            ),
-          ),
-          SizedBox(height: 6.h),
-        ],
-        TextFormField(
-          controller: widget.controller,
-          keyboardType: _keyboardType,
-          obscureText: isPassword ? _obscureText : false,
-          validator: _validate,
-          decoration: InputDecoration(
-            hintText: widget.hintText,
-            hintStyle: TextStyle(fontSize: 13.sp, color: Colors.grey.shade400),
-            prefixIcon: widget.prefixIcon != null
-                ? Icon(
-                    widget.prefixIcon,
-                    color: Colors.grey.shade500,
-                    size: 20.w,
-                  )
-                : null,
-            suffixIcon: isPassword
-                ? IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.grey.shade500,
-                      size: 20.w,
-                    ),
-                    onPressed: () {
-                      setState(() => _obscureText = !_obscureText);
-                    },
-                  )
-                : null,
-            filled: true,
-            fillColor: const Color(0xFFF8F9FA),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 14.h,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.grey.shade300),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(
-                color: AppColors.primaryColor,
-                width: 1.5,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: Colors.red),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: const BorderSide(color: Colors.red),
-            ),
-          ),
+      /// Use custom validator if provided, otherwise fallback to default validator.
+      validator: widget.validator ?? _defaultValidator,
+
+      /// Triggered whenever the user types.
+      onChanged: widget.onChanged,
+
+      /// Keyboard type configuration.
+      keyboardType: _getKeyboardType(),
+
+      /// Optional max length constraint.
+      maxLength: widget.maxLength,
+
+      /// Input formatters support.
+      inputFormatters: widget.inputFormatters,
+
+      /// Hide text only for password fields.
+      obscureText: obscureText,
+
+      /// Controls when validation runs.
+      autovalidateMode: widget.autovalidateMode,
+
+      /// Text style inside the field.
+      style: TextStyle(color: AppColors.primaryColor, fontSize: 14.sp),
+
+      ///
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+
+        hintStyle: const TextStyle(color: Color(0x7F4A628A)),
+
+        /// Optional prefix icon.
+        prefixIcon: widget.prefixIcon != null
+            ? Icon(widget.prefixIcon, color: Colors.grey)
+            : null,
+
+        filled: true,
+        fillColor: Colors.grey.withValues(alpha: 0.08),
+
+        border: OutlineInputBorder(
+          borderRadius: .circular(14),
+          borderSide: .none,
+        ),
+
+        errorBorder: OutlineInputBorder(
+          borderRadius: .circular(14),
+          borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+        ),
+
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: .circular(14),
+          borderSide: const BorderSide(color: AppColors.error, width: 2),
         ),
       ],
     );

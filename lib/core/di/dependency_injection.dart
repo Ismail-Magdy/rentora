@@ -9,6 +9,20 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
+import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
+import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
+import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
+import 'package:rentora/features/home/data/repos/home_repo.dart';
+import 'package:rentora/features/home/data/repos/home_repo_impl.dart';
+import 'package:rentora/features/home/manager/home_cubit.dart';
+import 'package:rentora/features/item_details/data/repos/item_details_repo.dart';
+import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
+import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
+import 'package:rentora/features/setup_profile/data/repos/setup_profile_repo.dart';
+import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
+import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
+import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rentora/features/auth/data/repos/auth_repo.dart';
 import 'package:rentora/features/auth/manager/cubit/auth_cubit.dart';
@@ -60,6 +74,49 @@ Future<void> initGetIt() async {
     ),
   );
   getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<AuthRepo>()));
+  /// Setup Profile
+  getIt.registerLazySingleton<SetupProfileRepo>(
+    () => SetupProfileRepo(getIt<UsersFirestoreService>()),
+  );
+
+  getIt.registerFactory<LocationCubit>(
+    () => LocationCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  );
+
+  getIt.registerFactory<InterestsCubit>(
+    () => InterestsCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  );
+
+  /// Home
+  getIt.registerLazySingleton<HomeRepo>(
+    () => HomeRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
+  );
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+
+  /// Item Details
+  getIt.registerLazySingleton<ItemDetailsRepo>(() => ItemDetailsRepoImpl());
+
+  //
+  getIt.registerFactory<ItemDetailsCubit>(
+    () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
+  );
+
+  /// Category Details
+  getIt.registerLazySingleton<CategoryDetailsRepo>(
+    () => CategoryDetailsRepoImpl(),
+  );
+
+  getIt.registerFactory<CategoryDetailsCubit>(
+    () => CategoryDetailsCubit(getIt<CategoryDetailsRepo>()),
+  );
+
+  /// Booking
+  getIt.registerLazySingleton<BookingRepository>(
+    () => BookingRepository(getIt<BookingsFirestoreService>()),
+  );
+  getIt.registerFactory<BookingCubit>(
+    () => BookingCubit(bookingRepository: getIt<BookingRepository>()),
+  );
 
   // Example at Auth Feature To do as this
   // /// Signup

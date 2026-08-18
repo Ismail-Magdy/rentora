@@ -38,6 +38,11 @@ class FirebaseAuthService {
     await _firebaseAuth.signOut();
   }
 
+  /// Gets the current logged in user's ID
+  String? getCurrentUserId() {
+    return _firebaseAuth.currentUser?.uid;
+  }
+
   /* 
   CLASS SUMMARY:
   This class is responsible for all Authentication operations in Rentora. 

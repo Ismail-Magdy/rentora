@@ -24,7 +24,6 @@ extension Navigation on BuildContext {
   void pop() => Navigator.of(this).pop();
 }
 
-
 /// Eample To Use
 // context.pushReplacementNamed(Routes.homeScreen);
 // Use This Instead Of Normal Long Navigation
