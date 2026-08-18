@@ -6,7 +6,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
-import 'package:rentora/features/verification/presentation/models/verification_route_args.dart';
+import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/widgets/face_scan_screen_content.dart';
 
 class VerificationFaceScanScreen extends StatefulWidget {

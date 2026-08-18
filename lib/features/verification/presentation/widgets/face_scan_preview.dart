@@ -129,9 +129,8 @@ class FaceScanPreview extends StatelessWidget {
           ),
         ),
         verticalSpace(24),
-        InkWell(
+        GestureDetector(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(20.r),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(

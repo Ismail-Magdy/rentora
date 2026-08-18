@@ -8,7 +8,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
-import 'package:rentora/features/verification/presentation/models/verification_route_args.dart';
+import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/widgets/verification_badge_header.dart';
 import 'package:rentora/features/verification/presentation/widgets/verification_benefit_card.dart';
 import 'package:rentora/features/verification/presentation/widgets/verification_footer_security.dart';

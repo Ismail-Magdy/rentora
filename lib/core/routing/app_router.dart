@@ -37,7 +37,7 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
-import 'package:rentora/features/verification/presentation/models/verification_route_args.dart';
+import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_face_scan_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_id_back_upload_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_id_front_upload_screen.dart';
