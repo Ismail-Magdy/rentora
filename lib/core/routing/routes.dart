@@ -20,6 +20,12 @@ class Routes {
   static const String itemDetailsScreen = "/itemDetailsScreen";
   //
   static const String notificationsScreen = "/notificationsScreen";
+
+  /// Category screen
+  static const String categoryScreen = "/categoryScreen";
+  static const String itemDetailsScreen = "/itemDetailsScreen";
+  static const String addPhotosScreen = "/addPhotosScreen";
+  static const String reviewScreen = "/reviewScreen";
   //
   static const String selectedDatesScreen = "/selectedDatesScreen";
   static const String bookingSummaryScreen = "/bookingSummaryScreen";

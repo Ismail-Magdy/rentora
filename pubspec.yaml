@@ -50,6 +50,8 @@ dependencies:
 
   # Networking
   dio: ^5.11.0
+  image_picker: ^1.2.3
+  equatable: ^2.1.0
   dartz: ^0.10.1
 
   # Location & Maps

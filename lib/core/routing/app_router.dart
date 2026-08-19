@@ -6,6 +6,10 @@ import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
+import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
+import 'package:rentora/features/create_listing/presentation/screens/add_photos_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/item_details_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:rentora/features/auth/presentation/screens/login_screen.dart';
@@ -38,6 +42,7 @@ import 'package:rentora/features/setup_profile/manager/location/location_cubit.d
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/location_screen.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/choose_category_screens.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
@@ -93,6 +98,48 @@ class AppRouter {
       /// OnBoarding Screens
       case Routes.onBoardingScreens:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
+case Routes.categoryScreen:
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider(
+        create: (_) => getIt<ListingCubit>(),
+        child: const ChooseCategoryScreen(),
+      ),
+    ),
+  );
+  case Routes.itemDetailsScreen:
+  final cubit = settings.arguments as ListingCubit;
+
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider.value(
+        value: cubit,
+        child: const ItemDetailsScreen(),
+      ),
+    ),
+  );
+  case Routes.addPhotosScreen:
+  final cubit = settings.arguments as ListingCubit;
+
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider.value(
+        value: cubit,
+        child: const AddPhotosScreen(),
+      ),
+    ),
+  );
+  case Routes.reviewScreen:
+  final cubit = settings.arguments as ListingCubit;
+
+  return MaterialPageRoute(
+    builder: (_) => _withNetwork(
+      BlocProvider.value(
+        value: cubit,
+        child: const ReviewAndPublishScreen(),
+      ),
+    ),
+  );
 
       /// Welcome Auth Screen
       case Routes.welcomeAuthScreen:
