@@ -50,11 +50,14 @@ class CustomTextFormField extends StatefulWidget {
 
   /// Controls auto validation behavior.
   final AutovalidateMode autovalidateMode;
-
+//!
+  final IconData? icon;
+  final int ? maxLines;
   const CustomTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
+   
     this.fieldType = .normal,
     this.prefixIcon,
     this.validator,
@@ -63,6 +66,8 @@ class CustomTextFormField extends StatefulWidget {
     this.maxLength,
     this.inputFormatters,
     this.autovalidateMode = .onUserInteraction,
+      this.icon,
+        this.maxLines,
     this.textInputAction,
     this.onFieldSubmitted,
   });
@@ -189,7 +194,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
       /// Keyboard type configuration.
       keyboardType: _getKeyboardType(),
-
+maxLines: widget.maxLines ?? 1,
       /// Optional max length constraint.
       maxLength: widget.maxLength,
 
@@ -210,6 +215,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         hintText: widget.hintText,
 
         hintStyle: const TextStyle(color: Color(0x7F4A628A)),
+       icon: widget.icon != null
+            ? Icon(widget.icon, color: Colors.grey)
+            : null,
+        /// Optional prefix icon.
 
         /// Optional prefix icon
         prefixIcon: widget.prefixIcon != null

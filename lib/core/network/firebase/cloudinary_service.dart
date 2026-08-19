@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart' as dio;
+import 'package:image_picker/image_picker.dart';
 
 class CloudinaryService {
   final dio.Dio _dio = dio.Dio();
@@ -10,6 +11,20 @@ class CloudinaryService {
 
   /// Function to upload an image to Cloudinary and return the secure URL
   /// Throws an Exception with a user-friendly message on failure
+  /// 
+    Future<List<String>> uploadMultipleImages(List<XFile> images) async {
+    List<String> urls = [];
+    for (var image in images) {
+      final url = await uploadImage(File(image.path));
+      if (url != null) urls.add(url);
+    }
+    return urls;
+  }
+
+
+
+
+
   Future<String?> uploadImage(File imageFile) async {
     try {
       String fileName = imageFile.path.split("/").last;

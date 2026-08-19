@@ -9,6 +9,8 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
+import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
+import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
 import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
@@ -63,7 +65,9 @@ Future<void> initGetIt() async {
   );
 
   /// Media Services
-  getIt.registerLazySingleton<CloudinaryService>(() => CloudinaryService());
+  getIt.registerLazySingleton<CloudinaryService>(
+    () => CloudinaryService(),
+  );
 
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
@@ -141,13 +145,23 @@ Future<void> initGetIt() async {
   // getIt.registerLazySingleton<SignupRepo>(() => SignupRepo());
   // getIt.registerFactory<SignupBloc>(() => SignupBloc(getIt<SignupRepo>()));
 
-  // /// Login
-  // getIt.registerLazySingleton<LoginRepo>(() => LoginRepo());
-  // getIt.registerFactory<LoginBloc>(() => LoginBloc(getIt<LoginRepo>()));
+  // Create Listing Add Iteam
 
-  // /// Forgot Password
-  // getIt.registerLazySingleton<ForgotPasswordRepo>(() => ForgotPasswordRepo());
-  // getIt.registerFactory<ForgotPasswordBloc>(
-  //   () => ForgotPasswordBloc(getIt<ForgotPasswordRepo>()),
-  // );
+getIt.registerLazySingleton<ListingRepositoryImpl>(
+    () => ListingRepositoryImpl(
+      getIt<FirebaseFirestore>(),
+      getIt<CloudinaryService>(),
+    ),
+  );
+
+getIt.registerFactory<ListingCubit>(
+  () => ListingCubit(
+    getIt<ListingRepositoryImpl>(),
+    getIt<FirebaseAuth>(),
+  ),
+);
+
+  // Repository
+
+
 }
