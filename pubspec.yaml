@@ -21,7 +21,7 @@ dependencies:
   cached_network_image: ^3.4.1
   lottie: ^3.3.3
   image_cropper: ^12.2.1
-  image_picker: ^1.1.2
+  image_picker: ^1.2.3
   flutter_svg: ^2.3.0
 
   # State Management
@@ -76,6 +76,7 @@ flutter:
     - assets/svgs/categories/
     - assets/svgs/root/
     - assets/svgs/home/
+    - assets/svgs/auth/
     - assets/icons/
     - assets/lottie/
 

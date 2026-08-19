@@ -68,7 +68,9 @@ class AppRouter {
   }
 
   Widget _withAuth(Widget screen) {
-    return BlocProvider(create: (_) => getIt<AuthCubit>(), child: screen);
+    return _withNetwork(
+      BlocProvider(create: (_) => getIt<AuthCubit>(), child: screen),
+    );
   }
 
   Widget _withVerificationCubit(Widget screen, Object? args) {
@@ -95,30 +97,25 @@ class AppRouter {
       /// Welcome Auth Screen
       case Routes.welcomeAuthScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(
-            BlocProvider(
-              create: (context) => getIt<AuthCubit>(),
-              child: const WelcomeAuthScreen(),
-            ),
-          ),
+          builder: (_) => _withAuth(const WelcomeAuthScreen()),
         );
 
       /// Sign Up Screen
       case Routes.signupScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(_withAuth(const SignUpScreen())),
+          builder: (_) => _withAuth(const SignUpScreen()),
         );
 
       /// Login Screen
       case Routes.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(_withAuth(const LoginScreen())),
+          builder: (_) => _withAuth(const LoginScreen()),
         );
 
       /// Forgot Password Screen
       case Routes.forgotPasswordScreen:
         return MaterialPageRoute(
-          builder: (_) => _withNetwork(_withAuth(const ForgetPasswordScreen())),
+          builder: (_) => _withAuth(const ForgetPasswordScreen()),
         );
       //
       /// Setup Profile

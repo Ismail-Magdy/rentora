@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +8,10 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
-import 'package:rentora/core/widgets/error_screen.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
+import 'package:rentora/features/auth/presentation/widgets/auth_divider.dart';
 
 class WelcomeAuthScreen extends StatelessWidget {
   const WelcomeAuthScreen({super.key});
@@ -19,9 +21,15 @@ class WelcomeAuthScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          // Navigator.pushNamedAndRemoveUntil(context, Routes.homeScreen, (route) => false);
+          CustomFeedbackDialog(
+            icon: Icons.check_circle_outline,
+            color: AppColors.primaryGreen,
+            title: "Success",
+            message: "You have successfully logged in",
+            onFinish: () => context.pushReplacementNamed(Routes.rootScreen),
+          );
         } else if (state is AuthError) {
-          ErrorScreen();
+          // TODO : Add FeedBack Dialog
         }
       },
       builder: (context, state) {
@@ -50,61 +58,46 @@ class WelcomeAuthScreen extends StatelessWidget {
                       onPressed: () => context.pushNamed(Routes.loginScreen),
                     ),
                     //
-                    SizedBox(height: 30.h),
+                    verticalSpace(30),
                     //
                     CustomButton(
-                      width: 380.w,
-                      height: 62.h,
+                      height: 52.h,
                       color: AppColors.white,
-                      text: 'Register',
-                      borderRadius: 12.0,
-                      textColor: AppColors.primaryGreen,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/signupScreen');
-                      },
+                      text: "Register",
+                      borderColor: AppColors.secondaryColor,
+                      textColor: AppColors.secondaryColor,
+                      onPressed: () => context.pushNamed(Routes.signupScreen),
                     ),
-
-                    SizedBox(height: 48.h),
-
-                    // فاصل الـ Or
-                    Row(
-                      children: [
-                        Expanded(child: Divider(color: AppColors.lightGrey)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            'Or',
-                            style: TextStyle(
-                              color: AppColors.grey,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                        ),
-                        Expanded(child: Divider(color: AppColors.lightGrey)),
-                      ],
-                    ),
-
-                    SizedBox(height: 48.h),
-
+                    //
+                    verticalSpace(48),
+                    // Or
+                    AuthDivider(),
+                    //
+                    verticalSpace(48),
+                    //
                     state is AuthLoading
                         ? const Center(
-                            child: CircularProgressIndicator(
+                            child: CupertinoActivityIndicator(
                               color: AppColors.primaryGreen,
                             ),
                           )
                         : CustomButton(
-                            width: 380.w,
-                            height: 48.h,
+                            height: 52.h,
                             color: AppColors.white,
-                            text: 'Continue with Google',
+                            text: "Continue with Google",
                             textColor: AppColors.black,
+                            borderColor: AppColors.lightGrey,
                             fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                            borderRadius: 12.0,
-                            onPressed: () {
-                              context.read<AuthCubit>().signInWithGoogle();
-                            },
+                            fontWeight: .w400,
+                            prefixIcon: SvgPicture.asset(
+                              "assets/svgs/auth/google.svg",
+                              width: 24.w,
+                              height: 24.h,
+                            ),
+                            onPressed: () =>
+                                context.read<AuthCubit>().signInWithGoogle(),
                           ),
+                    //
                   ],
                 ),
               ),
@@ -115,4 +108,3 @@ class WelcomeAuthScreen extends StatelessWidget {
     );
   }
 }
-// 168
