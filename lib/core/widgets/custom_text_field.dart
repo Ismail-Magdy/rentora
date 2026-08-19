@@ -4,8 +4,8 @@ import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:rentora/core/helpers/app_regex.dart";
 import "package:rentora/core/themes/app_colors.dart";
 
-/// Defines the type of the input field.
-/// This controls validation, keyboard type, and password behavior.
+/// Defines the type of the input field
+/// This controls validation, keyboard type, and password behavior
 enum FieldType {
   firstName,
   lastName,
@@ -18,19 +18,22 @@ enum FieldType {
 }
 
 class CustomTextFormField extends StatefulWidget {
-  /// Controller used to manage the input text.
+  final TextInputAction? textInputAction;
+  final void Function(String)? onFieldSubmitted;
+
+  /// Controller used to manage the input text
   final TextEditingController controller;
 
-  /// Hint text displayed inside the field.
+  /// Hint text displayed inside the field
   final String hintText;
 
-  /// Defines the field behavior.
+  /// Defines the field behavior
   final FieldType fieldType;
 
-  /// Optional icon displayed at the start of the field.
+  /// Optional icon displayed at the start of the field
   final IconData? prefixIcon;
 
-  /// Optional custom validator if you want to override default validation.
+  /// Optional custom validator if you want to override default validation
   final String? Function(String?)? validator;
 
   /// Called whenever the text changes.
@@ -65,6 +68,8 @@ class CustomTextFormField extends StatefulWidget {
     this.autovalidateMode = .onUserInteraction,
       this.icon,
         this.maxLines,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -99,26 +104,26 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     final trimmedValue = value?.trim() ?? "";
 
     switch (widget.fieldType) {
-      case .firstName:
+      case FieldType.firstName:
         if (trimmedValue.isEmpty) {
           return "Please enter your first name";
         }
         break;
 
-      case .lastName:
+      case FieldType.lastName:
         if (trimmedValue.isEmpty) {
           return "Please enter your last name";
         }
         break;
 
-      case .phoneNumber:
+      case FieldType.phoneNumber:
         if (trimmedValue.isEmpty ||
             !AppRegex.isPhoneNumberValid(trimmedValue)) {
           return "Please enter a valid phone number";
         }
         break;
 
-      case .userName:
+      case FieldType.userName:
         if (trimmedValue.isEmpty) {
           return "Please enter a username";
         }
@@ -127,13 +132,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         // }
         break;
 
-      case .email:
+      case FieldType.email:
         if (trimmedValue.isEmpty || !AppRegex.isEmailValid(trimmedValue)) {
           return "Please enter a valid email address";
         }
         break;
 
-      case .password:
+      case FieldType.password:
         if (trimmedValue.isEmpty) {
           return "Please enter a password";
         }
@@ -142,7 +147,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         }
         break;
 
-      case .number:
+      case .number: // Modification: Default validation to prevent empty fields
         if (trimmedValue.isEmpty) {
           return "Please enter a value";
         }
@@ -166,13 +171,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         return .phone;
 
       case .email:
-        return TextInputType.emailAddress;
+        return .emailAddress;
 
-      case .number:
-        return const TextInputType.numberWithOptions(decimal: true);
+      case .number: // Modification: Open number keyboard with decimal support
+        return const .numberWithOptions(decimal: true);
 
       default:
-        return TextInputType.text;
+        return .text;
     }
   }
 
@@ -214,12 +219,14 @@ maxLines: widget.maxLines ?? 1,
             ? Icon(widget.icon, color: Colors.grey)
             : null,
         /// Optional prefix icon.
+
+        /// Optional prefix icon
         prefixIcon: widget.prefixIcon != null
-            ? Icon(widget.prefixIcon, color: Colors.grey)
+            ? Icon(widget.prefixIcon, color: AppColors.grey)
             : null,
 
         filled: true,
-        fillColor: Colors.grey.withValues(alpha: 0.08),
+        fillColor: AppColors.grey.withValues(alpha: 0.08),
 
         border: OutlineInputBorder(
           borderRadius: .circular(14),

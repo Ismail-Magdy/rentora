@@ -32,6 +32,11 @@ class Rentora extends StatelessWidget {
             onGenerateRoute: appRouter.generateRoute,
             initialRoute: Routes.categoryScreen,
           ),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(fontFamily: "Poppins"),
+          onGenerateRoute: appRouter.generateRoute,
+          initialRoute: Routes.welcomeAuthScreen,
         ),
       ),
     );

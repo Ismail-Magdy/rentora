@@ -11,7 +11,25 @@ import 'package:rentora/core/network/firebase/verifications_firestore_service.da
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
 import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
+import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
+import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
+import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
+import 'package:rentora/features/home/data/repos/home_repo.dart';
+import 'package:rentora/features/home/data/repos/home_repo_impl.dart';
+import 'package:rentora/features/home/manager/home_cubit.dart';
+import 'package:rentora/features/item_details/data/repos/item_details_repo.dart';
+import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
+import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
+import 'package:rentora/features/setup_profile/data/repos/setup_profile_repo.dart';
+import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
+import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
+import 'package:rentora/features/booking/manager/booking_cubit.dart';
+import 'package:rentora/features/verification/data/repo/verification_repo.dart';
+import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rentora/features/auth/data/repos/auth_repo.dart';
+import 'package:rentora/features/auth/manager/auth_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -54,6 +72,78 @@ Future<void> initGetIt() async {
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
 
+  /// auth Feature
+  getIt.registerLazySingleton<AuthRepo>(
+    () => AuthRepo(
+      authService: getIt<FirebaseAuthService>(),
+      usersService: getIt<UsersFirestoreService>(),
+    ),
+  );
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<AuthRepo>()));
+
+  /// Setup Profile
+  getIt.registerLazySingleton<SetupProfileRepo>(
+    () => SetupProfileRepo(getIt<UsersFirestoreService>()),
+  );
+
+  getIt.registerFactory<LocationCubit>(
+    () => LocationCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  );
+
+  getIt.registerFactory<InterestsCubit>(
+    () => InterestsCubit(getIt<SetupProfileRepo>(), getIt<FirebaseAuth>()),
+  );
+
+  /// Home
+  getIt.registerLazySingleton<HomeRepo>(
+    () => HomeRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
+  );
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+
+  /// Item Details
+  getIt.registerLazySingleton<ItemDetailsRepo>(() => ItemDetailsRepoImpl());
+
+  //
+  getIt.registerFactory<ItemDetailsCubit>(
+    () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
+  );
+
+  /// Category Details
+  getIt.registerLazySingleton<CategoryDetailsRepo>(
+    () => CategoryDetailsRepoImpl(),
+  );
+
+  getIt.registerFactory<CategoryDetailsCubit>(
+    () => CategoryDetailsCubit(getIt<CategoryDetailsRepo>()),
+  );
+
+  /// Booking
+  getIt.registerLazySingleton<BookingRepository>(
+    () => BookingRepository(getIt<BookingsFirestoreService>()),
+  );
+  getIt.registerFactory<BookingCubit>(
+    () => BookingCubit(bookingRepository: getIt<BookingRepository>()),
+  );
+
+  /// Verification
+  getIt.registerLazySingleton<VerificationRepo>(
+    () => VerificationRepo(
+      getIt<CloudinaryService>(),
+      getIt<VerificationsFirestoreService>(),
+      getIt<FirebaseFirestore>(),
+    ),
+  );
+  getIt.registerFactory<VerificationCubit>(
+    () => VerificationCubit(
+      getIt<VerificationRepo>(),
+      getIt<FirebaseAuthService>(),
+    ),
+  );
+
+  // Example at Auth Feature To do as this
+  // /// Signup
+  // getIt.registerLazySingleton<SignupRepo>(() => SignupRepo());
+  // getIt.registerFactory<SignupBloc>(() => SignupBloc(getIt<SignupRepo>()));
 
   // Create Listing Add Iteam
 
