@@ -1,12 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:rentora/core/helpers/app_dialog.dart';
-
+import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/core/widgets/custom_auth_card.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
@@ -30,92 +31,98 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthLoading) {
-          AppDialogs.showLoading(context);
-        } else if (state is AuthError) {
-          AppDialogs.hideLoading(context);
-          AppDialogs.showSnackBar(context, state.failure.message);
-        } else if (state is PasswordResetSent) {
-          AppDialogs.hideLoading(context);
-          AppDialogs.showSnackBar(
+        if (state is AuthError) {
+          showFeedbackDialog(
             context,
-            'Reset link sent to ${state.email}',
-            isError: false,
+            icon: Icons.error_outline_rounded,
+            color: AppColors.error,
+            title: "Reset Failed",
+            message: state.failure.message,
           );
-          Navigator.pop(context);
+        } else if (state is PasswordResetSent) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.mark_email_read_outlined,
+            color: AppColors.primaryGreen,
+            title: "Email Sent",
+            message: "A password reset link has been sent to your email.",
+            onFinish: () => context.pop(),
+          );
         }
       },
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF1F3F4),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(24.w),
-              child: Form(
-                key: formKey,
-                child: AuthCard(
-                  title: 'Forgot Password',
-                  children: [
-                    SvgPicture.asset(
-                      'assets/svgs/logo.svg',
-                      width: 90.w,
-                      height: 90.h,
-                    ),
-                    SizedBox(height: 12.h),
-                    Text(
-                      'Enter your email and we will send you a link to reset your password.',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: Colors.grey.shade600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 28.h),
-
-                    CustomTextFormField(
-                      controller: emailController,
-                      hintText: 'Enter your email address',
-                      prefixIcon: Icons.mail_outline,
-                      fieldType: FieldType.email,
-                    ),
-                    SizedBox(height: 24.h),
-
-                    CustomButton(
-                      width: double.infinity,
-                      height: 50.h,
-                      text: 'Send Reset Link',
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      onPressed: () {
-                        if (!formKey.currentState!.validate()) return;
-
-                        context.read<AuthCubit>().sendPasswordReset(
-                          email: emailController.text,
-                        );
-                      },
-                    ),
-                    SizedBox(height: 20.h),
-
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Text(
-                        'Back to Login',
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColors.white,
+          appBar: CustomAppBar(text: "Forget Password?"),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: .symmetric(horizontal: 24.w),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      verticalSpace(40),
+                      Text(
+                        "Enter the email address associated with your account and we'll send you a link to reset your password.",
                         style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: AppColors.grey,
+                          height: 1.5,
+                        ),
+                        textAlign: .center,
+                      ),
+
+                      verticalSpace(48),
+
+                      Text(
+                        "Email Address",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: .w600,
+                          color: AppColors.black,
                         ),
                       ),
-                    ),
-                  ],
+                      verticalSpace(8),
+
+                      CustomTextFormField(
+                        controller: emailController,
+                        hintText: 'Enter your email address',
+                        prefixIcon: Icons.mail_outline,
+                        fieldType: .email,
+                      ),
+
+                      verticalSpace(32),
+
+                      state is AuthLoading
+                          ? const Center(
+                              child: CupertinoActivityIndicator(
+                                color: AppColors.primaryGreen,
+                              ),
+                            )
+                          : CustomButton(
+                              height: 52.h,
+                              text: 'Send Reset Link',
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              onPressed: () {
+                                if (!formKey.currentState!.validate()) return;
+                                context.read<AuthCubit>().sendPasswordReset(
+                                  email: emailController.text,
+                                );
+                              },
+                            ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

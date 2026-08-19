@@ -50,7 +50,7 @@ class CustomButton extends StatelessWidget {
       height: height ?? 50.h,
       elevation: elevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius.r),
+        borderRadius: .circular(borderRadius.r),
         side: borderColor != null
             ? BorderSide(color: borderColor!, width: 1.5.w)
             : BorderSide.none,
@@ -78,6 +78,7 @@ class CustomButton extends StatelessWidget {
                     color: textColor,
                     fontSize: fontSize ?? 16.sp,
                     fontWeight: fontWeight,
+                    fontFamily: "Montserrat",
                   ),
                 ),
                 if (suffixIcon != null) ...[horizontalSpace(8), suffixIcon!],

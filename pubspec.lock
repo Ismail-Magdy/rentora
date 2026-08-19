@@ -780,11 +780,12 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
+      sha256: d5b3e1774af29c9ab00103afb0d4614070f924d2e0057ac867ec98800114793f
       sha256: "6f3a1995eafb000333174fae92202622033b0ee7fd917a6cd3730295264df84a"
       url: "https://pub.flutter-io.cn"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.13+19"
+    version: "0.8.13+17"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -976,10 +977,6 @@ packages:
     source: hosted
     version: "1.19.0"
     version: "1.17.0"
-      sha256: "1741988757a65eb6b36abe716829688cf01910bbf91c34354ff7ec1c3de2b349"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.18.0"
   mgrs_dart:
     dependency: transitive
     description:
@@ -1395,10 +1392,6 @@ packages:
     source: hosted
     version: "0.7.12"
     version: "0.7.10"
-      sha256: "949a932224383300f01be9221c39180316445ecb8e7547f70a41a35bf421fb9e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.11"
   typed_data:
     dependency: transitive
     description:
@@ -1522,7 +1515,3 @@ packages:
 sdks:
   dart: ">=3.11.4 <4.0.0"
   flutter: ">=3.38.4"
-  dart: ">=3.12.0 <4.0.0"
-  flutter: ">=3.44.0"
-  dart: ">=3.12.0 <4.0.0"
-  flutter: ">=3.44.0"
