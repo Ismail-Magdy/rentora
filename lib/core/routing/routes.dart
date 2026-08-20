@@ -13,6 +13,7 @@ class Routes {
   static const String forgotPasswordScreen = "/forgotPasswordScreen";
   //
   static const String rootScreen = "/rootScreen";
+  static const String chatScreen = "/chat";
   //
   static const String homeScreen = "/homeScreen";
   static const String categoryDetailsScreen = "/categoryDetailsScreen";

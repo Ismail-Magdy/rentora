@@ -7,6 +7,7 @@ import 'package:rentora/core/helpers/verification_guard.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
+import 'package:rentora/features/chat/presentation/screens/chat_list_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -20,7 +21,7 @@ class _RootScreenState extends State<RootScreen> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    Center(child: Text('Chat Screen')),
+    ChatListScreen(),
     Center(child: Text('Archive Screen')),
     Center(child: Text('Settings Screen')),
   ];

@@ -39,6 +39,9 @@ import 'package:rentora/features/category_details/presentation/screens/category_
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
+import 'package:rentora/features/chat/data/models/chat_screen_args.dart';
+import 'package:rentora/features/chat/manager/chat_cubit.dart';
+import 'package:rentora/features/chat/presentation/screens/chat_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
@@ -222,11 +225,32 @@ class AppRouter {
             MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => getIt<HomeCubit>()),
-                // BlocProvider(
-                //   create: (context) => getIt<ChatCubit>(),
-                // ),
+                BlocProvider(create: (context) => getIt<ChatCubit>()),
               ],
               child: const RootScreen(),
+            ),
+          ),
+        );
+
+      case Routes.chatScreen:
+        final chatId = args is ChatScreenArgs
+            ? args.chatId
+            : (args is String ? args : '');
+        final receiverName = args is ChatScreenArgs ? args.receiverName : null;
+        final receiverAvatar =
+            args is ChatScreenArgs ? args.receiverAvatar : null;
+        final itemTitle = args is ChatScreenArgs ? args.itemTitle : null;
+
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (_) => getIt<ChatCubit>(),
+              child: ChatScreen(
+                chatId: chatId,
+                receiverName: receiverName,
+                receiverAvatar: receiverAvatar,
+                itemTitle: itemTitle,
+              ),
             ),
           ),
         );

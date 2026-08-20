@@ -25,6 +25,8 @@ import 'package:rentora/features/setup_profile/manager/interests/interests_cubit
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
+import 'package:rentora/features/chat/data/repo/chat_repo_imp.dart';
+import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/features/verification/data/repo/verification_repo.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -123,6 +125,12 @@ Future<void> initGetIt() async {
   getIt.registerFactory<BookingCubit>(
     () => BookingCubit(bookingRepository: getIt<BookingRepository>()),
   );
+
+  /// Chat
+  getIt.registerLazySingleton<ChatRepo>(
+    () => ChatRepo(getIt<ChatsFirestoreService>(), getIt<FirebaseFirestore>()),
+  );
+  getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt<ChatRepo>()));
 
   /// Verification
   getIt.registerLazySingleton<VerificationRepo>(
