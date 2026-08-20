@@ -1,10 +1,7 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/category_model.dart';
+import 'package:rentora/features/add_item/data/models/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
   final CategoryModel category;
@@ -31,16 +28,12 @@ class CategoryCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected
-                ? categoryColor
-                : const Color(0xFFE9ECEE),
+            color: isSelected ? categoryColor : const Color(0xFFE9ECEE),
             width: isSelected ? 2.w : 1.w,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(
-                isSelected ? .08 : .035,
-              ),
+              color: Colors.black.withOpacity(isSelected ? .08 : .035),
               blurRadius: isSelected ? 12 : 8,
               offset: const Offset(0, 4),
             ),
@@ -58,22 +51,14 @@ class CategoryCard extends StatelessWidget {
                 height: 27.h,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected
-                      ? categoryColor
-                      : Colors.transparent,
+                  color: isSelected ? categoryColor : Colors.transparent,
                   border: Border.all(
-                    color: isSelected
-                        ? categoryColor
-                        : const Color(0xFFD9DDDF),
+                    color: isSelected ? categoryColor : const Color(0xFFD9DDDF),
                     width: 2,
                   ),
                 ),
                 child: isSelected
-                    ?  Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 17.sp,
-                      )
+                    ? Icon(Icons.check, color: Colors.white, size: 17.sp)
                     : null,
               ),
             ),
@@ -90,11 +75,7 @@ class CategoryCard extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: categoryColor.withOpacity(.12),
                     ),
-                    child: Icon(
-                      category.icon,
-                      size: 34,
-                      color: categoryColor,
-                    ),
+                    child: Icon(category.icon, size: 34, color: categoryColor),
                   ),
 
                   verticalSpace(8),
@@ -115,14 +96,14 @@ class CategoryCard extends StatelessWidget {
                     ),
                   ),
 
-                 verticalSpace(4),
+                  verticalSpace(4),
 
                   Text(
                     category.subtitle,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontSize: 11.sp,
                       height: 1.25.h,
                       color: Color(0xFF777E82),

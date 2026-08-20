@@ -84,7 +84,11 @@ class LocationCubit extends Cubit<LocationState> {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
         // Constructing a readable address (e.g., "Street Name, City")
-        selectedAddress = '${place.street}, ${place.locality}';
+        final street = (place.street != null && place.street!.isNotEmpty)
+            ? '${place.street}, '
+            : '';
+        final locality = place.locality ?? '';
+        selectedAddress = '$street$locality'.trim();
       } else {
         selectedAddress = 'Unknown Location';
       }

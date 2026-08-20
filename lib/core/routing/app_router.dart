@@ -7,10 +7,10 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
-import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
-import 'package:rentora/features/create_listing/presentation/screens/add_photos_screen.dart';
-import 'package:rentora/features/create_listing/presentation/screens/add_item_details_screen.dart';
-import 'package:rentora/features/create_listing/presentation/screens/review_publish_screen.dart';
+import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/add_item/presentation/screens/add_photos_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/add_item_details_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:rentora/features/auth/presentation/screens/login_screen.dart';
@@ -43,7 +43,7 @@ import 'package:rentora/features/setup_profile/manager/location/location_cubit.d
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/location_screen.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
-import 'package:rentora/features/create_listing/presentation/screens/choose_category_screens.dart';
+import 'package:rentora/features/add_item/presentation/screens/choose_category_screens.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_face_scan_screen.dart';
@@ -134,14 +134,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(
-              create: (_) => getIt<ListingCubit>(),
+              create: (_) => getIt<AddItemCubit>(),
               child: const ChooseCategoryScreen(),
             ),
           ),
         );
 
       case Routes.addItemDetailsScreen:
-        final cubit = settings.arguments as ListingCubit;
+        final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider.value(
@@ -153,7 +153,7 @@ class AppRouter {
 
       ///
       case Routes.addPhotosScreen:
-        final cubit = settings.arguments as ListingCubit;
+        final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider.value(value: cubit, child: const AddPhotosScreen()),
@@ -162,7 +162,7 @@ class AppRouter {
 
       ///
       case Routes.reviewScreen:
-        final cubit = settings.arguments as ListingCubit;
+        final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider.value(

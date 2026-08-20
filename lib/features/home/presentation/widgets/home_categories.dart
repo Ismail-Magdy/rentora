@@ -50,6 +50,7 @@ class HomeCategories extends StatelessWidget {
         SizedBox(
           height: 95.h,
           child: ListView.separated(
+            physics: BouncingScrollPhysics(),
             padding: .symmetric(horizontal: 18.w),
             scrollDirection: .horizontal,
             itemCount: categories.length,
@@ -93,7 +94,7 @@ class HomeCategories extends StatelessWidget {
                     verticalSpace(8),
                     //
                     Text(
-                      category,
+                      category.capitalizeFirst(),
                       style: TextStyle(
                         fontSize: 11.sp,
                         fontWeight: .w500,

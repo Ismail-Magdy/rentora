@@ -5,10 +5,10 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/category_card.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/category_model.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
+import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/add_item/presentation/widgets/category_card.dart';
+import 'package:rentora/features/add_item/data/models/category_model.dart';
+import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
 
 class ChooseCategoryScreen extends StatefulWidget {
   const ChooseCategoryScreen({super.key});
@@ -126,14 +126,14 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
       return;
     }
 
-    final listingCubit = context.read<ListingCubit>();
+    final listingCubit = context.read<AddItemCubit>();
 
     listingCubit.updateCategory(categories[selectedIndex!].id);
 
     Navigator.pushNamed(
       context,
       Routes.itemDetailsScreen,
-      arguments: context.read<ListingCubit>(),
+      arguments: context.read<AddItemCubit>(),
     );
   }
 

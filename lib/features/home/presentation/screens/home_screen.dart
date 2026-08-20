@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     (index) => ProductModel(
       id: index.toString(),
       name: "Product Name Skeleton",
+      category: "Skeleton",
       price: 1500,
       rating: 4.5,
       distance: 3.5,
@@ -120,3 +121,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+// 123

@@ -14,7 +14,16 @@ class HomeTopBar extends StatelessWidget {
       child: Row(
         children: [
           //
-          Icon(Icons.tune, color: AppColors.secondaryColor, size: 27.sp),
+          GestureDetector(
+            onTap: () {
+              // TODO : Navigate to notification Screen
+            },
+            child: Icon(
+              Icons.notifications,
+              color: AppColors.secondaryColor,
+              size: 29.sp,
+            ),
+          ),
           //
           horizontalSpace(15),
           // Search Bar

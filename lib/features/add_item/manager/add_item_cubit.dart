@@ -1,19 +1,17 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:rentora/core/di/dependency_injection.dart';
-// import 'package:rentora/core/errors/failure.dart';
-import 'package:rentora/features/create_listing/data/models/listing_model.dart';
-import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
-import 'package:rentora/features/create_listing/manager/listing_state.dart';
+import 'package:rentora/features/add_item/data/models/add_item_model.dart';
+import 'package:rentora/features/add_item/data/repos/add_item_repository_impl.dart';
+import 'package:rentora/features/add_item/manager/add_item_state.dart';
 
-class ListingCubit extends Cubit<ListingState> {
-  final ListingRepositoryImpl _repository;
+class AddItemCubit extends Cubit<AddItemState> {
+  final AddItemRepositoryImpl _repository;
   final FirebaseAuth _auth;
 
-  ListingCubit(this._repository, this._auth) : super(const ListingState());
+  AddItemCubit(this._repository, this._auth) : super(const AddItemState());
 
-  // ========== Field Updates ==========
+  // Field Updates
   void updateCategory(String categoryId) =>
       emit(state.copyWith(categoryId: categoryId));
 
@@ -34,7 +32,7 @@ class ListingCubit extends Cubit<ListingState> {
   void updateLocation(String location) =>
       emit(state.copyWith(location: location));
 
-  // ========== Image Management ==========
+  // Image Management
   void addImage(XFile image) {
     final newList = List<XFile>.from(state.images)..add(image);
     emit(state.copyWith(images: newList));
@@ -55,9 +53,9 @@ class ListingCubit extends Cubit<ListingState> {
     emit(state.copyWith(images: images));
   }
 
-  // ========== Load for Edit ==========
+  // Load for Edit
   Future<void> loadListingForEdit(String listingId) async {
-    emit(state.copyWith(status: ListingStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: .loading, errorMessage: null));
     try {
       final listing = await _repository.fetchListing(listingId);
       emit(
@@ -73,31 +71,24 @@ class ListingCubit extends Cubit<ListingState> {
           isEditMode: true,
           listingId: listing.id,
           images: [], // no new local images initially
-          status: ListingStatus.success,
+          status: .success,
         ),
       );
     } catch (e) {
-      emit(
-        state.copyWith(status: ListingStatus.error, errorMessage: e.toString()),
-      );
+      emit(state.copyWith(status: .error, errorMessage: e.toString()));
     }
   }
 
-  // ========== Publish / Save ==========
+  //  Publish / Save
   Future<void> publishListing() async {
     // Validate
     final validationError = state.getValidationError();
     if (validationError != null) {
-      emit(
-        state.copyWith(
-          status: ListingStatus.error,
-          errorMessage: validationError,
-        ),
-      );
+      emit(state.copyWith(status: .error, errorMessage: validationError));
       return;
     }
 
-    emit(state.copyWith(status: ListingStatus.loading, errorMessage: null));
+    emit(state.copyWith(status: .loading, errorMessage: null));
 
     try {
       final currentUser = _auth.currentUser;
@@ -106,7 +97,7 @@ class ListingCubit extends Cubit<ListingState> {
       }
 
       // Build ListingEntity
-      final listing = ListingModel(
+      final listing = AddItemModel(
         id: state.listingId ?? '',
         userId: currentUser.uid,
         category: state.categoryId,
@@ -129,21 +120,15 @@ class ListingCubit extends Cubit<ListingState> {
       );
 
       emit(
-        state.copyWith(
-          status: ListingStatus.success,
-          isPublished: true,
-          errorMessage: null,
-        ),
+        state.copyWith(status: .success, isPublished: true, errorMessage: null),
       );
     } catch (e) {
-      emit(
-        state.copyWith(status: ListingStatus.error, errorMessage: e.toString()),
-      );
+      emit(state.copyWith(status: .error, errorMessage: e.toString()));
     }
   }
 
-  // ========== Reset ==========
+  //  Reset
   void reset() {
-    emit(const ListingState());
+    emit(const AddItemState());
   }
 }

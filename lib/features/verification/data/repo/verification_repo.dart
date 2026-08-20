@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rentora/core/errors/firebase_error_handler.dart';
 import 'package:rentora/core/errors/failure.dart';
+import 'package:rentora/core/errors/firebase_error_handler.dart';
 import 'package:rentora/core/network/firebase/cloudinary_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/features/verification/data/model/verification_model.dart';
@@ -24,9 +24,15 @@ class VerificationRepo {
     required File idBackFile,
   }) async {
     try {
-      String? selfieUrl = await _cloudinaryService.uploadImage(selfieFile);
-      String? idFrontUrl = await _cloudinaryService.uploadImage(idFrontFile);
-      String? idBackUrl = await _cloudinaryService.uploadImage(idBackFile);
+      final uploadResults = await Future.wait([
+        _cloudinaryService.uploadImage(selfieFile),
+        _cloudinaryService.uploadImage(idFrontFile),
+        _cloudinaryService.uploadImage(idBackFile),
+      ]);
+
+      final String? selfieUrl = uploadResults[0];
+      final String? idFrontUrl = uploadResults[1];
+      final String? idBackUrl = uploadResults[2];
 
       if (selfieUrl == null || idFrontUrl == null || idBackUrl == null) {
         throw const ServerFailure(

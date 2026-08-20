@@ -1,4 +1,4 @@
-class ListingModel {
+class AddItemModel {
   String id;
   final String userId;
   final String category;
@@ -12,7 +12,7 @@ class ListingModel {
   final DateTime createdAt;
   bool isAvailable;
 
-  ListingModel({
+  AddItemModel({
     this.id = '',
     required this.userId,
     required this.category,
@@ -41,8 +41,8 @@ class ListingModel {
     'isAvailable': isAvailable,
   };
 
-  factory ListingModel.fromMap(String id, Map<String, dynamic> map) =>
-      ListingModel(
+  factory AddItemModel.fromMap(String id, Map<String, dynamic> map) =>
+      AddItemModel(
         id: id,
         userId: map['userId'] ?? '',
         category: map['category'] ?? '',

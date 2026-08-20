@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
-enum ListingStatus { initial, loading, success, error }
+enum AddItemStatus { initial, loading, success, error }
 
-class ListingState extends Equatable {
+class AddItemState extends Equatable {
   final String categoryId;
   final String title;
   final String description;
@@ -21,13 +21,13 @@ class ListingState extends Equatable {
   final String? listingId; // ID of listing being edited
 
   // Status
-  final ListingStatus status;
+  final AddItemStatus status;
   final String? errorMessage;
 
   // Publish result
   final bool isPublished;
 
-  const ListingState({
+  const AddItemState({
     this.categoryId = '',
     this.title = '',
     this.description = '',
@@ -39,7 +39,7 @@ class ListingState extends Equatable {
     this.existingImageUrls = const [],
     this.isEditMode = false,
     this.listingId,
-    this.status = ListingStatus.initial,
+    this.status = .initial,
     this.errorMessage,
     this.isPublished = false,
   });
@@ -62,7 +62,7 @@ class ListingState extends Equatable {
     isPublished,
   ];
 
-  ListingState copyWith({
+  AddItemState copyWith({
     String? categoryId,
     String? title,
     String? description,
@@ -74,11 +74,11 @@ class ListingState extends Equatable {
     List<String>? existingImageUrls,
     bool? isEditMode,
     String? listingId,
-    ListingStatus? status,
+    AddItemStatus? status,
     String? errorMessage,
     bool? isPublished,
   }) {
-    return ListingState(
+    return AddItemState(
       categoryId: categoryId ?? this.categoryId,
       title: title ?? this.title,
       description: description ?? this.description,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
@@ -12,35 +14,31 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F7F9),
-        borderRadius: BorderRadius.circular(16.r),
+        color: AppColors.white,
+        borderRadius: .circular(16.r),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
-          /// الجزء اللي فوق: الصورة والقلب
           Expanded(
             child: Stack(
               children: [
-                // الصورة
+                // Image
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(16.r),
-                    ),
+                    color: AppColors.grey.withValues(alpha: 0.5),
+                    borderRadius: .vertical(top: .circular(16.r)),
                     image: DecorationImage(
-                      // لو مفيش صورة، حط صورة تجريبية (Placeholder)
                       image: NetworkImage(
                         product.imageUrl.isNotEmpty
                             ? product.imageUrl
                             : 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500&auto=format&fit=crop',
                       ),
-                      fit: BoxFit.cover,
+                      fit: .cover,
                     ),
                   ),
                 ),
-                // أيقونة القلب
+                //
                 Positioned(
                   top: 8.h,
                   right: 8.w,
@@ -49,10 +47,10 @@ class ProductCard extends StatelessWidget {
                       // TODO: Toggle Favorite logic later
                     },
                     child: Container(
-                      padding: EdgeInsets.all(6.r),
+                      padding: .all(6.r),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        shape: BoxShape.circle,
+                        color: AppColors.white.withValues(alpha: 0.8),
+                        shape: .circle,
                       ),
                       child: SvgPicture.asset(
                         product.isFavorite
@@ -60,9 +58,11 @@ class ProductCard extends StatelessWidget {
                             : 'assets/svgs/home/heart.svg',
                         width: 18.w,
                         height: 18.h,
-                        colorFilter: ColorFilter.mode(
-                          product.isFavorite ? Colors.red : Colors.black87,
-                          BlendMode.srcIn,
+                        colorFilter: .mode(
+                          product.isFavorite
+                              ? AppColors.error
+                              : AppColors.black,
+                          .srcIn,
                         ),
                       ),
                     ),
@@ -72,80 +72,90 @@ class ProductCard extends StatelessWidget {
             ),
           ),
 
-          /// الجزء اللي تحت: النصوص (الاسم، التقييم، السعر، المسافة)
           Padding(
-            padding: EdgeInsets.all(12.r),
+            padding: .all(12.r),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
-                // الاسم والتقييم
+                //
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
+                    //
                     Expanded(
                       child: Text(
                         product.name,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(fontSize: 14.sp, fontWeight: .bold),
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        overflow: .ellipsis,
                       ),
                     ),
+                    //
                     Row(
                       children: [
                         Text(
                           product.rating.toStringAsFixed(1),
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontSize: 12.sp, fontWeight: .bold),
                         ),
-                        SizedBox(width: 4.w),
+                        horizontalSpace(4),
+                        //
                         Icon(Icons.star, color: Colors.orange, size: 14.sp),
                       ],
                     ),
+                    //
                   ],
                 ),
-                SizedBox(height: 8.h),
-                // السعر والمسافة
+                verticalSpace(8),
+                //
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: .spaceBetween,
                   children: [
+                    //
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
+                      crossAxisAlignment: .baseline,
+                      textBaseline: .alphabetic,
                       children: [
+                        //
                         Text(
                           product.price.toStringAsFixed(0),
                           style: TextStyle(
                             fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.teal, // AppColors.primaryColor
+                            fontWeight: .bold,
+                            color: AppColors.primaryColor,
                           ),
                         ),
-                        SizedBox(width: 4.w),
+                        //
+                        horizontalSpace(4),
+                        //
                         Text(
                           'EGP/day',
-                          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: AppColors.grey,
+                          ),
                         ),
+                        //
                       ],
                     ),
+                    //
                     Row(
                       children: [
                         Text(
                           '${product.distance} km',
-                          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                            color: AppColors.grey,
+                          ),
                         ),
-                        SizedBox(width: 2.w),
+                        horizontalSpace(2),
                         Icon(
                           Icons.location_on_outlined,
-                          color: Colors.grey,
+                          color: AppColors.grey,
                           size: 12.sp,
                         ),
                       ],
                     ),
+                    //
                   ],
                 ),
               ],

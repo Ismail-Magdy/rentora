@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
@@ -24,7 +25,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
   void _nextPage() {
     if (_currentPage < onbourdingScreenData.length - 1) {
       _pageController.nextPage(
-        duration: Duration(milliseconds: 350),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
       );
     } else {
@@ -32,8 +33,13 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
     }
   }
 
-  void _finishOnboaring() =>
+  void _finishOnboaring() async {
+    await SharedPrefHelper.setData("hasSeenOnboarding", true);
+
+    if (mounted) {
       context.pushReplacementNamed(Routes.welcomeAuthScreen);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
@@ -32,15 +33,20 @@ class InterestsScreen extends StatelessWidget {
                 //
               } else if (state is InterestsSavedSuccess) {
                 //
-                showFeedbackDialog(
-                  context,
-                  icon: Icons.check_circle_outline,
-                  color: Colors.green,
-                  title: "Success",
-                  message: "Your interests have been saved",
-                  onFinish: () =>
-                      context.pushReplacementNamed(Routes.rootScreen),
-                );
+                SharedPrefHelper.setData("hasFinishedSetup", true).then((_) {
+                  if (!context.mounted) return;
+                  showFeedbackDialog(
+                    context,
+                    icon: Icons.check_circle_outline,
+                    color: Colors.green,
+                    title: "Success",
+                    message: "Your interests have been saved",
+                    onFinish: () => context.pushNamedAndRemoveUntil(
+                      Routes.rootScreen,
+                      predicate: (route) => false,
+                    ),
+                  );
+                });
                 //
               }
             },

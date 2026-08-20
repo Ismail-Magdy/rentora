@@ -24,6 +24,9 @@ extension Navigation on BuildContext {
   void pop() => Navigator.of(this).pop();
 }
 
-/// Eample To Use
-// context.pushReplacementNamed(Routes.homeScreen);
-// Use This Instead Of Normal Long Navigation
+extension StringExtension on String {
+  String capitalizeFirst() {
+    if (isEmpty) return this;
+    return "${this[0].toUpperCase()}${substring(1)}";
+  }
+}

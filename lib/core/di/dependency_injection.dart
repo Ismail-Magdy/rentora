@@ -9,8 +9,8 @@ import 'package:rentora/core/network/firebase/listings_firestore_service.dart';
 import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
-import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
-import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
+import 'package:rentora/features/add_item/data/repos/add_item_repository_impl.dart';
+import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
 import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
@@ -99,7 +99,9 @@ Future<void> initGetIt() async {
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
 
   /// Item Details
-  getIt.registerLazySingleton<ItemDetailsRepo>(() => ItemDetailsRepoImpl());
+  getIt.registerLazySingleton<ItemDetailsRepo>(
+    () => ItemDetailsRepoImpl(FirebaseFirestore.instance),
+  );
 
   getIt.registerFactory<ItemDetailsCubit>(
     () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
@@ -107,7 +109,7 @@ Future<void> initGetIt() async {
 
   /// Category Details
   getIt.registerLazySingleton<CategoryDetailsRepo>(
-    () => CategoryDetailsRepoImpl(),
+    () => CategoryDetailsRepoImpl(FirebaseFirestore.instance),
   );
 
   getIt.registerFactory<CategoryDetailsCubit>(
@@ -138,14 +140,14 @@ Future<void> initGetIt() async {
   );
 
   /// Create Listing Add Iteam
-  getIt.registerLazySingleton<ListingRepositoryImpl>(
-    () => ListingRepositoryImpl(
+  getIt.registerLazySingleton<AddItemRepositoryImpl>(
+    () => AddItemRepositoryImpl(
       getIt<FirebaseFirestore>(),
       getIt<CloudinaryService>(),
     ),
   );
 
-  getIt.registerFactory<ListingCubit>(
-    () => ListingCubit(getIt<ListingRepositoryImpl>(), getIt<FirebaseAuth>()),
+  getIt.registerFactory<AddItemCubit>(
+    () => AddItemCubit(getIt<AddItemRepositoryImpl>(), getIt<FirebaseAuth>()),
   );
 }
