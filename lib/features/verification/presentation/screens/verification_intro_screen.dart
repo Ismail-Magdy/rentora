@@ -27,62 +27,68 @@ class VerificationIntroScreen extends StatelessWidget {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                padding: .symmetric(horizontal: 20.w, vertical: 12.h),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: .center,
                   children: [
                     verticalSpace(10),
+                    //
                     const VerificationBadgeHeader(),
+                    //
                     verticalSpace(20),
                     Text(
                       "Build Trust in the Community",
                       style: TextStyle(
                         fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: .bold,
                         color: AppColors.black,
                       ),
                     ),
                     verticalSpace(8),
                     Text(
-                      "Verifying your account with a few simple steps gives you a Verified Badge, speeds up request approvals, and gives you access to a higher rental limit.",
+                      "Verifying your account with a few simple steps gives you a Verified Badge, speeds up request approvals, and gives you access to a higher rental limit",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: AppColors.darkGrey,
                         height: 1.45,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: .w400,
                       ),
                     ),
                     verticalSpace(20),
+                    //
                     const VerificationBenefitCard(
                       icon: Icons.bolt_outlined,
                       title: "Faster Approvals",
                       description:
-                          "Owners prefer dealing with verified accounts.",
+                          "Owners prefer dealing with verified accounts",
                     ),
+                    //
                     verticalSpace(12),
+                    //
                     const VerificationBenefitCard(
                       icon: Icons.trending_up_outlined,
                       title: "Higher Rental Limit",
                       description:
-                          "Rent higher-value equipment without restrictions.",
+                          "Rent higher value equipment without restrictions",
                     ),
+                    //
                     verticalSpace(20),
                     Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(16.r),
+                      width: .infinity,
+                      padding: .all(16.r),
                       decoration: BoxDecoration(
                         color: AppColors.lightGrey.withValues(alpha: 0.6),
-                        borderRadius: BorderRadius.circular(16.r),
+                        borderRadius: .circular(16.r),
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: .start,
                         children: [
                           Text(
                             "Verification Requirements:",
                             style: TextStyle(
                               fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: .bold,
                               color: AppColors.black,
                             ),
                           ),
@@ -90,13 +96,13 @@ class VerificationIntroScreen extends StatelessWidget {
                           const VerificationRequirementItem(
                             icon: Icons.badge_outlined,
                             title: "Valid National ID or Residency Permit",
-                            description: "A clear photo of both sides.",
+                            description: "A clear photo of both sides",
                           ),
                           verticalSpace(12),
                           const VerificationRequirementItem(
                             icon: Icons.face_retouching_natural_rounded,
                             title: "Quick Face Scan (Selfie)",
-                            description: "To verify that it matches your ID.",
+                            description: "To verify that it matches your ID",
                           ),
                         ],
                       ),
@@ -108,12 +114,7 @@ class VerificationIntroScreen extends StatelessWidget {
             ),
 
             Padding(
-              padding: EdgeInsets.only(
-                left: 20.w,
-                right: 20.w,
-                bottom: 28.h,
-                top: 12.h,
-              ),
+              padding: .only(left: 20.w, right: 20.w, bottom: 10.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -124,14 +125,13 @@ class VerificationIntroScreen extends StatelessWidget {
                       color: AppColors.white,
                       size: 20.sp,
                     ),
-                    onPressed: () {
-                      context.pushNamed(
-                        Routes.verificationFaceScanScreen,
-                        arguments: VerificationRouteArgs(
-                          verificationCubit: context.read<VerificationCubit>(),
-                        ),
-                      );
-                    },
+                    onPressed: () => context.pushNamed(
+                      Routes.verificationFaceScanScreen,
+                      arguments: VerificationRouteArgs(
+                        verificationCubit: context.read<VerificationCubit>(),
+                      ),
+                    ),
+
                     borderRadius: 16.r,
                     height: 52.h,
                     color: AppColors.primaryColor,

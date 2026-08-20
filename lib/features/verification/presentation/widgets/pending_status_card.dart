@@ -35,13 +35,13 @@ class PendingStatusCard extends StatelessWidget {
             width: 88.w,
             height: 88.w,
             decoration: BoxDecoration(
-              color: AppColors.amber.withValues(alpha: 0.12),
+              color: AppColors.warning.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Icon(
                 Icons.hourglass_bottom_rounded,
-                color: AppColors.amber,
+                color: AppColors.warning,
                 size: 46.sp,
               ),
             ),
@@ -87,10 +87,10 @@ class PendingStatusCard extends StatelessWidget {
           // Title
           Text(
             "Documents Received",
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: TextStyle(
               fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
+              fontWeight: .bold,
               color: AppColors.black,
             ),
           ),
@@ -98,13 +98,13 @@ class PendingStatusCard extends StatelessWidget {
 
           // Subtitle message
           Text(
-            "We're reviewing your information. This usually takes less than 24 hours. We'll notify you once your identity has been verified.",
+            "We're reviewing your information. This usually takes less than 24 hours. We'll notify you once your identity has been verified",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13.sp,
               color: AppColors.darkGrey,
               height: 1.5,
-              fontWeight: FontWeight.w400,
+              fontWeight: .w400,
             ),
           ),
           verticalSpace(24),

@@ -38,12 +38,9 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
           body: SafeArea(
             child: Column(
               children: [
-                // Header (unchanged)
+                // Header
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 12.h,
-                  ),
+                  padding: .symmetric(horizontal: 20.w, vertical: 12.h),
                   child: Row(
                     children: [
                       HeaderButton(
@@ -289,6 +286,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                 ),
               ],
             ),
+            //
           ),
         );
       },
@@ -388,3 +386,4 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
   }
 }
+// 388

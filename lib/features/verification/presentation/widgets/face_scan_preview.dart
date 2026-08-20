@@ -27,8 +27,8 @@ class FaceScanPreview extends StatelessWidget {
             width: 228.w,
             height: 228.w,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.primaryColor, width: 5.w),
+              shape: .circle,
+              border: .all(color: AppColors.primaryColor, width: 5.w),
             ),
             child: Padding(
               padding: EdgeInsets.all(8.r),
@@ -36,9 +36,9 @@ class FaceScanPreview extends StatelessWidget {
                 child: imageFile != null
                     ? Image.file(
                         imageFile!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
+                        fit: .cover,
+                        width: .infinity,
+                        height: .infinity,
                       )
                     : Container(
                         color: AppColors.verificationSurface,
@@ -46,13 +46,11 @@ class FaceScanPreview extends StatelessWidget {
                           child: Container(
                             width: 118.w,
                             height: 158.h,
-                            padding: EdgeInsets.all(8.r),
+                            padding: .all(8.r),
                             decoration: BoxDecoration(
                               color: AppColors.white,
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: AppColors.verificationBorder,
-                              ),
+                              borderRadius: .circular(12.r),
+                              border: .all(color: AppColors.verificationBorder),
                               boxShadow: [
                                 BoxShadow(
                                   color: AppColors.black.withValues(
@@ -70,7 +68,7 @@ class FaceScanPreview extends StatelessWidget {
                                   style: TextStyle(
                                     color: AppColors.primaryColor,
                                     fontSize: 8.sp,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: .w700,
                                   ),
                                 ),
                                 verticalSpace(8),
@@ -79,8 +77,8 @@ class FaceScanPreview extends StatelessWidget {
                                   height: 72.w,
                                   decoration: BoxDecoration(
                                     color: AppColors.infoLight,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
+                                    shape: .circle,
+                                    border: .all(
                                       color: AppColors.primaryColor,
                                       width: 2.w,
                                     ),
@@ -97,7 +95,7 @@ class FaceScanPreview extends StatelessWidget {
                                   height: 3.h,
                                   decoration: BoxDecoration(
                                     color: AppColors.verificationBorder,
-                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderRadius: .circular(8.r),
                                   ),
                                 ),
                                 verticalSpace(5),
@@ -106,12 +104,12 @@ class FaceScanPreview extends StatelessWidget {
                                   height: 3.h,
                                   decoration: BoxDecoration(
                                     color: AppColors.verificationBorder,
-                                    borderRadius: BorderRadius.circular(8.r),
+                                    borderRadius: .circular(8.r),
                                   ),
                                 ),
                                 verticalSpace(6),
                                 Text(
-                                  "Place your face inside the circle.",
+                                  "Place your face inside the circle",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 7.sp,
@@ -132,16 +130,16 @@ class FaceScanPreview extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            padding: .symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
               color: AppColors.white.withValues(alpha: 0.8),
-              borderRadius: BorderRadius.circular(20.r),
-              border: Border.all(
+              borderRadius: .circular(20.r),
+              border: .all(
                 color: AppColors.primaryColor.withValues(alpha: 0.12),
               ),
             ),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: .min,
               children: [
                 Icon(
                   isVerifying
@@ -159,7 +157,7 @@ class FaceScanPreview extends StatelessWidget {
                       : (imageFile != null ? "Verified" : "Tap to Scan"),
                   style: TextStyle(
                     fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: .w600,
                     color: AppColors.primaryColor,
                   ),
                 ),

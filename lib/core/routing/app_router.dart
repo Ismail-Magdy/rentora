@@ -127,7 +127,6 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => _withAuth(const ForgetPasswordScreen()),
         );
-      //
 
       /// Add Item
       case Routes.categoryScreen:

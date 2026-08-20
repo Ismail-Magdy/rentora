@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/helpers/verification_guard.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 
@@ -101,8 +104,11 @@ class _RootScreenState extends State<RootScreen> {
           Positioned(
             top: 0,
             child: GestureDetector(
-              // TODO:
-              // onTap: () =>  context.pushNamed(Routes.addScreen);
+              onTap: () => VerificationGuard.check(
+                context,
+                // TODO :
+                onVerified: () => context.pushNamed(Routes.addPhotosScreen),
+              ),
               child: Container(
                 width: 50.w,
                 height: 50.w,

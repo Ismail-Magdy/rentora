@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/helpers/verification_guard.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
 
 class ItemBottomNavBar extends StatelessWidget {
@@ -29,7 +33,26 @@ class ItemBottomNavBar extends StatelessWidget {
           children: [
             //
             Expanded(
-              child: CustomButton(text: "Book Now", onPressed: () {}),
+              child: CustomButton(
+                text: "Book Now",
+                onPressed: () => VerificationGuard.check(
+                  context,
+                  onVerified: () => context.pushNamed(
+                    Routes.selectedDatesScreen,
+                    arguments: BookingScreenArgs(
+                      listingId: item.id,
+                      ownerId: item.ownerId,
+                      renterId: '',
+                      dailyPrice: item.price,
+                      securityDeposit: 0,
+                      listingTitle: item.name,
+                      listingImageUrl: item.imageUrls.isNotEmpty
+                          ? item.imageUrls.first
+                          : '',
+                    ),
+                  ),
+                ),
+              ),
             ),
             //
             horizontalSpace(12),
