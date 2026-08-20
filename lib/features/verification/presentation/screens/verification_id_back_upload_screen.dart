@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/presentation/widgets/id_upload_screen_content.dart';
 
@@ -34,37 +37,57 @@ class _VerificationIdBackUploadScreenState
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<VerificationCubit>();
-    final state = cubit.state;
-    final hasBackImage = cubit.idBackFile != null;
-    final isLoading = state is VerificationLoading || _isPicking;
+    return BlocConsumer<VerificationCubit, VerificationState>(
+      listener: (context, state) {
+        if (state is VerificationError) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.error_outline,
+            color: AppColors.error,
+            title: "Error",
+            message: state.message,
+          );
+        } else if (state is VerificationSuccess) {
+          context.pushNamedAndRemoveUntil(
+            Routes.verificationPendingScreen,
+            predicate: (route) => false,
+          );
+        }
+      },
+      builder: (context, state) {
+        final cubit = context.read<VerificationCubit>();
+        final hasBackImage = cubit.idBackFile != null;
 
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: const CustomAppBar(text: "Account Verification"),
-      body: IdUploadScreenContent(
-        title: "Upload ID Back",
-        subtitle:
-            "Please take a clear and readable photo of your ID back side. Make sure there are no reflections and all corners are visible within the frame.",
-        frameLabel: "Place back ID here",
-        primaryText: hasBackImage ? "Submit Documents" : "Take a Photo",
-        secondaryText: hasBackImage
-            ? "Retake from Gallery"
-            : "Upload from Gallery",
-        imageFile: cubit.idBackFile,
-        onFrameTap: isLoading
-            ? null
-            : () => _pickBackImage(ImageSource.camera),
-        onPrimaryPressed: isLoading
-            ? null
-            : hasBackImage
-            ? _submitDocuments
-            : () => _pickBackImage(ImageSource.camera),
-        onSecondaryPressed: isLoading
-            ? null
-            : () => _pickBackImage(ImageSource.gallery),
-        isLoading: isLoading,
-      ),
+        final isLoading = state is VerificationLoading || _isPicking;
+
+        return Scaffold(
+          backgroundColor: AppColors.white,
+          appBar: const CustomAppBar(text: "Account Verification"),
+          body: IdUploadScreenContent(
+            title: "Upload ID Back",
+            subtitle:
+                "Please take a clear and readable photo of your ID back side. Make sure there are no reflections and all corners are visible within the frame.",
+            frameLabel: "Place back ID here",
+            primaryText: hasBackImage ? "Submit Documents" : "Take a Photo",
+            secondaryText: hasBackImage
+                ? "Retake from Gallery"
+                : "Upload from Gallery",
+            imageFile: cubit.idBackFile,
+            onFrameTap: isLoading
+                ? null
+                : () => _pickBackImage(ImageSource.camera),
+            onPrimaryPressed: isLoading
+                ? null
+                : hasBackImage
+                ? _submitDocuments
+                : () => _pickBackImage(ImageSource.camera),
+            onSecondaryPressed: isLoading
+                ? null
+                : () => _pickBackImage(ImageSource.gallery),
+            isLoading: isLoading,
+          ),
+        );
+      },
     );
   }
 }

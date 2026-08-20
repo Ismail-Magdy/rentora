@@ -6,14 +6,14 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
-import 'package:rentora/features/create_listing/manager/listing_state.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/add_photo_card.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/additional_photo_card.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/main_photo_card.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/main_photo_empty.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/section_title.dart';
+import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/add_item/manager/add_item_state.dart';
+import 'package:rentora/features/add_item/presentation/widgets/add_photo_card.dart';
+import 'package:rentora/features/add_item/presentation/widgets/additional_photo_card.dart';
+import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
+import 'package:rentora/features/add_item/presentation/widgets/main_photo_card.dart';
+import 'package:rentora/features/add_item/presentation/widgets/main_photo_empty.dart';
+import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
 
 class AddPhotosScreen extends StatefulWidget {
   const AddPhotosScreen({super.key});
@@ -28,7 +28,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListingCubit, ListingState>(
+    return BlocBuilder<AddItemCubit, AddItemState>(
       builder: (context, state) {
         final images = state.images;
         final existingImageUrls = state.existingImageUrls;
@@ -303,7 +303,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
     if (image == null) return;
 
-    final cubit = context.read<ListingCubit>();
+    final cubit = context.read<AddItemCubit>();
     if (replaceIndex != null) {
       cubit.replaceImage(replaceIndex, image);
     } else {
@@ -322,11 +322,11 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
   }
 
   void _removeImage(BuildContext context, int index) {
-    context.read<ListingCubit>().removeImage(index);
+    context.read<AddItemCubit>().removeImage(index);
   }
 
   void _onContinue(BuildContext context) {
-    final listingCubit = context.read<ListingCubit>();
+    final listingCubit = context.read<AddItemCubit>();
     final state = listingCubit.state;
 
     if (state.images.isEmpty && state.existingImageUrls.isEmpty) {
@@ -348,12 +348,12 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     Navigator.pushNamed(
       context,
       Routes.reviewScreen,
-      arguments: context.read<ListingCubit>(),
+      arguments: context.read<AddItemCubit>(),
     );
   }
 
   Widget _buildAdditionalPhotos(BuildContext context) {
-    final images = context.watch<ListingCubit>().state.images;
+    final images = context.watch<AddItemCubit>().state.images;
     final List<Widget> items = [];
 
     // Existing additional images (skip index 0)

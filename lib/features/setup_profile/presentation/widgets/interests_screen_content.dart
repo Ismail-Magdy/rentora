@@ -39,8 +39,10 @@ class InterestsScreenContent extends StatelessWidget {
                       children: [
                         //
                         GestureDetector(
-                          onTap: () =>
-                              context.pushReplacementNamed(Routes.rootScreen),
+                          onTap: () => context.pushNamedAndRemoveUntil(
+                            Routes.rootScreen,
+                            predicate: (route) => false,
+                          ),
                           child: Text(
                             "Skip",
                             style: TextStyle(

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
@@ -38,13 +40,11 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Total animation time is 2.5 seconds for a snappy feel
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 2500),
     );
 
-    //  Logo Animation (0% to 40% of the time)
     _logoScale = Tween<double>(begin: 0.4, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -59,7 +59,6 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Letters Animation (Staggered from 30% to 80% of the time)
     for (int i = 0; i < _lettersSvg.length; i++) {
       double start = 0.3 + (i * 0.05);
       double end = start + 0.2;
@@ -84,13 +83,51 @@ class _SplashScreenState extends State<SplashScreen>
       );
     }
 
-    // Start animation and navigate after it finishes
-    _controller.forward().then((value) {
-      Future.delayed(const Duration(milliseconds: 400), () {
+    _controller.forward().then((value) async {
+      await Future.delayed(const Duration(milliseconds: 400));
+
+      if (!mounted) return;
+
+      bool hasSeenOnboarding = await SharedPrefHelper.getBool(
+        'hasSeenOnboarding',
+      );
+      if (!hasSeenOnboarding) {
         if (mounted) {
           context.pushReplacementNamed(Routes.onBoardingScreens);
         }
-      });
+        return;
+      }
+
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        if (mounted) {
+          context.pushReplacementNamed(Routes.welcomeAuthScreen);
+        }
+
+        return;
+      }
+
+      if (!currentUser.emailVerified) {
+        await FirebaseAuth.instance.signOut();
+        if (mounted) {
+          context.pushReplacementNamed(Routes.welcomeAuthScreen);
+        }
+        return;
+      }
+
+      bool hasFinishedSetup = await SharedPrefHelper.getBool(
+        'hasFinishedSetup',
+      );
+      if (!hasFinishedSetup) {
+        if (mounted) {
+          context.pushReplacementNamed(Routes.locationScreen);
+        }
+        return;
+      }
+
+      if (mounted) {
+        context.pushReplacementNamed(Routes.rootScreen);
+      }
     });
   }
 

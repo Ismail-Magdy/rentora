@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/home/presentation/widgets/product_card.dart';
@@ -36,7 +38,7 @@ class CategoryDetailsScreenContent extends StatelessWidget {
               ),
             ),
             title: Text(
-              categoryName,
+              categoryName.capitalizeFirst(),
               style: TextStyle(
                 color: AppColors.primaryColor,
                 fontWeight: .bold,
@@ -46,17 +48,41 @@ class CategoryDetailsScreenContent extends StatelessWidget {
             centerTitle: true,
           ),
           //
+
+          // Empty State
           if (!isLoading && displayList.isEmpty)
             SliverToBoxAdapter(
-              child: Padding(
-                padding: .only(top: 100.h),
+              child: Container(
+                height: 600.h,
+                alignment: .center,
                 child: Column(
+                  mainAxisSize: .min,
                   children: [
-                    Lottie.asset("assets/lottie/no_products.json"),
+                    //
+                    Lottie.asset(
+                      "assets/lottie/no_products.json",
+                      height: 450.h,
+                    ),
+                    //
                     Text(
                       "No Products Found",
-                      style: TextStyle(fontWeight: .bold, fontSize: 20.sp),
+                      style: TextStyle(
+                        fontWeight: .bold,
+                        fontSize: 18.sp,
+                        color: AppColors.primaryColor,
+                      ),
                     ),
+                    //
+                    verticalSpace(8),
+                    //
+                    Text(
+                      "Be the first to add an item here",
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: AppColors.darkGrey,
+                      ),
+                    ),
+                    //
                   ],
                 ),
               ),
@@ -76,10 +102,10 @@ class CategoryDetailsScreenContent extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       if (!isLoading) {
-                        // context.pushNamed(
-                        //   Routes.itemDetailsScreen,
-                        //   arguments: displayList[index].id,
-                        // );
+                        context.pushNamed(
+                          Routes.itemDetailsScreen,
+                          arguments: displayList[index].id,
+                        );
                       }
                     },
                     child: ProductCard(product: displayList[index]),
@@ -90,6 +116,5 @@ class CategoryDetailsScreenContent extends StatelessWidget {
         ],
       ),
     );
-    //
   }
 }

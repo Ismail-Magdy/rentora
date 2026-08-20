@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/image_action_button.dart';
+import 'package:rentora/features/add_item/presentation/widgets/image_action_button.dart';
 
 class MainPhotoCard extends StatelessWidget {
   final XFile image;
@@ -34,10 +28,7 @@ class MainPhotoCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.file(
-              File(image.path),
-              fit: BoxFit.cover,
-            ),
+            Image.file(File(image.path), fit: BoxFit.cover),
 
             // Gradient
             DecoratedBox(
@@ -59,17 +50,12 @@ class MainPhotoCard extends StatelessWidget {
               left: 12,
               bottom: 12,
               child: Container(
-                padding:
-                     EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 7.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
                 decoration: BoxDecoration(
                   color: AppColors.white,
-                  borderRadius:
-                      BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child:  Text(
+                child: Text(
                   'Main photo',
                   style: TextStyle(
                     fontSize: 12.sp,
@@ -85,11 +71,8 @@ class MainPhotoCard extends StatelessWidget {
               right: 12,
               child: Row(
                 children: [
-                  ImageActionButton(
-                    icon: Icons.edit_outlined,
-                    onTap: onEdit,
-                  ),
-                
+                  ImageActionButton(icon: Icons.edit_outlined, onTap: onEdit),
+
                   horizontalSpace(8),
                   ImageActionButton(
                     icon: Icons.delete_outline,
@@ -105,4 +88,3 @@ class MainPhotoCard extends StatelessWidget {
     );
   }
 }
-

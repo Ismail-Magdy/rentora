@@ -5,8 +5,8 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 
-class LoacationFloatingAddressCard extends StatelessWidget {
-  const LoacationFloatingAddressCard({
+class LocationFloatingAddressCard extends StatelessWidget {
+  const LocationFloatingAddressCard({
     super.key,
     required this.state,
     required this.cubitSelectedAddress,

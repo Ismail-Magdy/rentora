@@ -5,15 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
-import 'package:rentora/features/create_listing/manager/listing_state.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/add_photo_button.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/description_row.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/info_row.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/price_row.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/review_card.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/section_header.dart';
+import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/add_item/manager/add_item_state.dart';
+import 'package:rentora/features/add_item/presentation/widgets/add_photo_button.dart';
+import 'package:rentora/features/add_item/presentation/widgets/description_row.dart';
+import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
+import 'package:rentora/features/add_item/presentation/widgets/info_row.dart';
+import 'package:rentora/features/add_item/presentation/widgets/price_row.dart';
+import 'package:rentora/features/add_item/presentation/widgets/review_card.dart';
+import 'package:rentora/features/add_item/presentation/widgets/section_header.dart';
 
 class ReviewAndPublishScreen extends StatefulWidget {
   const ReviewAndPublishScreen({super.key});
@@ -27,9 +27,9 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ListingCubit, ListingState>(
+    return BlocConsumer<AddItemCubit, AddItemState>(
       listener: (context, state) {
-        if (state.status == ListingStatus.error) {
+        if (state.status == .error) {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline,
@@ -43,7 +43,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
         }
       },
       builder: (context, state) {
-        final isPublishing = state.status == ListingStatus.loading;
+        final isPublishing = state.status == .loading;
 
         return Scaffold(
           backgroundColor: const Color(0xFFF8FAFA),
@@ -391,11 +391,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
   }
 
   void _publishListing(BuildContext context) {
-    context.read<ListingCubit>().publishListing();
+    context.read<AddItemCubit>().publishListing();
   }
 
   void _showSuccessDialog(BuildContext context) {
-    final cubit = context.read<ListingCubit>();
+    final cubit = context.read<AddItemCubit>();
 
     showDialog(
       context: context,
@@ -467,7 +467,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
     );
   }
 
-  Widget _buildPhotos(ListingState state) {
+  Widget _buildPhotos(AddItemState state) {
     // ignore: unused_local_variable
     final allImages = [
       ...state.images,

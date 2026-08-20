@@ -7,7 +7,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
-import 'package:rentora/features/setup_profile/presentation/widgets/loacation_floating_address_card.dart';
+import 'package:rentora/features/setup_profile/presentation/widgets/location_floating_address_card.dart';
 import 'package:rentora/features/setup_profile/presentation/widgets/location_bottom_sheet.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -107,7 +107,7 @@ class _LocationScreenState extends State<LocationScreen> {
               ),
               //
               /// Top Floating Address Card
-              LoacationFloatingAddressCard(
+              LocationFloatingAddressCard(
                 state: state,
                 cubitSelectedAddress: cubit.selectedAddress,
               ),
@@ -116,7 +116,7 @@ class _LocationScreenState extends State<LocationScreen> {
               LocationBottomSheet(
                 state: state,
                 searchController: _searchController,
-                onTapCurrentLoaction: () => cubit.getCurrentLocation(),
+                onTapCurrentLocation: () => cubit.getCurrentLocation(),
                 onPressedSaveLocation: () => cubit.saveLocation(),
               ),
               //

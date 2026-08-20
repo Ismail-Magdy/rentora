@@ -30,6 +30,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
     (index) => ProductModel(
       id: 'skeleton_$index',
       name: 'Loading Item Name',
+      category: 'Skeleton',
       price: 999,
       rating: 5.0,
       distance: 9.9,

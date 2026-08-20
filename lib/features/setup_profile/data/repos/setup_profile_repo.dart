@@ -24,7 +24,7 @@ class SetupProfileRepo {
         userId: userId,
         updatedData: {
           'location': location,
-          'address':
+          'locationName':
               address, // Storing the human readable address to display in Home Screen later
           'geohash': geohash,
         },

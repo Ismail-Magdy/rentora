@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class SmallImageAction extends StatelessWidget {
-   const SmallImageAction({
+  const SmallImageAction({
     required this.icon,
     required this.onTap,
     this.isDelete = false,
@@ -13,8 +12,6 @@ class SmallImageAction extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
   final bool isDelete;
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +27,7 @@ class SmallImageAction extends StatelessWidget {
         child: Icon(
           icon,
           size: 17.sp,
-          color: isDelete
-              ? AppColors.error
-              : AppColors.darkGrey,
+          color: isDelete ? AppColors.error : AppColors.darkGrey,
         ),
       ),
     );

@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
+import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/price_field.dart';
-import 'package:rentora/features/create_listing/presentation/widgets/section_title.dart';
+import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
+import 'package:rentora/features/add_item/presentation/widgets/price_field.dart';
+import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
 
 class AddItemDetailsScreen extends StatefulWidget {
   const AddItemDetailsScreen({super.key});
@@ -32,7 +32,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   void initState() {
     super.initState();
     // Populate from Cubit if in edit mode
-    final state = context.read<ListingCubit>().state;
+    final state = context.read<AddItemCubit>().state;
     nameController.text = state.title;
     descriptionController.text = state.description;
     priceController.text = state.dailyPrice > 0
@@ -74,7 +74,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
       return;
     }
 
-    final cubit = context.read<ListingCubit>();
+    final cubit = context.read<AddItemCubit>();
 
     cubit.updateTitle(title);
     cubit.updateDescription(description);
@@ -85,7 +85,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     Navigator.pushNamed(
       context,
       Routes.addPhotosScreen,
-      arguments: context.read<ListingCubit>(),
+      arguments: context.read<AddItemCubit>(),
     );
   }
 

@@ -11,12 +11,12 @@ class LocationBottomSheet extends StatelessWidget {
   const LocationBottomSheet({
     super.key,
     required this.searchController,
-    required this.onTapCurrentLoaction,
+    required this.onTapCurrentLocation,
     required this.state,
     required this.onPressedSaveLocation,
   });
   final TextEditingController searchController;
-  final Function() onTapCurrentLoaction;
+  final Function() onTapCurrentLocation;
   final LocationState state;
   final Function() onPressedSaveLocation;
 
@@ -83,7 +83,7 @@ class LocationBottomSheet extends StatelessWidget {
             //
             // Use Current Location Button
             GestureDetector(
-              onTap: onTapCurrentLoaction,
+              onTap: onTapCurrentLocation,
               child: Row(
                 children: [
                   //
