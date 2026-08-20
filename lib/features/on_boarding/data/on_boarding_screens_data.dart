@@ -1,5 +1,4 @@
-//
-final List<Map<String, String>> onbourdingScreen = [
+final List<Map<String, String>> onbourdingScreenData = [
   {
     "title": "Need it?\nRent it",
     "description":
@@ -22,4 +21,3 @@ final List<Map<String, String>> onbourdingScreen = [
     "image": "assets/images/on_boarding/pic4.png",
   },
 ];
-  //

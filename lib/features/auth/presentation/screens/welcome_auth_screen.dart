@@ -21,15 +21,24 @@ class WelcomeAuthScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          CustomFeedbackDialog(
+          //
+          showFeedbackDialog(
+            context,
             icon: Icons.check_circle_outline,
             color: AppColors.primaryGreen,
             title: "Success",
             message: "You have successfully logged in",
-            onFinish: () => context.pushReplacementNamed(Routes.rootScreen),
+            onFinish: () => context.pushReplacementNamed(Routes.locationScreen),
           );
         } else if (state is AuthError) {
-          // TODO : Add FeedBack Dialog
+          //
+          showFeedbackDialog(
+            context,
+            icon: Icons.error_outline_rounded,
+            color: AppColors.error,
+            title: "Login Failed",
+            message: state.failure.message,
+          );
         }
       },
       builder: (context, state) {
@@ -58,7 +67,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                       onPressed: () => context.pushNamed(Routes.loginScreen),
                     ),
                     //
-                    verticalSpace(30),
+                    verticalSpace(25),
                     //
                     CustomButton(
                       height: 52.h,
@@ -71,7 +80,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                     //
                     verticalSpace(48),
                     // Or
-                    AuthDivider(),
+                    const AuthDivider(),
                     //
                     verticalSpace(48),
                     //
@@ -97,7 +106,6 @@ class WelcomeAuthScreen extends StatelessWidget {
                             onPressed: () =>
                                 context.read<AuthCubit>().signInWithGoogle(),
                           ),
-                    //
                   ],
                 ),
               ),

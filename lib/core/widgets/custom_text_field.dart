@@ -1,18 +1,17 @@
-import "package:flutter/material.dart";
-import "package:flutter/services.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
-import "package:rentora/core/helpers/app_regex.dart";
-import "package:rentora/core/themes/app_colors.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/app_regex.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
-/// Defines the type of the input field
-/// This controls validation, keyboard type, and password behavior
 enum FieldType {
   firstName,
   lastName,
   phoneNumber,
   userName,
   email,
-  password,
+  newPassword,
+  loginPassword,
   normal,
   number,
 }
@@ -50,14 +49,13 @@ class CustomTextFormField extends StatefulWidget {
 
   /// Controls auto validation behavior.
   final AutovalidateMode autovalidateMode;
-//!
+
   final IconData? icon;
-  final int ? maxLines;
+  final int? maxLines;
   const CustomTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
-   
     this.fieldType = .normal,
     this.prefixIcon,
     this.validator,
@@ -66,8 +64,8 @@ class CustomTextFormField extends StatefulWidget {
     this.maxLength,
     this.inputFormatters,
     this.autovalidateMode = .onUserInteraction,
-      this.icon,
-        this.maxLines,
+    this.icon,
+    this.maxLines,
     this.textInputAction,
     this.onFieldSubmitted,
   });
@@ -80,13 +78,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   /// Controls password visibility for password fields.
   late bool obscureText;
 
+  bool get isPasswordField =>
+      widget.fieldType == .newPassword || widget.fieldType == .loginPassword;
+
   @override
   void didUpdateWidget(covariant CustomTextFormField oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.fieldType != widget.fieldType) {
       setState(() {
-        obscureText = widget.fieldType == .password;
+        obscureText = isPasswordField;
       });
     }
   }
@@ -96,7 +97,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     super.initState();
 
     /// Initialize password visibility only if the field is a password.
-    obscureText = widget.fieldType == .password;
+    obscureText = isPasswordField;
   }
 
   /// Default validation logic based on field type.
@@ -104,50 +105,53 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     final trimmedValue = value?.trim() ?? "";
 
     switch (widget.fieldType) {
-      case FieldType.firstName:
+      case .firstName:
         if (trimmedValue.isEmpty) {
           return "Please enter your first name";
         }
         break;
 
-      case FieldType.lastName:
+      case .lastName:
         if (trimmedValue.isEmpty) {
           return "Please enter your last name";
         }
         break;
 
-      case FieldType.phoneNumber:
+      case .phoneNumber:
         if (trimmedValue.isEmpty ||
             !AppRegex.isPhoneNumberValid(trimmedValue)) {
           return "Please enter a valid phone number";
         }
         break;
 
-      case FieldType.userName:
+      case .userName:
         if (trimmedValue.isEmpty) {
           return "Please enter a username";
         }
-        // if (trimmedValue.contains(" ")) {
-        //   return "Username must not contain spaces";
-        // }
         break;
 
-      case FieldType.email:
+      case .email:
         if (trimmedValue.isEmpty || !AppRegex.isEmailValid(trimmedValue)) {
           return "Please enter a valid email address";
         }
         break;
 
-      case FieldType.password:
+      case .newPassword:
         if (trimmedValue.isEmpty) {
           return "Please enter a password";
         }
         if (!AppRegex.isPasswordValid(trimmedValue)) {
-          return "Must contain at least 8 characters, including uppercase, lowercase, a number, and a symbol";
+          return "Must contain at least 8 characters, a symbol, and numbers";
         }
         break;
 
-      case .number: // Modification: Default validation to prevent empty fields
+      case .loginPassword:
+        if (trimmedValue.isEmpty) {
+          return "Please enter your password";
+        }
+        break;
+
+      case .number:
         if (trimmedValue.isEmpty) {
           return "Please enter a value";
         }
@@ -173,8 +177,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       case .email:
         return .emailAddress;
 
-      case .number: // Modification: Open number keyboard with decimal support
-        return const .numberWithOptions(decimal: true);
+      case .number:
+        return const TextInputType.numberWithOptions(decimal: true);
 
       default:
         return .text;
@@ -194,7 +198,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
       /// Keyboard type configuration.
       keyboardType: _getKeyboardType(),
-maxLines: widget.maxLines ?? 1,
+      maxLines: widget.maxLines ?? 1,
+
       /// Optional max length constraint.
       maxLength: widget.maxLength,
 
@@ -215,12 +220,11 @@ maxLines: widget.maxLines ?? 1,
         hintText: widget.hintText,
 
         hintStyle: const TextStyle(color: Color(0x7F4A628A)),
-       icon: widget.icon != null
+        icon: widget.icon != null
             ? Icon(widget.icon, color: Colors.grey)
             : null,
-        /// Optional prefix icon.
 
-        /// Optional prefix icon
+        /// Optional prefix icon.
         prefixIcon: widget.prefixIcon != null
             ? Icon(widget.prefixIcon, color: AppColors.grey)
             : null,
@@ -230,7 +234,7 @@ maxLines: widget.maxLines ?? 1,
 
         border: OutlineInputBorder(
           borderRadius: .circular(14),
-          borderSide: .none,
+          borderSide: BorderSide.none,
         ),
 
         errorBorder: OutlineInputBorder(
@@ -244,7 +248,7 @@ maxLines: widget.maxLines ?? 1,
         ),
 
         /// Password visibility toggle button.
-        suffixIcon: widget.fieldType == .password
+        suffixIcon: isPasswordField
             ? IconButton(
                 onPressed: () {
                   setState(() {

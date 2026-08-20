@@ -1,11 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rentora/features/create_listing/data/models/listing_entity.dart';
 
 enum ListingStatus { initial, loading, success, error }
 
 class ListingState extends Equatable {
- 
   final String categoryId;
   final String title;
   final String description;
@@ -15,12 +13,12 @@ class ListingState extends Equatable {
   final String location;
 
   // Images
-  final List<XFile> images;         // Newly added local images
+  final List<XFile> images; // Newly added local images
   final List<String> existingImageUrls; // Existing remote URLs (for edit)
 
   // Edit mode
   final bool isEditMode;
-  final String? listingId;          // ID of listing being edited
+  final String? listingId; // ID of listing being edited
 
   // Status
   final ListingStatus status;
@@ -48,21 +46,21 @@ class ListingState extends Equatable {
 
   @override
   List<Object?> get props => [
-        categoryId,
-        title,
-        description,
-        condition,
-        dailyPrice,
-        securityDeposit,
-        location,
-        images,
-        existingImageUrls,
-        isEditMode,
-        listingId,
-        status,
-        errorMessage,
-        isPublished,
-      ];
+    categoryId,
+    title,
+    description,
+    condition,
+    dailyPrice,
+    securityDeposit,
+    location,
+    images,
+    existingImageUrls,
+    isEditMode,
+    listingId,
+    status,
+    errorMessage,
+    isPublished,
+  ];
 
   ListingState copyWith({
     String? categoryId,
@@ -125,7 +123,10 @@ class ListingState extends Equatable {
     if (dailyPrice <= 0) return 'Daily price must be greater than 0';
     if (securityDeposit < 0) return 'Security deposit cannot be negative';
     if (location.isEmpty) return 'Please enter a location';
-    if (images.isEmpty && existingImageUrls.isEmpty) return 'Please add at least one photo';
+    if (images.isEmpty && existingImageUrls.isEmpty) {
+      return 'Please add at least one photo';
+    }
+
     return null;
   }
 }

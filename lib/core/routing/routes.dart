@@ -12,7 +12,6 @@ class Routes {
   static const String signupScreen = "/signupScreen";
   static const String forgotPasswordScreen = "/forgotPasswordScreen";
   //
-  static const String setupProfileScreen = "/setupProfileScreen";
   static const String rootScreen = "/rootScreen";
   //
   static const String homeScreen = "/homeScreen";
@@ -23,7 +22,7 @@ class Routes {
 
   /// Category screen
   static const String categoryScreen = "/categoryScreen";
-  static const String itemDetailsScreen = "/itemDetailsScreen";
+  static const String addItemDetailsScreen = "/addItemDetailsScreen";
   static const String addPhotosScreen = "/addPhotosScreen";
   static const String reviewScreen = "/reviewScreen";
   //
@@ -46,7 +45,8 @@ class Routes {
 
   // Verification
   static const String verificationIntroScreen = "/verificationIntroScreen";
-  static const String verificationFaceScanScreen = "/verificationFaceScanScreen";
+  static const String verificationFaceScanScreen =
+      "/verificationFaceScanScreen";
   static const String verificationIdFrontUploadScreen =
       "/verificationIdFrontUploadScreen";
   static const String verificationIdBackUploadScreen =

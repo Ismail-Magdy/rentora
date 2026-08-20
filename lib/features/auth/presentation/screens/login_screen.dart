@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
             title: "Welcome Back",
             message: "You have successfully logged in",
             onFinish: () => context.pushNamedAndRemoveUntil(
-              Routes.rootScreen,
+              Routes.locationScreen,
               predicate: (route) => false,
             ),
           );
@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: passwordController,
                             hintText: '********',
                             prefixIcon: Icons.lock_outline,
-                            fieldType: FieldType.password,
+                            fieldType: .loginPassword,
                           ),
                           //
                           verticalSpace(15),

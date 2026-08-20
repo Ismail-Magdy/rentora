@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/routing/routes.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 import 'package:rentora/features/splash/widgets/splash_screen_content.dart';
 
@@ -85,7 +88,7 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward().then((value) {
       Future.delayed(const Duration(milliseconds: 400), () {
         if (mounted) {
-          // context.pushReplacementNamed(Routes.onBoardingRoute);
+          context.pushReplacementNamed(Routes.onBoardingScreens);
         }
       });
     });
@@ -100,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       body: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
@@ -116,4 +119,3 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-// 160

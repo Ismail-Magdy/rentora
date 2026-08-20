@@ -4,11 +4,12 @@ import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/core/network/manager/network_state.dart';
 import 'package:rentora/core/routing/routes.dart';
+import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
+import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
 import 'package:rentora/features/create_listing/presentation/screens/add_photos_screen.dart';
-import 'package:rentora/features/create_listing/presentation/screens/item_details_screen.dart';
+import 'package:rentora/features/create_listing/presentation/screens/add_item_details_screen.dart';
 import 'package:rentora/features/create_listing/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
@@ -43,9 +44,6 @@ import 'package:rentora/features/setup_profile/presentation/screens/interests_sc
 import 'package:rentora/features/setup_profile/presentation/screens/location_screen.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
 import 'package:rentora/features/create_listing/presentation/screens/choose_category_screens.dart';
-import 'package:rentora/core/helpers/extensions.dart';
-import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_face_scan_screen.dart';
@@ -93,58 +91,23 @@ class AppRouter {
     final args = settings.arguments;
     switch (settings.name) {
       case Routes.splashScreen:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(
+          builder: (_) => ExitConfirmationWrapper(child: const SplashScreen()),
+        );
 
       /// OnBoarding Screens
       case Routes.onBoardingScreens:
-        return MaterialPageRoute(builder: (_) => const OnBoardingScreens());
-case Routes.categoryScreen:
-  return MaterialPageRoute(
-    builder: (_) => _withNetwork(
-      BlocProvider(
-        create: (_) => getIt<ListingCubit>(),
-        child: const ChooseCategoryScreen(),
-      ),
-    ),
-  );
-  case Routes.itemDetailsScreen:
-  final cubit = settings.arguments as ListingCubit;
-
-  return MaterialPageRoute(
-    builder: (_) => _withNetwork(
-      BlocProvider.value(
-        value: cubit,
-        child: const ItemDetailsScreen(),
-      ),
-    ),
-  );
-  case Routes.addPhotosScreen:
-  final cubit = settings.arguments as ListingCubit;
-
-  return MaterialPageRoute(
-    builder: (_) => _withNetwork(
-      BlocProvider.value(
-        value: cubit,
-        child: const AddPhotosScreen(),
-      ),
-    ),
-  );
-  case Routes.reviewScreen:
-  final cubit = settings.arguments as ListingCubit;
-
-  return MaterialPageRoute(
-    builder: (_) => _withNetwork(
-      BlocProvider.value(
-        value: cubit,
-        child: const ReviewAndPublishScreen(),
-      ),
-    ),
-  );
+        return MaterialPageRoute(
+          builder: (_) =>
+              ExitConfirmationWrapper(child: const OnBoardingScreens()),
+        );
 
       /// Welcome Auth Screen
       case Routes.welcomeAuthScreen:
         return MaterialPageRoute(
-          builder: (_) => _withAuth(const WelcomeAuthScreen()),
+          builder: (_) => _withAuth(
+            ExitConfirmationWrapper(child: const WelcomeAuthScreen()),
+          ),
         );
 
       /// Sign Up Screen
@@ -165,8 +128,51 @@ case Routes.categoryScreen:
           builder: (_) => _withAuth(const ForgetPasswordScreen()),
         );
       //
-      /// Setup Profile
-      // Location Screen
+
+      /// Add Item
+      case Routes.categoryScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (_) => getIt<ListingCubit>(),
+              child: const ChooseCategoryScreen(),
+            ),
+          ),
+        );
+
+      case Routes.addItemDetailsScreen:
+        final cubit = settings.arguments as ListingCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(
+              value: cubit,
+              child: const AddItemDetailsScreen(),
+            ),
+          ),
+        );
+
+      ///
+      case Routes.addPhotosScreen:
+        final cubit = settings.arguments as ListingCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(value: cubit, child: const AddPhotosScreen()),
+          ),
+        );
+
+      ///
+      case Routes.reviewScreen:
+        final cubit = settings.arguments as ListingCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(
+              value: cubit,
+              child: const ReviewAndPublishScreen(),
+            ),
+          ),
+        );
+
+      /// Setup Profile => Location Screen
       case Routes.locationScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
@@ -177,7 +183,7 @@ case Routes.categoryScreen:
           ),
         );
 
-      // Interests Screen
+      /// Setup Profile => Interests Screen
       case Routes.interestsScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
@@ -410,24 +416,7 @@ case Routes.categoryScreen:
       case Routes.verificationFaceScanScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            _withVerificationCubit(
-              BlocConsumer<VerificationCubit, VerificationState>(
-                listenWhen: (previous, current) => current is VerificationError,
-                listener: (context, state) {
-                  if (state is VerificationError) {
-                    showFeedbackDialog(
-                      context,
-                      icon: Icons.error_outline,
-                      color: AppColors.error,
-                      title: "Scan Failed",
-                      message: state.message,
-                    );
-                  }
-                },
-                builder: (context, state) => const VerificationFaceScanScreen(),
-              ),
-              args,
-            ),
+            _withVerificationCubit(const VerificationFaceScanScreen(), args),
           ),
         );
 
@@ -435,22 +424,7 @@ case Routes.categoryScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             _withVerificationCubit(
-              BlocConsumer<VerificationCubit, VerificationState>(
-                listenWhen: (previous, current) => current is VerificationError,
-                listener: (context, state) {
-                  if (state is VerificationError) {
-                    showFeedbackDialog(
-                      context,
-                      icon: Icons.error_outline,
-                      color: AppColors.error,
-                      title: "Upload Failed",
-                      message: state.message,
-                    );
-                  }
-                },
-                builder: (context, state) =>
-                    const VerificationIdFrontUploadScreen(),
-              ),
+              const VerificationIdFrontUploadScreen(),
               args,
             ),
           ),
@@ -460,39 +434,7 @@ case Routes.categoryScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             _withVerificationCubit(
-              BlocConsumer<VerificationCubit, VerificationState>(
-                listenWhen: (previous, current) =>
-                    current is VerificationSuccess ||
-                    current is VerificationError,
-                listener: (context, state) {
-                  if (state is VerificationSuccess) {
-                    showFeedbackDialog(
-                      context,
-                      icon: Icons.check_circle_outline,
-                      color: AppColors.successDark,
-                      title: "Documents Received",
-                      message:
-                          "Your verification documents were submitted successfully.",
-                      onFinish: () => context.pushNamedAndRemoveUntil(
-                        Routes.verificationPendingScreen,
-                        predicate: (route) => false,
-                      ),
-                    );
-                  }
-
-                  if (state is VerificationError) {
-                    showFeedbackDialog(
-                      context,
-                      icon: Icons.error_outline,
-                      color: AppColors.error,
-                      title: "Verification Failed",
-                      message: state.message,
-                    );
-                  }
-                },
-                builder: (context, state) =>
-                    const VerificationIdBackUploadScreen(),
-              ),
+              const VerificationIdBackUploadScreen(),
               args,
             ),
           ),
@@ -504,18 +446,6 @@ case Routes.categoryScreen:
             _withVerificationCubit(const VerificationPendingScreen(), args),
           ),
         );
-
-      /// Example of a route that is wrapped with NetworkCubit and OfflineModeWidget
-      // /// Welcome AuthScreen
-      // case Routes.welcomeAuthScreen:
-      //   return MaterialPageRoute(
-      //     builder: (_) => _withNetwork(
-      //       BlocProvider(
-      //         create: (context) => getIt<SocialAuthBloc>(),
-      //         child: const WelcomeAuthScreen(),
-      //       ),
-      //     ),
-      //   );
 
       /// Default Case (Unknown Route)
       default:
