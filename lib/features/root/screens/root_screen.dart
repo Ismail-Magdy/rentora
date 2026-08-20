@@ -106,8 +106,7 @@ class _RootScreenState extends State<RootScreen> {
             child: GestureDetector(
               onTap: () => VerificationGuard.check(
                 context,
-                // TODO :
-                onVerified: () => context.pushNamed(Routes.addPhotosScreen),
+                onVerified: () => context.pushNamed(Routes.initialPhotoScreen),
               ),
               child: Container(
                 width: 50.w,
