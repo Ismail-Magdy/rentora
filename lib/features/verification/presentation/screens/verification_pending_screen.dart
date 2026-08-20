@@ -4,7 +4,7 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/verification/presentation/widgets/pending_status_card.dart';
 import 'package:rentora/features/verification/presentation/widgets/verification_support_footer.dart';
@@ -27,10 +27,10 @@ class VerificationPendingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: const CustomAppBar(text: "Account Verification"),
+      appBar: const CustomAppBarWithNoLeading(text: "Account Verification"),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: .symmetric(horizontal: 20.w),
           child: Column(
             children: [
               const Spacer(flex: 2),
@@ -40,11 +40,11 @@ class VerificationPendingScreen extends StatelessWidget {
                   predicate: (route) => false,
                 ),
               ),
-              verticalSpace(24),
+              const Spacer(flex: 3),
               VerificationSupportFooter(
                 onContactSupport: () => _showSupportDialog(context),
               ),
-              const Spacer(flex: 3),
+              verticalSpace(10),
             ],
           ),
         ),

@@ -89,6 +89,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     );
   }
 
+  //
   @override
   Widget build(BuildContext context) {
     return Scaffold(

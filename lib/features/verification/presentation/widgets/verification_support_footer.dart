@@ -14,10 +14,10 @@ class VerificationSupportFooter extends StatelessWidget {
       onTap: onContactSupport,
       borderRadius: BorderRadius.circular(12.r),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        padding: .symmetric(horizontal: 12.w, vertical: 8.h),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: .min,
+          mainAxisAlignment: .center,
           children: [
             Icon(
               Icons.headset_mic_rounded,
@@ -30,7 +30,7 @@ class VerificationSupportFooter extends StatelessWidget {
               style: TextStyle(
                 color: AppColors.darkGrey,
                 fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
+                fontWeight: .w500,
               ),
             ),
             Text(
@@ -38,8 +38,8 @@ class VerificationSupportFooter extends StatelessWidget {
               style: TextStyle(
                 color: AppColors.primaryColor,
                 fontSize: 13.sp,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
+                fontWeight: .bold,
+                decoration: .underline,
                 decorationColor: AppColors.primaryColor,
               ),
             ),

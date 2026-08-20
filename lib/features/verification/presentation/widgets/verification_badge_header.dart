@@ -9,14 +9,14 @@ class VerificationBadgeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Stack(
-        alignment: Alignment.bottomRight,
+        alignment: .bottomRight,
         children: [
           Container(
             width: 100.w,
             height: 100.w,
             decoration: BoxDecoration(
               color: AppColors.primaryColor.withValues(alpha: 0.12),
-              shape: BoxShape.circle,
+              shape: .circle,
             ),
             child: Icon(
               Icons.verified_user,
@@ -28,16 +28,16 @@ class VerificationBadgeHeader extends StatelessWidget {
             bottom: 4.h,
             right: 4.w,
             child: Container(
-              padding: EdgeInsets.all(4.r),
+              padding: .all(4.r),
               decoration: const BoxDecoration(
                 color: AppColors.white,
-                shape: BoxShape.circle,
+                shape: .circle,
               ),
               child: Container(
-                padding: EdgeInsets.all(4.r),
+                padding: .all(4.r),
                 decoration: const BoxDecoration(
                   color: AppColors.success,
-                  shape: BoxShape.circle,
+                  shape: .circle,
                 ),
                 child: Icon(Icons.check, color: AppColors.white, size: 14.sp),
               ),
