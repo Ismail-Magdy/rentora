@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
-import 'package:rentora/features/add_item/presentation/widgets/category_card.dart';
 import 'package:rentora/features/add_item/data/models/category_model.dart';
 import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
 
@@ -132,8 +131,8 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
 
     Navigator.pushNamed(
       context,
-      Routes.itemDetailsScreen,
-      arguments: context.read<AddItemCubit>(),
+      Routes.addItemDetailsScreen,
+      arguments: listingCubit,
     );
   }
 
@@ -172,32 +171,57 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                 ],
               ),
             ),
-            // Progress bar (unchanged)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 160.w,
-                  height: 5.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE7E9EA),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: 70,
-                      height: 5.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(20),
+              // Progress Bar (Step 3)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32.w),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Category',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.grey.withValues(alpha: 0.7),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          'Step 3 of 6',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    verticalSpace(10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              height: 6.h,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              height: 6.h,
+                              color: AppColors.grey.withValues(alpha: 0.3),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ),
             // Content (unchanged)
             Expanded(
               child: SingleChildScrollView(
@@ -243,17 +267,58 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                       itemCount: categories.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 14,
-                            mainAxisSpacing: 14,
-                            childAspectRatio: 0.92,
-                          ),
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                        childAspectRatio: 1.2,
+                      ),
                       itemBuilder: (context, index) {
                         final category = categories[index];
-                        return CategoryCard(
-                          category: category,
-                          isSelected: selectedIndex == index,
+                        final isSelected = selectedIndex == index;
+
+                        return GestureDetector(
                           onTap: () => selectCategory(index),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.primaryColor.withValues(
+                                      alpha: 0.1)
+                                  : const Color(0xFFF7F7F9),
+                              borderRadius: BorderRadius.circular(20.r),
+                              border: Border.all(
+                                color: isSelected
+                                    ? AppColors.primaryColor
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  category.icon,
+                                  size: 35.sp,
+                                  color: isSelected
+                                      ? AppColors.primaryColor
+                                      : AppColors.secondaryColor,
+                                ),
+                                verticalSpace(10),
+                                Text(
+                                  category.title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight:
+                                        isSelected ? FontWeight.bold : FontWeight.w500,
+                                    color: isSelected
+                                        ? AppColors.primaryColor
+                                        : Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                     ),

@@ -13,7 +13,8 @@ class AddItemState extends Equatable {
   final String location;
 
   // Images
-  final List<XFile> images; // Newly added local images
+  final XFile? mainPhoto; // Main photo captured in Step 1
+  final List<XFile> images; // Additional local images
   final List<String> existingImageUrls; // Existing remote URLs (for edit)
 
   // Edit mode
@@ -27,6 +28,9 @@ class AddItemState extends Equatable {
   // Publish result
   final bool isPublished;
 
+  // Terms & Conditions
+  final bool agreedToTerms;
+
   const AddItemState({
     this.categoryId = '',
     this.title = '',
@@ -35,13 +39,15 @@ class AddItemState extends Equatable {
     this.dailyPrice = 0,
     this.securityDeposit = 0,
     this.location = '',
+    this.mainPhoto,
     this.images = const [],
     this.existingImageUrls = const [],
     this.isEditMode = false,
     this.listingId,
-    this.status = .initial,
+    this.status = AddItemStatus.initial,
     this.errorMessage,
     this.isPublished = false,
+    this.agreedToTerms = false,
   });
 
   @override
@@ -53,6 +59,7 @@ class AddItemState extends Equatable {
     dailyPrice,
     securityDeposit,
     location,
+    mainPhoto,
     images,
     existingImageUrls,
     isEditMode,
@@ -60,6 +67,7 @@ class AddItemState extends Equatable {
     status,
     errorMessage,
     isPublished,
+    agreedToTerms,
   ];
 
   AddItemState copyWith({
@@ -70,6 +78,8 @@ class AddItemState extends Equatable {
     double? dailyPrice,
     double? securityDeposit,
     String? location,
+    XFile? mainPhoto,
+    bool clearMainPhoto = false,
     List<XFile>? images,
     List<String>? existingImageUrls,
     bool? isEditMode,
@@ -77,6 +87,7 @@ class AddItemState extends Equatable {
     AddItemStatus? status,
     String? errorMessage,
     bool? isPublished,
+    bool? agreedToTerms,
   }) {
     return AddItemState(
       categoryId: categoryId ?? this.categoryId,
@@ -86,6 +97,7 @@ class AddItemState extends Equatable {
       dailyPrice: dailyPrice ?? this.dailyPrice,
       securityDeposit: securityDeposit ?? this.securityDeposit,
       location: location ?? this.location,
+      mainPhoto: clearMainPhoto ? null : (mainPhoto ?? this.mainPhoto),
       images: images ?? this.images,
       existingImageUrls: existingImageUrls ?? this.existingImageUrls,
       isEditMode: isEditMode ?? this.isEditMode,
@@ -93,6 +105,7 @@ class AddItemState extends Equatable {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       isPublished: isPublished ?? this.isPublished,
+      agreedToTerms: agreedToTerms ?? this.agreedToTerms,
     );
   }
 
@@ -111,21 +124,19 @@ class AddItemState extends Equatable {
         condition.isNotEmpty &&
         dailyPrice > 0 &&
         securityDeposit >= 0 &&
-        location.isNotEmpty &&
-        (images.isNotEmpty || existingImageUrls.isNotEmpty);
+        (mainPhoto != null || images.isNotEmpty || existingImageUrls.isNotEmpty);
   }
 
   String? getValidationError() {
+    if (mainPhoto == null && images.isEmpty && existingImageUrls.isEmpty) {
+      return 'Please add at least one photo';
+    }
     if (categoryId.isEmpty) return 'Please select a category';
     if (title.isEmpty) return 'Please enter a title';
     if (description.isEmpty) return 'Please enter a description';
     if (condition.isEmpty) return 'Please select a condition';
     if (dailyPrice <= 0) return 'Daily price must be greater than 0';
     if (securityDeposit < 0) return 'Security deposit cannot be negative';
-    if (location.isEmpty) return 'Please enter a location';
-    if (images.isEmpty && existingImageUrls.isEmpty) {
-      return 'Please add at least one photo';
-    }
 
     return null;
   }

@@ -144,7 +144,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                         ),
                       ),
                       Text(
-                        'Step 2 of 4',
+                        'Step 4 of 6',
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: AppColors.primaryColor,
@@ -159,7 +159,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: 4,
                           child: Container(
                             height: 6.h,
                             color: AppColors.primaryColor,

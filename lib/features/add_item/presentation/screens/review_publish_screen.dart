@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
@@ -23,8 +24,6 @@ class ReviewAndPublishScreen extends StatefulWidget {
 }
 
 class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
-  bool _isConfirmed = false;
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddItemCubit, AddItemState>(
@@ -97,7 +96,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             ),
                           ),
                           Text(
-                            'Step 4 of 4',
+                            'Step 6 of 6',
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: AppColors.primaryColor,
@@ -109,11 +108,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                       const SizedBox(height: 9),
                       Row(
                         children: List.generate(
-                          4,
+                          6,
                           (index) => Expanded(
                             child: Container(
                               margin: EdgeInsets.only(
-                                right: index == 3 ? 0 : 5,
+                                right: index == 5 ? 0 : 5,
                               ),
                               height: 6.h,
                               decoration: BoxDecoration(
@@ -156,7 +155,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         SectionHeader(
                           title: 'Photos',
                           onEdit: () {
-                            Navigator.pop(context); // go back to photos
+                            Navigator.pushNamed(
+                              context,
+                              Routes.addPhotosScreen,
+                              arguments: context.read<AddItemCubit>(),
+                            );
                           },
                         ),
                         verticalSpace(12),
@@ -167,7 +170,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           title: 'Item Details',
                           icon: Icons.inventory_2_outlined,
                           onEdit: () {
-                            Navigator.pop(context); // go back to details
+                            Navigator.pushNamed(
+                              context,
+                              Routes.addItemDetailsScreen,
+                              arguments: context.read<AddItemCubit>(),
+                            );
                           },
                           child: Column(
                             children: [
@@ -262,20 +269,18 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         // Confirmation checkbox
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _isConfirmed = !_isConfirmed;
-                            });
+                            context.read<AddItemCubit>().toggleAgreedToTerms();
                           },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              color: _isConfirmed
+                              color: state.agreedToTerms
                                   ? AppColors.success.withOpacity(.07)
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(17),
                               border: Border.all(
-                                color: _isConfirmed
+                                color: state.agreedToTerms
                                     ? AppColors.success
                                     : const Color(0xFFE3E7E8),
                               ),
@@ -288,18 +293,18 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                   width: 24.w,
                                   height: 24.h,
                                   decoration: BoxDecoration(
-                                    color: _isConfirmed
+                                    color: state.agreedToTerms
                                         ? AppColors.success
                                         : Colors.transparent,
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
-                                      color: _isConfirmed
+                                      color: state.agreedToTerms
                                           ? AppColors.success
                                           : const Color(0xFFBFC7C9),
                                       width: 1.5.w,
                                     ),
                                   ),
-                                  child: _isConfirmed
+                                  child: state.agreedToTerms
                                       ? const Icon(
                                           Icons.check,
                                           color: Colors.white,
@@ -343,7 +348,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                     width: double.infinity,
                     height: 58,
                     child: ElevatedButton(
-                      onPressed: _isConfirmed && !isPublishing
+                      onPressed: state.agreedToTerms && !isPublishing
                           ? () => _publishListing(context)
                           : null,
                       style: ElevatedButton.styleFrom(
@@ -444,7 +449,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
 
                     Navigator.pop(dialogContext);
 
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.rootScreen,
+                      (route) => false,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
@@ -455,7 +464,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                     ),
                   ),
                   child: const Text(
-                    'Done',
+                    'Back to Home',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -468,15 +477,22 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
   }
 
   Widget _buildPhotos(AddItemState state) {
-    // ignore: unused_local_variable
-    final allImages = [
-      ...state.images,
-      ...state.existingImageUrls.map((url) => url),
-    ]; // not ideal but for display
-    // Actually we want to show local images and remote images separately.
-    // We'll show local images as file previews, and remote as network.
-    // We'll construct a list of widgets.
     List<Widget> widgets = [];
+
+    // Main photo
+    if (state.mainPhoto != null) {
+      widgets.add(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.file(
+            File(state.mainPhoto!.path),
+            width: 105.w,
+            height: 105.h,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
 
     // Local images
     for (var image in state.images) {

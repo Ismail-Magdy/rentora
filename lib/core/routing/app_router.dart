@@ -8,8 +8,11 @@ import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
-import 'package:rentora/features/add_item/presentation/screens/add_photos_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_item_details_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/add_photos_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/choose_category_screens.dart';
+import 'package:rentora/features/add_item/presentation/screens/data_entry_choice_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/initial_photo_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
@@ -43,7 +46,6 @@ import 'package:rentora/features/setup_profile/manager/location/location_cubit.d
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/location_screen.dart';
 import 'package:rentora/features/splash/screens/splash_screen.dart';
-import 'package:rentora/features/add_item/presentation/screens/choose_category_screens.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_face_scan_screen.dart';
@@ -128,12 +130,34 @@ class AppRouter {
           builder: (_) => _withAuth(const ForgetPasswordScreen()),
         );
 
-      /// Add Item
-      case Routes.categoryScreen:
+      /// Add Item flow
+      case Routes.initialPhotoScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(
               create: (_) => getIt<AddItemCubit>(),
+              child: const InitialPhotoScreen(),
+            ),
+          ),
+        );
+
+      case Routes.dataEntryChoiceScreen:
+        final cubit = settings.arguments as AddItemCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(
+              value: cubit,
+              child: const DataEntryChoiceScreen(),
+            ),
+          ),
+        );
+
+      case Routes.categoryScreen:
+        final cubit = settings.arguments as AddItemCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(
+              value: cubit,
               child: const ChooseCategoryScreen(),
             ),
           ),
@@ -150,7 +174,6 @@ class AppRouter {
           ),
         );
 
-      ///
       case Routes.addPhotosScreen:
         final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
@@ -159,7 +182,6 @@ class AppRouter {
           ),
         );
 
-      ///
       case Routes.reviewScreen:
         final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(

@@ -20,7 +20,9 @@ class Routes {
   //
   static const String notificationsScreen = "/notificationsScreen";
 
-  /// Category screen
+  /// Add Item flow
+  static const String initialPhotoScreen = "/initialPhotoScreen";
+  static const String dataEntryChoiceScreen = "/dataEntryChoiceScreen";
   static const String categoryScreen = "/categoryScreen";
   static const String addItemDetailsScreen = "/addItemDetailsScreen";
   static const String addPhotosScreen = "/addPhotosScreen";

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +12,6 @@ import 'package:rentora/features/add_item/manager/add_item_state.dart';
 import 'package:rentora/features/add_item/presentation/widgets/add_photo_card.dart';
 import 'package:rentora/features/add_item/presentation/widgets/additional_photo_card.dart';
 import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
-import 'package:rentora/features/add_item/presentation/widgets/main_photo_card.dart';
-import 'package:rentora/features/add_item/presentation/widgets/main_photo_empty.dart';
 import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
 
 class AddPhotosScreen extends StatefulWidget {
@@ -24,7 +23,7 @@ class AddPhotosScreen extends StatefulWidget {
 
 class _AddPhotosScreenState extends State<AddPhotosScreen> {
   final ImagePicker _picker = ImagePicker();
-  static const int maxImages = 6;
+  static const int maxImages = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                             ),
                           ),
                           Text(
-                            'Step 3 of 4',
+                            'Step 5 of 6',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: AppColors.primaryColor,
@@ -100,7 +99,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 3,
+                              flex: 5,
                               child: Container(
                                 height: 6.h,
                                 color: AppColors.primaryColor,
@@ -149,15 +148,23 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         verticalSpace(22),
                         // // Main photo
                         const SectionTitle(title: 'Main photo', required: true),
-                        // const SizedBox(height: 10),
-                        images.isEmpty
-                            ? MainPhotoEmpty(onTap: () => _pickImage(context))
-                            : MainPhotoCard(
-                                image: images[0],
-                                onRemove: () => _removeImage(context, 0),
-                                onEdit: () =>
-                                    _pickImage(context, replaceIndex: 0),
+                        verticalSpace(10),
+                        if (state.mainPhoto != null)
+                          Container(
+                            height: 200.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: AppColors.primaryColor.withOpacity(0.2),
+                                width: 2,
                               ),
+                              image: DecorationImage(
+                                image: FileImage(File(state.mainPhoto!.path)),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         verticalSpace(25),
                         // Additional photos
                         Row(
@@ -324,25 +331,6 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
   }
 
   void _onContinue(BuildContext context) {
-    final listingCubit = context.read<AddItemCubit>();
-    final state = listingCubit.state;
-
-    if (state.images.isEmpty && state.existingImageUrls.isEmpty) {
-      showFeedbackDialog(
-        context,
-        icon: Icons.photo_library_outlined,
-        color: AppColors.warning,
-        title: 'No Photos Added',
-        message: 'Please add at least one photo.',
-      );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Please add at least one photo'),
-      //   ),
-      // );
-      return;
-    }
-
     Navigator.pushNamed(
       context,
       Routes.reviewScreen,
@@ -354,8 +342,8 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     final images = context.watch<AddItemCubit>().state.images;
     final List<Widget> items = [];
 
-    // Existing additional images (skip index 0)
-    for (int i = 1; i < images.length; i++) {
+    // Additional images
+    for (int i = 0; i < images.length; i++) {
       items.add(
         AdditionalPhotoCard(
           image: images[i],
