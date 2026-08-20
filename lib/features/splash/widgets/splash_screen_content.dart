@@ -40,6 +40,7 @@ class SplashScreenContent extends StatelessWidget {
               ),
             ),
           ),
+          //
           verticalSpace(24),
           // RENTORA Text
           Row(
@@ -60,6 +61,7 @@ class SplashScreenContent extends StatelessWidget {
               );
             }),
           ),
+          //
         ],
       ),
     );

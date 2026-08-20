@@ -1,5 +1,4 @@
-
-class ListingEntity {
+class ListingModel {
   String id;
   final String userId;
   final String category;
@@ -13,7 +12,7 @@ class ListingEntity {
   final DateTime createdAt;
   bool isAvailable;
 
-  ListingEntity({
+  ListingModel({
     this.id = '',
     required this.userId,
     required this.category,
@@ -29,20 +28,21 @@ class ListingEntity {
   });
 
   Map<String, dynamic> toMap() => {
-        'userId': userId,
-        'category': category,
-        'title': title,
-        'description': description,
-        'condition': condition,
-        'dailyPrice': dailyPrice,
-        'securityDeposit': securityDeposit,
-        'location': location,
-        'imageUrls': imageUrls,
-        'createdAt': createdAt.toIso8601String(),
-        'isAvailable': isAvailable,
-      };
+    'userId': userId,
+    'category': category,
+    'title': title,
+    'description': description,
+    'condition': condition,
+    'dailyPrice': dailyPrice,
+    'securityDeposit': securityDeposit,
+    'location': location,
+    'imageUrls': imageUrls,
+    'createdAt': createdAt.toIso8601String(),
+    'isAvailable': isAvailable,
+  };
 
-  factory ListingEntity.fromMap(String id, Map<String, dynamic> map) => ListingEntity(
+  factory ListingModel.fromMap(String id, Map<String, dynamic> map) =>
+      ListingModel(
         id: id,
         userId: map['userId'] ?? '',
         category: map['category'] ?? '',
@@ -53,7 +53,9 @@ class ListingEntity {
         securityDeposit: (map['securityDeposit'] ?? 0).toDouble(),
         location: map['location'] ?? '',
         imageUrls: List<String>.from(map['imageUrls'] ?? []),
-        createdAt: DateTime.parse(map['createdAt'] ?? DateTime.now().toIso8601String()),
+        createdAt: DateTime.parse(
+          map['createdAt'] ?? DateTime.now().toIso8601String(),
+        ),
         isAvailable: map['isAvailable'] ?? true,
       );
 }

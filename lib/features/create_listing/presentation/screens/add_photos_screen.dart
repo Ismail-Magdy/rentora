@@ -6,8 +6,8 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_state.dart';
+import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
+import 'package:rentora/features/create_listing/manager/listing_state.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/add_photo_card.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/additional_photo_card.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
@@ -332,7 +332,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     if (state.images.isEmpty && state.existingImageUrls.isEmpty) {
       showFeedbackDialog(
         context,
-     icon:  Icons.photo_library_outlined ,
+        icon: Icons.photo_library_outlined,
         color: AppColors.warning,
         title: 'No Photos Added',
         message: 'Please add at least one photo.',

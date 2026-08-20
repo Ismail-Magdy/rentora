@@ -3,23 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
+import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
-// C:\Users\DELL\Desktop\ieee\rentora\lib\core\widgets\custom_text_field.dart
 import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/price_field.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/section_title.dart';
 
-class ItemDetailsScreen extends StatefulWidget {
-  const ItemDetailsScreen({super.key});
+class AddItemDetailsScreen extends StatefulWidget {
+  const AddItemDetailsScreen({super.key});
 
   @override
-  State<ItemDetailsScreen> createState() => _ItemDetailsScreenState();
+  State<AddItemDetailsScreen> createState() => _AddItemDetailsScreenState();
 }
 
-class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
+class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
@@ -27,22 +26,21 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
 
   String? selectedCondition;
 
-  final List<String> conditions = [
-    'Like New',
-    'Excellent',
-    'Good',
-    'Fair',
-  ];
+  final List<String> conditions = ['Like New', 'Excellent', 'Good', 'Fair'];
 
   @override
   void initState() {
     super.initState();
     // Populate from Cubit if in edit mode
-  final state = context.read<ListingCubit>().state;
+    final state = context.read<ListingCubit>().state;
     nameController.text = state.title;
     descriptionController.text = state.description;
-    priceController.text = state.dailyPrice > 0 ? state.dailyPrice.toString() : '';
-    depositController.text = state.securityDeposit > 0 ? state.securityDeposit.toString() : '';
+    priceController.text = state.dailyPrice > 0
+        ? state.dailyPrice.toString()
+        : '';
+    depositController.text = state.securityDeposit > 0
+        ? state.securityDeposit.toString()
+        : '';
     selectedCondition = state.condition.isNotEmpty ? state.condition : null;
   }
 
@@ -54,41 +52,43 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
     depositController.dispose();
     super.dispose();
   }
-void onNext() {
-  final title = nameController.text.trim();
-  final description = descriptionController.text.trim();
-  final price = double.tryParse(priceController.text) ?? 0;
-  final deposit = double.tryParse(depositController.text) ?? 0;
 
-  if (title.isEmpty ||
-      description.isEmpty ||
-      price <= 0 ||
-      deposit < 0 ||
-      selectedCondition == null) {
-  showFeedbackDialog(
-  context,
-  icon: Icons.warning_amber_rounded,
-  color: AppColors.warning,
-  title: 'Incomplete Information',
-  message: 'Please complete all required fields.',
-);
-    return;
+  void onNext() {
+    final title = nameController.text.trim();
+    final description = descriptionController.text.trim();
+    final price = double.tryParse(priceController.text) ?? 0;
+    final deposit = double.tryParse(depositController.text) ?? 0;
+
+    if (title.isEmpty ||
+        description.isEmpty ||
+        price <= 0 ||
+        deposit < 0 ||
+        selectedCondition == null) {
+      showFeedbackDialog(
+        context,
+        icon: Icons.warning_amber_rounded,
+        color: AppColors.warning,
+        title: 'Incomplete Information',
+        message: 'Please complete all required fields.',
+      );
+      return;
+    }
+
+    final cubit = context.read<ListingCubit>();
+
+    cubit.updateTitle(title);
+    cubit.updateDescription(description);
+    cubit.updateDailyPrice(price);
+    cubit.updateSecurityDeposit(deposit);
+    cubit.updateCondition(selectedCondition!);
+
+    Navigator.pushNamed(
+      context,
+      Routes.addPhotosScreen,
+      arguments: context.read<ListingCubit>(),
+    );
   }
 
-  final cubit = context.read<ListingCubit>();
-
-  cubit.updateTitle(title);
-  cubit.updateDescription(description);
-  cubit.updateDailyPrice(price);
-  cubit.updateSecurityDeposit(deposit);
-  cubit.updateCondition(selectedCondition!);
-
-Navigator.pushNamed(
-  context,
-  Routes.addPhotosScreen,
-  arguments: context.read<ListingCubit>(),
-);
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,14 +98,16 @@ Navigator.pushNamed(
           children: [
             // Header (unchanged)
             Padding(
-              padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              padding: .symmetric(horizontal: 20.w, vertical: 12.h),
               child: Row(
                 children: [
+                  //
                   HeaderButton(
                     icon: Icons.arrow_back,
                     onTap: () => Navigator.pop(context),
                   ),
-                   Expanded(
+                  //
+                  Expanded(
                     child: Center(
                       child: Text(
                         'Add New Listing',
@@ -182,7 +184,7 @@ Navigator.pushNamed(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Text(
+                    Text(
                       'Tell us about your item',
                       style: TextStyle(
                         fontSize: 27.sp,
@@ -191,9 +193,9 @@ Navigator.pushNamed(
                         color: AppColors.black,
                       ),
                     ),
-                
+
                     verticalSpace(8),
-                   Text(
+                    Text(
                       'Add some details to help renters understand what you are offering.',
                       style: TextStyle(
                         fontSize: 14.sp,
@@ -201,27 +203,22 @@ Navigator.pushNamed(
                         color: AppColors.grey,
                       ),
                     ),
-                   
+
                     verticalSpace(22),
-                    const SectionTitle(
-                      title: 'Item name',
-                      required: true,
-                    ),
+                    const SectionTitle(title: 'Item name', required: true),
                     verticalSpace(8),
-                    CustomTextFormField (
+                    CustomTextFormField(
                       controller: nameController,
                       hintText: 'e.g. Canon EOS R50 Camera',
                       icon: Icons.title_outlined,
                     ),
                     verticalSpace(18),
-                    const SectionTitle(
-                      title: 'Description',
-                      required: true,
-                    ),
+                    const SectionTitle(title: 'Description', required: true),
                     verticalSpace(8),
-                    CustomTextFormField (
+                    CustomTextFormField(
                       controller: descriptionController,
-                      hintText: 'Describe the item, its features and condition...',
+                      hintText:
+                          'Describe the item, its features and condition...',
                       maxLines: 4,
                     ),
                     verticalSpace(18),
@@ -263,13 +260,10 @@ Navigator.pushNamed(
                       ],
                     ),
                     verticalSpace(18),
-                    const SectionTitle(
-                      title: 'Item condition',
-                      required: true,
-                    ),
+                    const SectionTitle(title: 'Item condition', required: true),
                     verticalSpace(8),
                     Container(
-                      padding:  EdgeInsets.symmetric(horizontal: 16.w),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       decoration: BoxDecoration(
                         color: AppColors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -283,13 +277,9 @@ Navigator.pushNamed(
                           isExpanded: true,
                           hint: const Text(
                             'Select condition',
-                            style: TextStyle(
-                              color: AppColors.grey,
-                            ),
+                            style: TextStyle(color: AppColors.grey),
                           ),
-                          icon: const Icon(
-                            Icons.keyboard_arrow_down_rounded,
-                          ),
+                          icon: const Icon(Icons.keyboard_arrow_down_rounded),
                           items: conditions.map((condition) {
                             return DropdownMenuItem<String>(
                               value: condition,
@@ -319,7 +309,7 @@ Navigator.pushNamed(
                             color: AppColors.primaryColor,
                             size: 20,
                           ),
-                          horizontalSpace( 10),
+                          horizontalSpace(10),
                           Expanded(
                             child: Text(
                               'The security deposit is held as protection against damage or loss and may be returned after the rental.',
@@ -357,7 +347,7 @@ Navigator.pushNamed(
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        child:  Text(
+                        child: Text(
                           'Back',
                           style: TextStyle(
                             color: AppColors.black,
@@ -383,7 +373,7 @@ Navigator.pushNamed(
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        child:  Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
@@ -394,9 +384,7 @@ Navigator.pushNamed(
                               ),
                             ),
                             horizontalSpace(8),
-                            Icon(
-                              Icons.arrow_forward_rounded,
-                            ),
+                            Icon(Icons.arrow_forward_rounded),
                           ],
                         ),
                       ),

@@ -5,7 +5,11 @@ class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthService(this._firebaseAuth) : _googleSignIn = GoogleSignIn();
+  FirebaseAuthService(this._firebaseAuth)
+    : _googleSignIn = GoogleSignIn(
+        serverClientId:
+            '653688654264-sgu8533arm0ocvt1rtv8sg7t9efv285j.apps.googleusercontent.com',
+      );
 
   /// Creates a new user account using email and password
   /// Returns the [UserCredential] which contains the user's UID
@@ -13,10 +17,17 @@ class FirebaseAuthService {
     required String email,
     required String password,
   }) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(
+    final credential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    if (credential.user != null && !credential.user!.emailVerified) {
+      await credential.user!.sendEmailVerification();
+      await _firebaseAuth.signOut();
+    }
+
+    return credential;
   }
 
   /// Signs in an existing user using email and password
@@ -24,10 +35,20 @@ class FirebaseAuthService {
     required String email,
     required String password,
   }) async {
-    return await _firebaseAuth.signInWithEmailAndPassword(
+    final credential = await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    if (credential.user != null && !credential.user!.emailVerified) {
+      await _firebaseAuth.signOut();
+      throw FirebaseAuthException(
+        code: 'email-not-verified',
+        message: 'Please verify your email address before logging in',
+      );
+    }
+
+    return credential;
   }
 
   /// Handles Google Sign-In Flow

@@ -5,8 +5,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
-import 'package:rentora/features/create_listing/presentation/screens/item_details_screen.dart';
+import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/category_card.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/category_model.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
@@ -114,31 +113,29 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
     });
   }
 
-void onNext() {
-  if (selectedIndex == null) {
-    showFeedbackDialog(
-  context,
-  icon: Icons.category_outlined,
-  color: AppColors.warning,
-  title: 'Category Required',
-  message: 'Please select a category first.',
-);
-    
-    return;
+  void onNext() {
+    if (selectedIndex == null) {
+      showFeedbackDialog(
+        context,
+        icon: Icons.category_outlined,
+        color: AppColors.warning,
+        title: 'Category Required',
+        message: 'Please select a category first.',
+      );
+
+      return;
+    }
+
+    final listingCubit = context.read<ListingCubit>();
+
+    listingCubit.updateCategory(categories[selectedIndex!].id);
+
+    Navigator.pushNamed(
+      context,
+      Routes.itemDetailsScreen,
+      arguments: context.read<ListingCubit>(),
+    );
   }
-
-  final listingCubit = context.read<ListingCubit>();
-
-  listingCubit.updateCategory(
-    categories[selectedIndex!].id,
-  );
-
- Navigator.pushNamed(
-  context,
-  Routes.itemDetailsScreen,
-  arguments: context.read<ListingCubit>(),
-);
-}
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +235,7 @@ void onNext() {
                         ),
                       ],
                     ),
-                  
+
                     verticalSpace(25),
                     GridView.builder(
                       shrinkWrap: true,
@@ -246,11 +243,11 @@ void onNext() {
                       itemCount: categories.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 14,
-                        mainAxisSpacing: 14,
-                        childAspectRatio: 0.92,
-                      ),
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 14,
+                            mainAxisSpacing: 14,
+                            childAspectRatio: 0.92,
+                          ),
                       itemBuilder: (context, index) {
                         final category = categories[index];
                         return CategoryCard(
@@ -261,7 +258,7 @@ void onNext() {
                       },
                     ),
                     // const SizedBox(height: 20),
-                   verticalSpace(20),
+                    verticalSpace(20),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
@@ -280,7 +277,7 @@ void onNext() {
                             color: AppColors.success,
                             size: 20,
                           ),
-                        horizontalSpace( 8),
+                          horizontalSpace(8),
                           const Text(
                             'You can only choose one category.',
                             style: TextStyle(

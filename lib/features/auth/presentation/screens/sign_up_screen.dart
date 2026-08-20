@@ -43,7 +43,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
-          //
           showFeedbackDialog(
             context,
             icon: Icons.error_outline_rounded,
@@ -51,21 +50,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             title: "Registration Failed",
             message: state.failure.message,
           );
-          //
         } else if (state is AuthSuccess) {
-          //
           showFeedbackDialog(
             context,
-            icon: Icons.check_circle_outline_rounded,
-            color: AppColors.primaryGreen,
-            title: "Success",
-            message: "Your account has been created successfully",
-            onFinish: () => context.pushNamedAndRemoveUntil(
-              Routes.rootScreen,
-              predicate: (route) => false,
-            ),
+            icon: Icons.mark_email_unread_outlined,
+            color: AppColors.primaryColor,
+            title: "Verify Your Email",
+            message:
+                "Account created successfully We've sent a verification link to your email. Please check your inbox and verify to login",
+            onFinish: () => context.pushNamed(Routes.loginScreen),
           );
-          //
         }
       },
       builder: (context, state) {
@@ -162,7 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: passwordController,
                             hintText: "********",
                             prefixIcon: Icons.lock_outline,
-                            fieldType: .password,
+                            fieldType: .newPassword,
                           ),
                           //
                           verticalSpace(24),
@@ -170,7 +164,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Row(
                             crossAxisAlignment: .start,
                             children: [
-                              //
                               SizedBox(
                                 width: 22.w,
                                 height: 22.w,
@@ -185,9 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                               ),
-                              //
                               horizontalSpace(10),
-                              //
                               Expanded(
                                 child: RichText(
                                   text: TextSpan(
@@ -216,12 +207,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                               ),
-                              //
                             ],
                           ),
                           //
                           verticalSpace(32),
-                          //
                           state is AuthLoading
                               ? const Center(
                                   child: CupertinoActivityIndicator(
@@ -256,13 +245,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     );
                                   },
                                 ),
-                          //
                           verticalSpace(24),
-                          //
                           Row(
                             mainAxisAlignment: .center,
                             children: [
-                              //
                               Text(
                                 "Already have an account? ",
                                 style: TextStyle(
@@ -270,7 +256,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: AppColors.grey,
                                 ),
                               ),
-                              //
                               GestureDetector(
                                 onTap: () =>
                                     context.pushNamed(Routes.loginScreen),
@@ -283,16 +268,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                               ),
-                              //
                             ],
                           ),
-                          //
                           verticalSpace(32),
-                          //
-                          AuthDivider(),
-                          //
+                          const AuthDivider(),
                           verticalSpace(32),
-                          //
                           state is AuthLoading
                               ? const Center(
                                   child: CupertinoActivityIndicator(
@@ -316,7 +296,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       .read<AuthCubit>()
                                       .signInWithGoogle(),
                                 ),
-
                           verticalSpace(24),
                         ],
                       ),

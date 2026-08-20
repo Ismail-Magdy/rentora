@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_state.dart';
+import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
+import 'package:rentora/features/create_listing/manager/listing_state.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/add_photo_button.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/description_row.dart';
 import 'package:rentora/features/create_listing/presentation/widgets/header_button.dart';
@@ -30,13 +30,13 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
     return BlocConsumer<ListingCubit, ListingState>(
       listener: (context, state) {
         if (state.status == ListingStatus.error) {
-         showFeedbackDialog(
-  context,
-  icon: Icons.error_outline,
-  color: AppColors.error,
-  title: 'Something Went Wrong',
-  message: state.errorMessage ?? 'An error occurred.',
-);
+          showFeedbackDialog(
+            context,
+            icon: Icons.error_outline,
+            color: AppColors.error,
+            title: 'Something Went Wrong',
+            message: state.errorMessage ?? 'An error occurred.',
+          );
         }
         if (state.isPublished) {
           _showSuccessDialog(context);
@@ -52,14 +52,17 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
               children: [
                 // Header (unchanged)
                 Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 12.h,
+                  ),
                   child: Row(
                     children: [
                       HeaderButton(
                         icon: Icons.close_rounded,
                         onTap: () => Navigator.pop(context),
                       ),
-                       Expanded(
+                      Expanded(
                         child: Center(
                           child: Text(
                             'Add New Listing',
@@ -80,7 +83,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                 ),
                 // Progress (full)
                 Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: 32.w),
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
                   child: Column(
                     children: [
                       Row(
@@ -109,7 +112,9 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           4,
                           (index) => Expanded(
                             child: Container(
-                              margin: EdgeInsets.only(right: index == 3 ? 0 : 5),
+                              margin: EdgeInsets.only(
+                                right: index == 3 ? 0 : 5,
+                              ),
                               height: 6.h,
                               decoration: BoxDecoration(
                                 color: AppColors.primaryColor,
@@ -137,11 +142,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             color: Color(0xFF171717),
                           ),
                         ),
-                        verticalSpace( 7),
-                         Text(
+                        verticalSpace(7),
+                        Text(
                           'Make sure everything looks good before publishing.',
                           style: TextStyle(
-                            fontSize: 14.sp ,
+                            fontSize: 14.sp,
                             height: 1.4.h,
                             color: Color(0xFF6D7478),
                           ),
@@ -166,13 +171,23 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           },
                           child: Column(
                             children: [
-                              InfoRow(label: 'Category', value: state.categoryId),
+                              InfoRow(
+                                label: 'Category',
+                                value: state.categoryId,
+                              ),
                               Divider(height: 24.h),
-                              InfoRow(label: 'Title', value: state.title, valueBold: true),
+                              InfoRow(
+                                label: 'Title',
+                                value: state.title,
+                                valueBold: true,
+                              ),
                               Divider(height: 24.h),
                               DescriptionRow(description: state.description),
                               Divider(height: 24.h),
-                              InfoRow(label: 'Condition', value: state.condition),
+                              InfoRow(
+                                label: 'Condition',
+                                value: state.condition,
+                              ),
                             ],
                           ),
                         ),
@@ -191,13 +206,15 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             children: [
                               PriceRow(
                                 label: 'Daily rental price',
-                                value: 'EGP ${state.dailyPrice.toStringAsFixed(0)}',
+                                value:
+                                    'EGP ${state.dailyPrice.toStringAsFixed(0)}',
                                 highlighted: true,
                               ),
                               const Divider(height: 24),
                               PriceRow(
                                 label: 'Security deposit',
-                                value: 'EGP ${state.securityDeposit.toStringAsFixed(0)}',
+                                value:
+                                    'EGP ${state.securityDeposit.toStringAsFixed(0)}',
                               ),
                             ],
                           ),
@@ -216,7 +233,9 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                 width: 42.w,
                                 height: 42.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryColor.withOpacity(.08),
+                                  color: AppColors.primaryColor.withOpacity(
+                                    .08,
+                                  ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Icon(
@@ -227,7 +246,9 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                               horizontalSpace(12),
                               Expanded(
                                 child: Text(
-                                  state.location.isNotEmpty ? state.location : 'No location set',
+                                  state.location.isNotEmpty
+                                      ? state.location
+                                      : 'No location set',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -249,10 +270,14 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                             duration: const Duration(milliseconds: 180),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              color: _isConfirmed ? AppColors.success.withOpacity(.07) : Colors.white,
+                              color: _isConfirmed
+                                  ? AppColors.success.withOpacity(.07)
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(17),
                               border: Border.all(
-                                color: _isConfirmed ? AppColors.success : const Color(0xFFE3E7E8),
+                                color: _isConfirmed
+                                    ? AppColors.success
+                                    : const Color(0xFFE3E7E8),
                               ),
                             ),
                             child: Row(
@@ -263,15 +288,23 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                   width: 24.w,
                                   height: 24.h,
                                   decoration: BoxDecoration(
-                                    color: _isConfirmed ? AppColors.success : Colors.transparent,
+                                    color: _isConfirmed
+                                        ? AppColors.success
+                                        : Colors.transparent,
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
-                                      color: _isConfirmed ? AppColors.success : const Color(0xFFBFC7C9),
+                                      color: _isConfirmed
+                                          ? AppColors.success
+                                          : const Color(0xFFBFC7C9),
                                       width: 1.5.w,
                                     ),
                                   ),
                                   child: _isConfirmed
-                                      ? const Icon(Icons.check, color: Colors.white, size: 17)
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 17,
+                                        )
                                       : null,
                                 ),
                                 const SizedBox(width: 12),
@@ -310,10 +343,13 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                     width: double.infinity,
                     height: 58,
                     child: ElevatedButton(
-                      onPressed: _isConfirmed && !isPublishing ? () => _publishListing(context) : null,
+                      onPressed: _isConfirmed && !isPublishing
+                          ? () => _publishListing(context)
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
-                        disabledBackgroundColor: AppColors.primaryColor.withOpacity(.6),
+                        disabledBackgroundColor: AppColors.primaryColor
+                            .withOpacity(.6),
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -329,7 +365,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                                 color: Colors.white,
                               ),
                             )
-                          :  Row(
+                          : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -358,14 +394,14 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
     context.read<ListingCubit>().publishListing();
   }
 
-void _showSuccessDialog(BuildContext context) {
-  final cubit = context.read<ListingCubit>();
+  void _showSuccessDialog(BuildContext context) {
+    final cubit = context.read<ListingCubit>();
 
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (dialogContext) {
-      return AlertDialog(
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) {
+        return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
@@ -390,35 +426,26 @@ void _showSuccessDialog(BuildContext context) {
               Text(
                 'Listing Published!',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w800,
-                ),
+                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w800),
               ),
               verticalSpace(10),
               Text(
                 'Your item is now available for renters to discover.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  height: 1.5.h,
-                  color: Color(0xFF6D7478),
-                ),
+                style: TextStyle(height: 1.5.h, color: Color(0xFF6D7478)),
               ),
               verticalSpace(24),
               SizedBox(
                 width: double.infinity,
                 height: 50.h,
                 child: ElevatedButton(
-               onPressed: () {
-  cubit.reset();
+                  onPressed: () {
+                    cubit.reset();
 
-  Navigator.pop(dialogContext);
+                    Navigator.pop(dialogContext);
 
-  Navigator.popUntil(
-    context,
-    (route) => route.isFirst,
-  );
-},
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.white,
@@ -429,9 +456,7 @@ void _showSuccessDialog(BuildContext context) {
                   ),
                   child: const Text(
                     'Done',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
@@ -443,7 +468,11 @@ void _showSuccessDialog(BuildContext context) {
   }
 
   Widget _buildPhotos(ListingState state) {
-    final allImages = [...state.images, ...state.existingImageUrls.map((url) => url)]; // not ideal but for display
+    // ignore: unused_local_variable
+    final allImages = [
+      ...state.images,
+      ...state.existingImageUrls.map((url) => url),
+    ]; // not ideal but for display
     // Actually we want to show local images and remote images separately.
     // We'll show local images as file previews, and remote as network.
     // We'll construct a list of widgets.
@@ -495,9 +524,7 @@ void _showSuccessDialog(BuildContext context) {
         child: const Center(
           child: Text(
             'No photos added',
-            style: TextStyle(
-              color: AppColors.grey,
-            ),
+            style: TextStyle(color: AppColors.grey),
           ),
         ),
       );
@@ -519,7 +546,7 @@ void _showSuccessDialog(BuildContext context) {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: widgets.length,
-        separatorBuilder: (_, __) =>  horizontalSpace( 10.w),
+        separatorBuilder: (_, __) => horizontalSpace(10.w),
         itemBuilder: (context, index) {
           // Mark first as "Main"
           if (index == 0 && widgets.isNotEmpty) {
@@ -530,7 +557,10 @@ void _showSuccessDialog(BuildContext context) {
                   left: 7,
                   bottom: 7,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 5.h,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -564,9 +594,7 @@ void _showSuccessDialog(BuildContext context) {
           ],
         ),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.primaryColor.withOpacity(.15),
-        ),
+        border: Border.all(color: AppColors.primaryColor.withOpacity(.15)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

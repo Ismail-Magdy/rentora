@@ -22,7 +22,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
 
   //
   void _nextPage() {
-    if (_currentPage < onbourdingScreen.length - 1) {
+    if (_currentPage < onbourdingScreenData.length - 1) {
       _pageController.nextPage(
         duration: Duration(milliseconds: 350),
         curve: Curves.easeInOut,
@@ -32,11 +32,13 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
     }
   }
 
-  void _finishOnboaring() => context.pushReplacementNamed(Routes.rootScreen);
+  void _finishOnboaring() =>
+      context.pushReplacementNamed(Routes.welcomeAuthScreen);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -72,12 +74,12 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: onbourdingScreen.length,
+                itemCount: onbourdingScreenData.length,
                 onPageChanged: (index) {
                   setState(() => _currentPage = index);
                 },
                 itemBuilder: (context, index) =>
-                    buildOnBoardingScreen(onbourdingScreen[index]),
+                    buildOnBoardingScreen(onbourdingScreenData[index]),
               ),
             ),
             //
@@ -85,7 +87,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
             //
             Row(
               mainAxisAlignment: .center,
-              children: List.generate(onbourdingScreen.length, (index) {
+              children: List.generate(onbourdingScreenData.length, (index) {
                 final bool isActive = index == _currentPage;
                 return AnimatedContainer(
                   duration: Duration(milliseconds: 250),
@@ -103,7 +105,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
             ),
             //
             verticalSpace(46),
-            // TODO : ADD ICON IF UI,UX WANT , AFTER MERGE VERIFICATION FEATURE
+            //
             Padding(
               padding: .fromLTRB(25.w, 0, 25.w, 20.h),
               child: CustomButton(

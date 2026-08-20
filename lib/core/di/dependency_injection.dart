@@ -10,7 +10,7 @@ import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/network/firebase/verifications_firestore_service.dart';
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/features/create_listing/data/repos/listing_repository_impl.dart';
-import 'package:rentora/features/create_listing/manager/cubit/listing_cubit.dart';
+import 'package:rentora/features/create_listing/manager/listing_cubit.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
 import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
@@ -65,9 +65,7 @@ Future<void> initGetIt() async {
   );
 
   /// Media Services
-  getIt.registerLazySingleton<CloudinaryService>(
-    () => CloudinaryService(),
-  );
+  getIt.registerLazySingleton<CloudinaryService>(() => CloudinaryService());
 
   /// Offline Mode
   getIt.registerLazySingleton<NetworkCubit>(() => NetworkCubit());
@@ -103,7 +101,6 @@ Future<void> initGetIt() async {
   /// Item Details
   getIt.registerLazySingleton<ItemDetailsRepo>(() => ItemDetailsRepoImpl());
 
-  //
   getIt.registerFactory<ItemDetailsCubit>(
     () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
   );
@@ -140,28 +137,15 @@ Future<void> initGetIt() async {
     ),
   );
 
-  // Example at Auth Feature To do as this
-  // /// Signup
-  // getIt.registerLazySingleton<SignupRepo>(() => SignupRepo());
-  // getIt.registerFactory<SignupBloc>(() => SignupBloc(getIt<SignupRepo>()));
-
-  // Create Listing Add Iteam
-
-getIt.registerLazySingleton<ListingRepositoryImpl>(
+  /// Create Listing Add Iteam
+  getIt.registerLazySingleton<ListingRepositoryImpl>(
     () => ListingRepositoryImpl(
       getIt<FirebaseFirestore>(),
       getIt<CloudinaryService>(),
     ),
   );
 
-getIt.registerFactory<ListingCubit>(
-  () => ListingCubit(
-    getIt<ListingRepositoryImpl>(),
-    getIt<FirebaseAuth>(),
-  ),
-);
-
-  // Repository
-
-
+  getIt.registerFactory<ListingCubit>(
+    () => ListingCubit(getIt<ListingRepositoryImpl>(), getIt<FirebaseAuth>()),
+  );
 }

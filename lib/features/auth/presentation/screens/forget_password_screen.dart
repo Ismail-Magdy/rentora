@@ -45,9 +45,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           showFeedbackDialog(
             context,
             icon: Icons.mark_email_read_outlined,
-            color: AppColors.primaryGreen,
+            color: AppColors.primaryColor,
             title: "Email Sent",
-            message: "A password reset link has been sent to your email.",
+            message: "A password reset link has been sent to your email",
             onFinish: () => context.pop(),
           );
         }

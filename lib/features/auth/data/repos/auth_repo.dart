@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:rentora/core/errors/exceptions.dart';
@@ -24,7 +25,6 @@ class AuthRepo {
     }
   }
 
-  ///
   Future<UserModel> signInWithGoogle() async {
     await _checkConnection();
     try {
@@ -132,12 +132,22 @@ class AuthRepo {
   Future<void> sendPasswordReset({required String email}) async {
     await _checkConnection();
     try {
+      final userQuery = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email.trim())
+          .get();
+
+      if (userQuery.docs.isEmpty) {
+        throw const ServerException("No account found with this email address");
+      }
+
       await _authService.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw ServerException(FirebaseErrorHandler.handle(e));
     } on SocketException {
       throw const OfflineException("No internet connection");
     } catch (e) {
+      if (e is ServerException) rethrow;
       throw ServerException(FirebaseErrorHandler.handle(e));
     }
   }
