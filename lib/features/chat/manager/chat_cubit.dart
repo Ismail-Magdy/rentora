@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/errors/exceptions.dart';
 import 'package:rentora/core/errors/firebase_error_handler.dart';
@@ -67,18 +68,53 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> sendMessage({
     required String chatId,
     required String senderId,
-    required String text,
+    String text = '',
+    String? imageUrl,
   }) async {
-    if (text.trim().isEmpty) return;
+    final cleanText = text.trim();
+    final hasImage = imageUrl != null && imageUrl.trim().isNotEmpty;
+    if (cleanText.isEmpty && !hasImage) return;
 
     try {
       await _chatRepo.sendMessage(
         chatId: chatId,
         senderId: senderId,
-        text: text,
+        text: cleanText,
+        imageUrl: hasImage ? imageUrl.trim() : null,
       );
     } catch (e) {
       String errorMessage = "Failed to send message";
+      if (e is ServerException) {
+        errorMessage = e.message;
+      } else {
+        errorMessage = FirebaseErrorHandler.handle(e);
+      }
+      emit(ChatError(errorMessage));
+    }
+  }
+
+  Future<void> sendImageMessage({
+    required String chatId,
+    required String senderId,
+    required File imageFile,
+    String text = '',
+  }) async {
+    try {
+      emit(ChatImageUploading());
+      final imageUrl = await _chatRepo.uploadChatImage(imageFile);
+      if (imageUrl != null && imageUrl.isNotEmpty) {
+        await _chatRepo.sendMessage(
+          chatId: chatId,
+          senderId: senderId,
+          text: text,
+          imageUrl: imageUrl,
+        );
+        emit(ChatImageUploadSuccess());
+      } else {
+        emit(ChatError('Failed to upload image. Please try again.'));
+      }
+    } catch (e) {
+      String errorMessage = "Failed to send image";
       if (e is ServerException) {
         errorMessage = e.message;
       } else {

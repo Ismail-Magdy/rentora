@@ -62,15 +62,72 @@ class MessageBubble extends StatelessWidget {
               isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              message.text,
-              style: TextStyle(
-                color: isMine ? AppColors.white : AppColors.black,
-                fontSize: 14.5.sp,
-                height: 1.35,
-                fontWeight: FontWeight.w400,
+            if (message.imageUrl != null &&
+                message.imageUrl!.trim().isNotEmpty) ...[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child: Image.network(
+                  message.imageUrl!,
+                  width: double.infinity,
+                  height: 180.h,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      height: 180.h,
+                      color: AppColors.lightGrey.withValues(alpha: 0.3),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                          color: isMine
+                              ? AppColors.white
+                              : AppColors.primaryColor,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 140.h,
+                    color: AppColors.lightGrey.withValues(alpha: 0.3),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.broken_image_rounded,
+                            size: 32.sp,
+                            color: AppColors.grey,
+                          ),
+                          verticalSpace(4),
+                          Text(
+                            'Failed to load image',
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: AppColors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
+              if (message.text.isNotEmpty) verticalSpace(8),
+            ],
+            if (message.text.isNotEmpty)
+              Text(
+                message.text,
+                style: TextStyle(
+                  color: isMine ? AppColors.white : AppColors.black,
+                  fontSize: 14.5.sp,
+                  height: 1.35,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             if (formattedTime.isNotEmpty) ...[
               verticalSpace(4),
               Row(

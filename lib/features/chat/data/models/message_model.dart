@@ -4,12 +4,14 @@ class MessageModel {
   final String messageId;
   final String senderId;
   final String text;
+  final String? imageUrl;
   final Timestamp? timestamp;
 
   MessageModel({
     required this.messageId,
     required this.senderId,
     required this.text,
+    this.imageUrl,
     this.timestamp,
   });
 
@@ -18,6 +20,7 @@ class MessageModel {
       'messageId': messageId,
       'senderId': senderId,
       'text': text,
+      if (imageUrl != null && imageUrl!.isNotEmpty) 'imageUrl': imageUrl,
       'timestamp': timestamp ?? FieldValue.serverTimestamp(),
     };
   }
@@ -27,7 +30,11 @@ class MessageModel {
       messageId: json['messageId'] ?? '',
       senderId: json['senderId'] ?? '',
       text: json['text'] ?? '',
-      timestamp: json['timestamp'],
+      imageUrl: json['imageUrl'],
+      timestamp: json['timestamp'] is Timestamp
+          ? json['timestamp'] as Timestamp
+          : null,
     );
   }
 }
+

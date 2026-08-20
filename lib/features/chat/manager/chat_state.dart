@@ -17,6 +17,10 @@ class ChatMessagesLoaded extends ChatState {
   ChatMessagesLoaded(this.messages);
 }
 
+class ChatImageUploading extends ChatState {}
+
+class ChatImageUploadSuccess extends ChatState {}
+
 class ChatError extends ChatState {
   final String message;
   ChatError(this.message);

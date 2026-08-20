@@ -1,15 +1,22 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rentora/core/errors/exceptions.dart';
 import 'package:rentora/core/errors/firebase_error_handler.dart';
 import 'package:rentora/core/network/firebase/chats_firestore_service.dart';
+import 'package:rentora/core/network/firebase/cloudinary_service.dart';
 import 'package:rentora/features/chat/data/models/message_model.dart';
 import 'package:rentora/features/chat/data/models/chat_model.dart';
 
 class ChatRepo {
   final ChatsFirestoreService _chatsFirestoreService;
   final FirebaseFirestore _firestore;
+  final CloudinaryService _cloudinaryService;
 
-  ChatRepo(this._chatsFirestoreService, this._firestore);
+  ChatRepo(
+    this._chatsFirestoreService,
+    this._firestore,
+    this._cloudinaryService,
+  );
 
   Stream<List<MessageModel>> getMessages(String chatId) {
     if (chatId.trim().isEmpty) {
@@ -36,19 +43,17 @@ class ChatRepo {
         .collection('chats')
         .where('participants', arrayContains: userId)
         .snapshots()
-        .map(
-          (snapshot) {
-            final chats = snapshot.docs
-                .map((doc) => ChatModel.fromJson(doc.data()))
-                .toList();
-            chats.sort((a, b) {
-              final aTime = a.lastMessageTime?.toDate() ?? DateTime(2000);
-              final bTime = b.lastMessageTime?.toDate() ?? DateTime(2000);
-              return bTime.compareTo(aTime);
-            });
-            return chats;
-          },
-        );
+        .map((snapshot) {
+          final chats = snapshot.docs
+              .map((doc) => ChatModel.fromJson(doc.data()))
+              .toList();
+          chats.sort((a, b) {
+            final aTime = a.lastMessageTime?.toDate() ?? DateTime(2000);
+            final bTime = b.lastMessageTime?.toDate() ?? DateTime(2000);
+            return bTime.compareTo(aTime);
+          });
+          return chats;
+        });
   }
 
   Future<String> createOrGetChat({
@@ -76,7 +81,8 @@ class ChatRepo {
 
     try {
       final sortedParticipants = [cleanFirstId, cleanSecondId]..sort();
-      final id = '${cleanBookingId.isEmpty ? 'chat' : cleanBookingId}_${sortedParticipants.join('_')}';
+      final id =
+          '${cleanBookingId.isEmpty ? 'chat' : cleanBookingId}_${sortedParticipants.join('_')}';
 
       final docRef = _firestore.collection('chats').doc(id);
       final docSnapshot = await docRef.get();
@@ -102,10 +108,7 @@ class ChatRepo {
           data['itemImageUrl'] = itemImageUrl;
         }
 
-        await _chatsFirestoreService.createChatRoom(
-          chatId: id,
-          chatData: data,
-        );
+        await _chatsFirestoreService.createChatRoom(chatId: id, chatData: data);
       }
       return id;
     } catch (e) {
@@ -114,14 +117,30 @@ class ChatRepo {
     }
   }
 
+  Future<String?> uploadChatImage(File imageFile) async {
+    try {
+      return await _cloudinaryService.uploadImage(imageFile);
+    } catch (e) {
+      throw ServerException('Failed to upload image. Please try again.');
+    }
+  }
+
   Future<void> sendMessage({
     required String chatId,
     required String senderId,
-    required String text,
+    String text = '',
+    String? imageUrl,
   }) async {
-    if (chatId.trim().isEmpty || senderId.trim().isEmpty || text.trim().isEmpty) {
+    final cleanText = text.trim();
+    final hasImage = imageUrl != null && imageUrl.trim().isNotEmpty;
+
+    if (chatId.trim().isEmpty || senderId.trim().isEmpty) {
       return;
     }
+    if (cleanText.isEmpty && !hasImage) {
+      return;
+    }
+
     try {
       final messageDocRef = _firestore
           .collection('chats')
@@ -132,7 +151,8 @@ class ChatRepo {
       final message = MessageModel(
         messageId: messageDocRef.id,
         senderId: senderId,
-        text: text,
+        text: cleanText,
+        imageUrl: hasImage ? imageUrl.trim() : null,
         timestamp: Timestamp.now(),
       );
 
@@ -141,8 +161,10 @@ class ChatRepo {
         messageData: message.toJson(),
       );
 
+      final lastMsg = cleanText.isNotEmpty ? cleanText : '📷 Image';
+
       await _firestore.collection('chats').doc(chatId).update({
-        'lastMessage': text,
+        'lastMessage': lastMsg,
         'lastMessageTime': FieldValue.serverTimestamp(),
       });
     } catch (e) {

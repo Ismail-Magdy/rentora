@@ -128,7 +128,11 @@ Future<void> initGetIt() async {
 
   /// Chat
   getIt.registerLazySingleton<ChatRepo>(
-    () => ChatRepo(getIt<ChatsFirestoreService>(), getIt<FirebaseFirestore>()),
+    () => ChatRepo(
+      getIt<ChatsFirestoreService>(),
+      getIt<FirebaseFirestore>(),
+      getIt<CloudinaryService>(),
+    ),
   );
   getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt<ChatRepo>()));
 

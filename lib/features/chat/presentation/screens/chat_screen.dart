@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/features/chat/manager/chat_state.dart';
+import 'package:rentora/features/chat/presentation/widgets/chat_app_bar.dart';
 import 'package:rentora/features/chat/presentation/widgets/chat_empty_state.dart';
 import 'package:rentora/features/chat/presentation/widgets/chat_input_bar.dart';
 import 'package:rentora/features/chat/presentation/widgets/message_bubble.dart';
@@ -50,6 +51,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void _onSendImage(File imageFile, String caption) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && widget.chatId.trim().isNotEmpty) {
+      context.read<ChatCubit>().sendImageMessage(
+        chatId: widget.chatId.trim(),
+        senderId: user.uid,
+        imageFile: imageFile,
+        text: caption,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
@@ -58,8 +71,10 @@ class _ChatScreenState extends State<ChatScreen> {
     if (widget.chatId.trim().isEmpty) {
       return Scaffold(
         backgroundColor: AppColors.scaffoldBackground,
-        appBar: CustomAppBar(
-          text: titleText,
+        appBar: ChatAppBar(
+          receiverName: titleText,
+          receiverAvatar: widget.receiverAvatar,
+          itemTitle: widget.itemTitle,
         ),
         body: const ChatEmptyState(
           title: 'Invalid Chat',
@@ -71,8 +86,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      appBar: CustomAppBar(
-        text: titleText,
+      appBar: ChatAppBar(
+        receiverName: titleText,
+        receiverAvatar: widget.receiverAvatar,
+        itemTitle: widget.itemTitle,
       ),
       body: Column(
         children: [
@@ -136,8 +153,15 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          ChatInputBar(
-            onSendMessage: _onSendMessage,
+          BlocBuilder<ChatCubit, ChatState>(
+            builder: (context, state) {
+              final isUploading = state is ChatImageUploading;
+              return ChatInputBar(
+                onSendMessage: _onSendMessage,
+                onSendImage: _onSendImage,
+                isSending: isUploading,
+              );
+            },
           ),
         ],
       ),
