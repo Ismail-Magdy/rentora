@@ -8,6 +8,7 @@ import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/archive/presentation/screens/archive_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_item_details_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_photos_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/choose_category_screens.dart';
@@ -231,11 +232,22 @@ class AppRouter {
             MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => getIt<HomeCubit>()),
+                BlocProvider(create: (context) => getIt<BookingCubit>()),
                 // BlocProvider(
                 //   create: (context) => getIt<ChatCubit>(),
                 // ),
               ],
               child: const RootScreen(),
+            ),
+          ),
+        );
+
+      case Routes.archiveScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const ArchiveScreen(),
             ),
           ),
         );
