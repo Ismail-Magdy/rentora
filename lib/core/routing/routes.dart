@@ -18,6 +18,7 @@ class Routes {
   static const String homeScreen = "/homeScreen";
   static const String categoryDetailsScreen = "/categoryDetailsScreen";
   static const String itemDetailsScreen = "/itemDetailsScreen";
+  static const String viewMapScreen = "/viewMapScreen";
   //
   static const String notificationsScreen = "/notificationsScreen";
 
