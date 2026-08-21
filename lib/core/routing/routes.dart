@@ -26,6 +26,7 @@ class Routes {
   static const String categoryScreen = "/categoryScreen";
   static const String addItemDetailsScreen = "/addItemDetailsScreen";
   static const String addPhotosScreen = "/addPhotosScreen";
+  static const String addItemAvailabilityScreen = "/addItemAvailabilityScreen";
   static const String reviewScreen = "/reviewScreen";
   //
   static const String selectedDatesScreen = "/selectedDatesScreen";

@@ -4,10 +4,13 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
-import 'package:rentora/features/add_item/data/models/category_model.dart';
-import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rentora/features/setup_profile/data/models/category_model.dart';
+import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 
 class ChooseCategoryScreen extends StatefulWidget {
   const ChooseCategoryScreen({super.key});
@@ -19,92 +22,12 @@ class ChooseCategoryScreen extends StatefulWidget {
 class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
   int? selectedIndex;
 
-  final List<CategoryModel> categories = [
-    CategoryModel(
-      title: 'Cameras',
-      id: 'Cameras',
-      subtitle: 'DSLR, Mirrorless, Lenses...',
-      icon: Icons.camera_alt_outlined,
-      color: AppColors.primaryColor,
-    ),
-    CategoryModel(
-      title: 'Electronics',
-      id: 'Electronics',
-      subtitle: 'Laptops, Tablets, Phones...',
-      icon: Icons.laptop_mac_outlined,
-      color: AppColors.success,
-    ),
-    CategoryModel(
-      title: 'Gaming',
-      id: 'Gaming',
-      subtitle: 'PS5, Xbox, VR, Accessories...',
-      icon: Icons.sports_esports_outlined,
-      color: AppColors.warning,
-    ),
-    CategoryModel(
-      title: 'Sports & Fitness',
-      id: 'Sports & Fitness',
-      subtitle: 'Equipment, Bikes, Accessories...',
-      icon: Icons.fitness_center_outlined,
-      color: AppColors.success,
-    ),
-    CategoryModel(
-      title: 'Tools & DIY',
-      id: 'Tools & DIY',
-      subtitle: 'Drills, Tools, Machinery...',
-      icon: Icons.handyman_outlined,
-      color: AppColors.primaryColor,
-    ),
-    CategoryModel(
-      title: 'Music',
-      id: 'Music',
-      subtitle: 'Instruments, Audio, Accessories...',
-      icon: Icons.music_note_outlined,
-      color: AppColors.warning,
-    ),
-    CategoryModel(
-      title: 'Home & Living',
-      id: 'Home & Living',
-      subtitle: 'Furniture, Appliances, Decor...',
-      icon: Icons.chair_outlined,
-      color: AppColors.primaryColor,
-    ),
-    CategoryModel(
-      title: 'Outdoor & Travel',
-      id: 'Outdoor & Travel',
-      subtitle: 'Camping, Hiking, Travel gear...',
-      icon: Icons.backpack_outlined,
-      color: AppColors.success,
-    ),
-    CategoryModel(
-      title: 'Vehicles',
-      id: 'Vehicles',
-      subtitle: 'Scooters, Cars, Bikes...',
-      icon: Icons.directions_car_outlined,
-      color: AppColors.warning,
-    ),
-    CategoryModel(
-      title: 'Fashion',
-      id: 'Fashion',
-      subtitle: 'Clothing, Shoes, Accessories...',
-      icon: Icons.shopping_bag_outlined,
-      color: AppColors.primaryColor,
-    ),
-    CategoryModel(
-      title: 'Events & Party',
-      id: 'Events & Party',
-      subtitle: 'Party, Wedding, Event gear...',
-      icon: Icons.celebration_outlined,
-      color: AppColors.success,
-    ),
-    CategoryModel(
-      title: 'Other',
-      id: 'Other',
-      subtitle: 'Something else special',
-      icon: Icons.more_horiz,
-      color: Colors.grey,
-    ),
-  ];
+  List<CategoryModel> get categories {
+    return [
+      ...CategoryModel.categories,
+      CategoryModel(id: "other", name: "Other", iconPath: ""),
+    ];
+  }
 
   void selectCategory(int index) {
     setState(() {
@@ -119,7 +42,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
         icon: Icons.category_outlined,
         color: AppColors.warning,
         title: 'Category Required',
-        message: 'Please select a category first.',
+        message: 'Please select a category first',
       );
 
       return;
@@ -143,85 +66,9 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header (unchanged)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Row(
-                children: [
-                  HeaderButton(
-                    icon: Icons.arrow_back,
-                    onTap: () => Navigator.pop(context),
-                  ),
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        'Choose a category',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF171717),
-                        ),
-                      ),
-                    ),
-                  ),
-                  HeaderButton(
-                    icon: Icons.close,
-                    onTap: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-            ),
-              // Progress Bar (Step 3)
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.w),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Category',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColors.grey.withValues(alpha: 0.7),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          'Step 3 of 6',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                    verticalSpace(10),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              height: 6.h,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              height: 6.h,
-                              color: AppColors.grey.withValues(alpha: 0.3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            CustomAppBar(text: "Choose a category"),
+            // Progress Bar (Step 3)
+            AddItemProgressBar(title: "Category", stepNumber: "Step 3 of 7"),
             // Content (unchanged)
             Expanded(
               child: SingleChildScrollView(
@@ -245,7 +92,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                   color: AppColors.black,
                                 ),
                               ),
-                              const SizedBox(height: 10),
+                              verticalSpace(10),
                               const Text(
                                 'This helps us show your item to the right people.',
                                 style: TextStyle(
@@ -267,11 +114,11 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                       itemCount: categories.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                        childAspectRatio: 1.2,
-                      ),
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 1.2,
+                          ),
                       itemBuilder: (context, index) {
                         final category = categories[index];
                         final isSelected = selectedIndex == index;
@@ -283,7 +130,8 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? AppColors.primaryColor.withValues(
-                                      alpha: 0.1)
+                                      alpha: 0.1,
+                                    )
                                   : const Color(0xFFF7F7F9),
                               borderRadius: BorderRadius.circular(20.r),
                               border: Border.all(
@@ -296,21 +144,34 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  category.icon,
-                                  size: 35.sp,
-                                  color: isSelected
-                                      ? AppColors.primaryColor
-                                      : AppColors.secondaryColor,
-                                ),
+                                category.id == 'other'
+                                    ? Icon(
+                                        Icons.more_horiz,
+                                        size: 35.sp,
+                                        color: isSelected
+                                            ? AppColors.primaryColor
+                                            : AppColors.secondaryColor,
+                                      )
+                                    : SvgPicture.asset(
+                                        category.iconPath,
+                                        width: 35.sp,
+                                        height: 35.sp,
+                                        colorFilter: ColorFilter.mode(
+                                          isSelected
+                                              ? AppColors.primaryColor
+                                              : AppColors.secondaryColor,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
                                 verticalSpace(10),
                                 Text(
-                                  category.title,
+                                  category.name,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14.sp,
-                                    fontWeight:
-                                        isSelected ? FontWeight.bold : FontWeight.w500,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
                                     color: isSelected
                                         ? AppColors.primaryColor
                                         : Colors.black87,
@@ -322,7 +183,6 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                         );
                       },
                     ),
-                    // const SizedBox(height: 20),
                     verticalSpace(20),
                     Container(
                       width: double.infinity,
@@ -331,7 +191,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                         vertical: 13,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.success.withOpacity(.07),
+                        color: AppColors.success.withValues(alpha: 0.07),
                         borderRadius: BorderRadius.circular(18),
                       ),
                       child: Row(
@@ -361,35 +221,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
             // Next button
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              child: SizedBox(
-                width: double.infinity,
-                height: 58,
-                child: ElevatedButton(
-                  onPressed: onNext,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Next',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      horizontalSpace(10),
-                      Icon(Icons.arrow_forward_rounded),
-                    ],
-                  ),
-                ),
-              ),
+              child: CustomButton(text: "Next", onPressed: onNext),
             ),
           ],
         ),

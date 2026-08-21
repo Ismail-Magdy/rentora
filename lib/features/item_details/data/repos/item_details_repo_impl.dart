@@ -23,8 +23,26 @@ class ItemDetailsRepoImpl implements ItemDetailsRepo {
         return Left(ServerFailure('Product not found.'));
       }
 
+      final Map<String, dynamic> data = Map<String, dynamic>.from(doc.data()!);
+      final ownerId = data['userId'] ?? data['ownerId'];
+      if (ownerId != null && ownerId.toString().isNotEmpty) {
+        try {
+          final userDoc = await _firestore.collection('users').doc(ownerId.toString()).get();
+          if (userDoc.exists) {
+            final userData = userDoc.data();
+            String name = "${userData?['firstName'] ?? ''} ${userData?['lastName'] ?? ''}".trim();
+            if (name.isEmpty) name = userData?['name'] ?? '';
+            data['ownerName'] = name;
+            data['ownerAvatar'] = userData?['profilePicture'] ?? userData?['photoUrl'] ?? userData?['photoURL'] ?? '';
+            data['ownerVerificationStatus'] = userData?['verificationStatus'] ?? 'unverified';
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+
       final ItemDetailsModel productDetails = ItemDetailsModel.fromJson(
-        doc.data()!,
+        data,
         doc.id,
       );
 

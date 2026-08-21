@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,8 +35,24 @@ class AddItemCubit extends Cubit<AddItemState> {
   void updateSecurityDeposit(double deposit) =>
       emit(state.copyWith(securityDeposit: deposit));
 
-  void updateLocation(String location) =>
-      emit(state.copyWith(location: location));
+  void updateRating(double rating) =>
+      emit(state.copyWith(rating: rating));
+
+  void updateLocation(String location, GeoPoint geoPoint) =>
+      emit(state.copyWith(location: location, locationGeoPoint: geoPoint));
+
+  void updateAvailability(DateTime from, DateTime to) =>
+      emit(state.copyWith(availableFrom: from, availableTo: to));
+
+  void toggleKeyFeature(String feature) {
+    final currentFeatures = List<String>.from(state.keyFeatures);
+    if (currentFeatures.contains(feature)) {
+      currentFeatures.remove(feature);
+    } else {
+      currentFeatures.add(feature);
+    }
+    emit(state.copyWith(keyFeatures: currentFeatures));
+  }
 
   // Terms & Conditions
   void toggleAgreedToTerms() =>
@@ -76,6 +93,11 @@ class AddItemCubit extends Cubit<AddItemState> {
           dailyPrice: listing.dailyPrice,
           securityDeposit: listing.securityDeposit,
           location: listing.location,
+          locationGeoPoint: listing.locationGeoPoint,
+          rating: listing.rating,
+          keyFeatures: listing.keyFeatures,
+          availableFrom: listing.availableFrom,
+          availableTo: listing.availableTo,
           existingImageUrls: listing.imageUrls,
           isEditMode: true,
           listingId: listing.id,
@@ -125,6 +147,11 @@ class AddItemCubit extends Cubit<AddItemState> {
         dailyPrice: state.dailyPrice,
         securityDeposit: state.securityDeposit,
         location: state.location,
+        locationGeoPoint: state.locationGeoPoint,
+        rating: state.rating,
+        keyFeatures: state.keyFeatures,
+        availableFrom: state.availableFrom,
+        availableTo: state.availableTo,
         imageUrls: state.existingImageUrls, // will be updated by repository
         createdAt: DateTime.now(),
         isAvailable: true,

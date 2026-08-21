@@ -1,16 +1,21 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/manager/add_item_state.dart';
+import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 import 'package:rentora/features/add_item/presentation/widgets/add_photo_button.dart';
 import 'package:rentora/features/add_item/presentation/widgets/description_row.dart';
-import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
 import 'package:rentora/features/add_item/presentation/widgets/info_row.dart';
 import 'package:rentora/features/add_item/presentation/widgets/price_row.dart';
 import 'package:rentora/features/add_item/presentation/widgets/review_card.dart';
@@ -24,6 +29,17 @@ class ReviewAndPublishScreen extends StatefulWidget {
 }
 
 class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
+  bool _isLoadingLocation = false;
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return '--';
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    return '${date.day} ${months[date.month - 1]} ${date.year}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddItemCubit, AddItemState>(
@@ -45,86 +61,16 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
         final isPublishing = state.status == .loading;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF8FAFA),
+          backgroundColor: AppColors.white,
           body: SafeArea(
             child: Column(
               children: [
                 // Header (unchanged)
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 12.h,
-                  ),
-                  child: Row(
-                    children: [
-                      HeaderButton(
-                        icon: Icons.close_rounded,
-                        onTap: () => Navigator.pop(context),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Add New Listing',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      HeaderButton(
-                        icon: Icons.help_outline_rounded,
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                ),
+                CustomAppBar(text: "Add New Listing"),
                 // Progress (full)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.w),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Review & Publish',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: Color(0xFF6D7478),
-                            ),
-                          ),
-                          Text(
-                            'Step 6 of 6',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 9),
-                      Row(
-                        children: List.generate(
-                          6,
-                          (index) => Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                right: index == 5 ? 0 : 5,
-                              ),
-                              height: 6.h,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryColor,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                AddItemProgressBar(
+                  title: "Review & Publish",
+                  stepNumber: "Step 7 of 7",
                 ),
                 // Content
                 Expanded(
@@ -154,13 +100,10 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         // Photos
                         SectionHeader(
                           title: 'Photos',
-                          onEdit: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.addPhotosScreen,
-                              arguments: context.read<AddItemCubit>(),
-                            );
-                          },
+                          onEdit: () => context.pushNamed(
+                            Routes.addPhotosScreen,
+                            arguments: context.read<AddItemCubit>(),
+                          ),
                         ),
                         verticalSpace(12),
                         _buildPhotos(state),
@@ -202,6 +145,32 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         // AI suggestion (placeholder)
                         _buildAiSuggestion(),
                         verticalSpace(16.h),
+                        // Availability
+                        ReviewCard(
+                          title: 'Availability',
+                          icon: Icons.calendar_today_outlined,
+                          onEdit: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.addItemAvailabilityScreen,
+                              arguments: context.read<AddItemCubit>(),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              InfoRow(
+                                label: 'From',
+                                value: _formatDate(state.availableFrom),
+                              ),
+                              Divider(height: 24.h),
+                              InfoRow(
+                                label: 'To',
+                                value: _formatDate(state.availableTo),
+                              ),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(16.h),
                         // Rental Details
                         ReviewCard(
                           title: 'Rental Details',
@@ -231,36 +200,122 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         ReviewCard(
                           title: 'Location',
                           icon: Icons.location_on_outlined,
-                          onEdit: () {
-                            // TODO: navigate to location picker
-                          },
                           child: Row(
                             children: [
                               Container(
                                 width: 42.w,
                                 height: 42.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryColor.withOpacity(
-                                    .08,
+                                  color: AppColors.primaryColor.withValues(
+                                    alpha: 0.08,
                                   ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Icon(
-                                  Icons.location_on_outlined,
+                                  Icons.my_location,
                                   color: AppColors.primaryColor,
                                 ),
                               ),
                               horizontalSpace(12),
                               Expanded(
-                                child: Text(
-                                  state.location.isNotEmpty
-                                      ? state.location
-                                      : 'No location set',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                                child: state.location.isNotEmpty
+                                    ? Text(
+                                        state.location,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      )
+                                    : _isLoadingLocation
+                                    ? Row(
+                                        children: [
+                                          const CupertinoActivityIndicator(
+                                            radius: 10,
+                                          ),
+                                          horizontalSpace(6),
+                                          const Text(
+                                            'Fetching location',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : GestureDetector(
+                                        onTap: () async {
+                                          setState(() {
+                                            _isLoadingLocation = true;
+                                          });
+
+                                          final uid = FirebaseAuth
+                                              .instance
+                                              .currentUser
+                                              ?.uid;
+                                          String? fetchedLocation;
+                                          GeoPoint? fetchedGeoPoint;
+
+                                          if (uid != null) {
+                                            try {
+                                              final doc =
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('users')
+                                                      .doc(uid)
+                                                      .get();
+                                              if (doc.exists) {
+                                                fetchedLocation =
+                                                    doc.data()?['locationName']
+                                                        as String?;
+                                                fetchedGeoPoint =
+                                                    doc.data()?['location']
+                                                        as GeoPoint?;
+                                              }
+                                            } catch (e) {
+                                              // ignore
+                                            }
+                                          }
+
+                                          await Future.delayed(
+                                            const Duration(milliseconds: 600),
+                                          );
+
+                                          if (context.mounted) {
+                                            if (fetchedLocation != null &&
+                                                fetchedLocation.isNotEmpty &&
+                                                fetchedGeoPoint != null) {
+                                              context
+                                                  .read<AddItemCubit>()
+                                                  .updateLocation(
+                                                    fetchedLocation,
+                                                    fetchedGeoPoint,
+                                                  );
+                                            } else {
+                                              showFeedbackDialog(
+                                                context,
+                                                icon:
+                                                    Icons.warning_amber_rounded,
+                                                color: AppColors.warning,
+                                                title: 'Location Not Found',
+                                                message:
+                                                    'We could not find a saved location in your profile.',
+                                              );
+                                            }
+                                            setState(() {
+                                              _isLoadingLocation = false;
+                                            });
+                                          }
+                                        },
+                                        child: const Text(
+                                          'Use current location',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.primaryColor,
+                                          ),
+                                        ),
+                                      ),
                               ),
                             ],
                           ),
@@ -268,15 +323,16 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         verticalSpace(20),
                         // Confirmation checkbox
                         GestureDetector(
-                          onTap: () {
-                            context.read<AddItemCubit>().toggleAgreedToTerms();
-                          },
+                          onTap: () => context
+                              .read<AddItemCubit>()
+                              .toggleAgreedToTerms(),
+
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: state.agreedToTerms
-                                  ? AppColors.success.withOpacity(.07)
+                                  ? AppColors.success.withValues(alpha: .07)
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(17),
                               border: Border.all(
@@ -346,7 +402,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                   ),
                   child: SizedBox(
                     width: double.infinity,
-                    height: 58,
+                    height: 52.h,
                     child: ElevatedButton(
                       onPressed: state.agreedToTerms && !isPublishing
                           ? () => _publishListing(context)
@@ -354,7 +410,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor,
                         disabledBackgroundColor: AppColors.primaryColor
-                            .withOpacity(.6),
+                            .withValues(alpha: 0.6),
                         foregroundColor: Colors.white,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
@@ -365,24 +421,16 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           ? const SizedBox(
                               width: 23,
                               height: 23,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                color: Colors.white,
+                              child: CupertinoActivityIndicator(
+                                color: AppColors.white,
                               ),
                             )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Publish Listing',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                horizontalSpace(12),
-                                Icon(Icons.arrow_upward_rounded),
-                              ],
+                          : Text(
+                              'Publish Listing',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                     ),
                   ),
@@ -396,6 +444,18 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
   }
 
   void _publishListing(BuildContext context) {
+    final state = context.read<AddItemCubit>().state;
+    if (state.location.isEmpty) {
+      showFeedbackDialog(
+        context,
+        icon: Icons.location_off_outlined,
+        color: AppColors.warning,
+        title: 'Location Required',
+        message:
+            'Please tap "Use your current location" to attach your default address before publishing.',
+      );
+      return;
+    }
     context.read<AddItemCubit>().publishListing();
   }
 
@@ -426,16 +486,15 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                   size: 42,
                 ),
               ),
-              // const SizedBox(height: 20),
               verticalSpace(20),
               Text(
-                'Listing Published!',
+                'Listing Published',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w800),
               ),
               verticalSpace(10),
               Text(
-                'Your item is now available for renters to discover.',
+                'Your item is now available for renters to discover',
                 textAlign: TextAlign.center,
                 style: TextStyle(height: 1.5.h, color: Color(0xFF6D7478)),
               ),
@@ -658,3 +717,4 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
     );
   }
 }
+// 661
