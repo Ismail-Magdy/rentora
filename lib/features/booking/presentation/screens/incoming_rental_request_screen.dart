@@ -66,7 +66,10 @@ class IncomingRentalRequestScreen extends StatelessWidget {
                 durationText: durationText,
               ),
               verticalSpace(16),
-              const IncomingRequestRenterCard(
+              IncomingRequestRenterCard(
+                bookingId: booking?.bookingId,
+                renterId: booking?.renterId,
+                itemTitle: title,
                 renterName: 'Sara Ahmed',
                 avatarUrl: 'https://i.pravatar.cc/150?img=47',
                 rating: '4.8',

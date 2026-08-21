@@ -10,7 +10,20 @@ class ChatsFirestoreService {
     required String chatId,
     required Map<String, dynamic> chatData,
   }) async {
-    await _firestore.collection("chats").doc(chatId).set(chatData);
+    await _firestore
+        .collection("chats")
+        .doc(chatId)
+        .set(chatData, SetOptions(merge: true));
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserChatsStream({
+    required String userId,
+  }) {
+    return _firestore
+        .collection('chats')
+        .where('participants', arrayContains: userId)
+        .orderBy('lastMessageTime', descending: true)
+        .snapshots();
   }
 
   /// Sends a new message inside a specific chat room
@@ -37,10 +50,10 @@ class ChatsFirestoreService {
         .snapshots();
   }
 
-  /* 
+  /*
   CLASS SUMMARY:
-  This class is responsible for the real-time communication feature. It creates 
-  chat sessions tied to specific bookings, handles sending messages to subcollections, 
+  This class is responsible for the real-time communication feature. It creates
+  chat sessions tied to specific bookings, handles sending messages to subcollections,
   and returns live Streams to update the UI instantly without refreshing.
   */
 }
