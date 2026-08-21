@@ -36,6 +36,9 @@ import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rentora/features/auth/data/repos/auth_repo.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
+import 'package:rentora/features/favorites/data/repos/favorites_repo.dart';
+import 'package:rentora/features/favorites/data/repos/favorites_repo_impl.dart';
+import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -171,16 +174,17 @@ Future<void> initGetIt() async {
   );
 
   /// Search
-getIt.registerLazySingleton<SearchRepo>(
-  () => SearchRepoImpl(
-    getIt<FirebaseFirestore>(),
-  ),
-);
+  getIt.registerLazySingleton<SearchRepo>(
+    () => SearchRepoImpl(getIt<FirebaseFirestore>()),
+  );
 
-getIt.registerFactory<SearchCubit>(
-  () => SearchCubit(
-    getIt<SearchRepo>(),
-  ),
-);
+  getIt.registerFactory<SearchCubit>(() => SearchCubit(getIt<SearchRepo>()));
 
+  /// Favorites
+  getIt.registerLazySingleton<FavoritesRepo>(
+    () => FavoritesRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
+  );
+  getIt.registerLazySingleton<FavoritesCubit>(
+    () => FavoritesCubit(getIt<SharedPreferences>()),
+  );
 }
