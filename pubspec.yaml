@@ -60,6 +60,8 @@ dependencies:
   geolocator: ^14.0.2
   dart_geohash: ^2.1.0
   table_calendar: ^3.2.1
+  firebase_messaging: ^16.5.0
+  flutter_local_notifications: ^22.3.0
 
 dev_dependencies:
   flutter_test:

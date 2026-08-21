@@ -17,6 +17,9 @@ import 'package:rentora/features/category_details/manager/category_details_cubit
 import 'package:rentora/features/home/data/repos/home_repo.dart';
 import 'package:rentora/features/home/data/repos/home_repo_impl.dart';
 import 'package:rentora/features/home/manager/home_cubit.dart';
+import 'package:rentora/features/notifications/data/repos/notifications_repo.dart';
+import 'package:rentora/features/notifications/data/repos/notifications_repo_impl.dart';
+import 'package:rentora/features/notifications/manager/notifications_cubit.dart';
 import 'package:rentora/features/item_details/data/repos/item_details_repo.dart';
 import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
@@ -117,6 +120,12 @@ Future<void> initGetIt() async {
 
   getIt.registerFactory<ItemDetailsCubit>(
     () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
+  );
+
+  // Notifications
+  getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepoImpl());
+  getIt.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(getIt<NotificationsRepo>()),
   );
 
   /// Category Details
