@@ -94,6 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? _dummyProducts
                 : (state as HomeLoaded).products;
 
+            final double? userLat = isLoading ? null : (state as HomeLoaded).userLatitude;
+            final double? userLng = isLoading ? null : (state as HomeLoaded).userLongitude;
+
             return Skeletonizer(
               enabled: isLoading,
               child: CustomScrollView(
@@ -108,6 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeProductsGrid(
                     products: displayProducts,
                     isLoading: isLoading,
+                    userLatitude: userLat,
+                    userLongitude: userLng,
                   ),
                   //
                   SliverToBoxAdapter(child: verticalSpace(100)),

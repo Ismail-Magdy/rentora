@@ -58,7 +58,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
         chat.participantAvatars!.containsKey(otherId)) {
       return chat.participantAvatars![otherId];
     }
-    return chat.itemImageUrl;
+    // The listing image is not a profile picture. Only use the avatar
+    // explicitly stored for the other participant.
+    return null;
   }
 
   @override

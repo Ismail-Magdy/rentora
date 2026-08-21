@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,6 +12,11 @@ class AddItemState extends Equatable {
   final double dailyPrice;
   final double securityDeposit;
   final String location;
+  final GeoPoint? locationGeoPoint;
+  final double rating;
+  final List<String> keyFeatures;
+  final DateTime? availableFrom;
+  final DateTime? availableTo;
 
   // Images
   final XFile? mainPhoto; // Main photo captured in Step 1
@@ -39,6 +45,11 @@ class AddItemState extends Equatable {
     this.dailyPrice = 0,
     this.securityDeposit = 0,
     this.location = '',
+    this.locationGeoPoint,
+    this.rating = 0.0,
+    this.keyFeatures = const [],
+    this.availableFrom,
+    this.availableTo,
     this.mainPhoto,
     this.images = const [],
     this.existingImageUrls = const [],
@@ -59,6 +70,11 @@ class AddItemState extends Equatable {
     dailyPrice,
     securityDeposit,
     location,
+    locationGeoPoint,
+    rating,
+    keyFeatures,
+    availableFrom,
+    availableTo,
     mainPhoto,
     images,
     existingImageUrls,
@@ -78,6 +94,11 @@ class AddItemState extends Equatable {
     double? dailyPrice,
     double? securityDeposit,
     String? location,
+    GeoPoint? locationGeoPoint,
+    double? rating,
+    List<String>? keyFeatures,
+    DateTime? availableFrom,
+    DateTime? availableTo,
     XFile? mainPhoto,
     bool clearMainPhoto = false,
     List<XFile>? images,
@@ -97,6 +118,11 @@ class AddItemState extends Equatable {
       dailyPrice: dailyPrice ?? this.dailyPrice,
       securityDeposit: securityDeposit ?? this.securityDeposit,
       location: location ?? this.location,
+      locationGeoPoint: locationGeoPoint ?? this.locationGeoPoint,
+      rating: rating ?? this.rating,
+      keyFeatures: keyFeatures ?? this.keyFeatures,
+      availableFrom: availableFrom ?? this.availableFrom,
+      availableTo: availableTo ?? this.availableTo,
       mainPhoto: clearMainPhoto ? null : (mainPhoto ?? this.mainPhoto),
       images: images ?? this.images,
       existingImageUrls: existingImageUrls ?? this.existingImageUrls,
@@ -124,6 +150,9 @@ class AddItemState extends Equatable {
         condition.isNotEmpty &&
         dailyPrice > 0 &&
         securityDeposit >= 0 &&
+        keyFeatures.length >= 3 &&
+        availableFrom != null &&
+        availableTo != null &&
         (mainPhoto != null || images.isNotEmpty || existingImageUrls.isNotEmpty);
   }
 
@@ -137,6 +166,8 @@ class AddItemState extends Equatable {
     if (condition.isEmpty) return 'Please select a condition';
     if (dailyPrice <= 0) return 'Daily price must be greater than 0';
     if (securityDeposit < 0) return 'Security deposit cannot be negative';
+    if (keyFeatures.length < 3) return 'Please select at least 3 key features';
+    if (availableFrom == null || availableTo == null) return 'Please select availability dates';
 
     return null;
   }

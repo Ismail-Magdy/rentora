@@ -6,6 +6,7 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/helpers/verification_guard.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/features/archive/presentation/screens/archive_screen.dart';
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_list_screen.dart';
 
@@ -19,13 +20,12 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    ChatListScreen(),
-    Center(child: Text('Archive Screen')),
-    Center(child: Text('Settings Screen')),
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const ChatListScreen(),
+    const ArchiveScreen(),
+    const Center(child: Text('Settings Screen')),
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

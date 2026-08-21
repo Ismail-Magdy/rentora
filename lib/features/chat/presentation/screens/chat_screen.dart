@@ -95,6 +95,10 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: BlocBuilder<ChatCubit, ChatState>(
+              // Uploading an image and its completion are transient states.
+              // Keep the currently rendered message list while they are active.
+              buildWhen: (previous, current) =>
+                  current is ChatMessagesLoaded || current is ChatLoading,
               builder: (context, state) {
                 if (state is ChatLoading) {
                   return const Center(
@@ -124,7 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   if (state.messages.isEmpty) {
                     return const ChatEmptyState(
                       title: 'No messages yet',
-                      message: 'Say hello to start the conversation! 👋',
+                      message: 'Say hello to start the conversation!',
                       icon: Icons.chat_bubble_outline_rounded,
                     );
                   }
@@ -141,10 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           state.messages[state.messages.length - 1 - index];
                       final isMine = message.senderId == currentUserId;
 
-                      return MessageBubble(
-                        message: message,
-                        isMine: isMine,
-                      );
+                      return MessageBubble(message: message, isMine: isMine);
                     },
                   );
                 }
@@ -168,4 +169,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-

@@ -23,6 +23,17 @@ class HomeCubit extends Cubit<HomeState> {
       _categories = categories;
 
       final productsResult = await _homeRepo.getProducts();
+      final locationResult = await _homeRepo.getUserLocation();
+      
+      double? userLat;
+      double? userLng;
+      
+      locationResult.fold((_) {}, (geoPoint) {
+        if (geoPoint != null) {
+          userLat = geoPoint.latitude;
+          userLng = geoPoint.longitude;
+        }
+      });
 
       productsResult.fold((failure) => emit(HomeError(failure.message)), (
         products,
@@ -33,6 +44,8 @@ class HomeCubit extends Cubit<HomeState> {
             categories: _categories,
             products: _products,
             selectedCategory: '',
+            userLatitude: userLat,
+            userLongitude: userLng,
           ),
         );
       });

@@ -10,11 +10,15 @@ import 'package:rentora/features/home/presentation/widgets/product_card.dart';
 class HomeProductsGrid extends StatelessWidget {
   final List<ProductModel> products;
   final bool isLoading;
+  final double? userLatitude;
+  final double? userLongitude;
 
   const HomeProductsGrid({
     super.key,
     required this.products,
     this.isLoading = false,
+    this.userLatitude,
+    this.userLongitude,
   });
 
   @override
@@ -64,7 +68,11 @@ class HomeProductsGrid extends StatelessWidget {
                 );
               }
             },
-            child: ProductCard(product: products[index]),
+            child: ProductCard(
+              product: products[index],
+              userLat: userLatitude,
+              userLng: userLongitude,
+            ),
           );
         }, childCount: products.length),
       ),

@@ -105,7 +105,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                         //
                         verticalSpace(24),
                         //
-                        const ItemAvailabilitySection(),
+                        ItemAvailabilitySection(item: item),
                         //
                         verticalSpace(40),
                         //

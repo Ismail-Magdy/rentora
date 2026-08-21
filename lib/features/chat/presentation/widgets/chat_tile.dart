@@ -9,11 +9,7 @@ class ChatTile extends StatelessWidget {
   final ChatModel chat;
   final VoidCallback onTap;
 
-  const ChatTile({
-    super.key,
-    required this.chat,
-    required this.onTap,
-  });
+  const ChatTile({super.key, required this.chat, required this.onTap});
 
   String _getOtherParticipantId(String currentUserId) {
     return chat.participants.firstWhere(
@@ -43,7 +39,8 @@ class ChatTile extends StatelessWidget {
         chat.participantAvatars!.containsKey(otherId)) {
       return chat.participantAvatars![otherId];
     }
-    return chat.itemImageUrl;
+    // The listing image must not be used as the participant's avatar.
+    return null;
   }
 
   String _formatTimestamp(DateTime? dateTime) {
@@ -89,9 +86,8 @@ class ChatTile extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16.r),
-        child: InkWell(
+        child: GestureDetector(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16.r),
           child: Padding(
             padding: EdgeInsets.all(12.r),
             child: Row(
@@ -188,4 +184,3 @@ class ChatTile extends StatelessWidget {
     );
   }
 }
-

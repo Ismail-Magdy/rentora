@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
-import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
+import 'package:rentora/features/add_item/manager/add_item_state.dart';
+import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 import 'package:rentora/features/add_item/presentation/widgets/price_field.dart';
 import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
 
@@ -23,10 +26,22 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController depositController = TextEditingController();
+  final TextEditingController ratingController = TextEditingController();
 
   String? selectedCondition;
 
   final List<String> conditions = ['Like New', 'Excellent', 'Good', 'Fair'];
+
+  final List<String> availableFeatures = [
+    'Wireless',
+    'Portable',
+    'HD 4K',
+    'Bluetooth',
+    'Waterproof',
+    'Rechargeable',
+    'Lightweight',
+    'Heavy Duty',
+  ];
 
   @override
   void initState() {
@@ -41,6 +56,9 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     depositController.text = state.securityDeposit > 0
         ? state.securityDeposit.toString()
         : '';
+    ratingController.text = state.rating > 0
+        ? state.rating.toString()
+        : '';
     selectedCondition = state.condition.isNotEmpty ? state.condition : null;
   }
 
@@ -50,6 +68,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     descriptionController.dispose();
     priceController.dispose();
     depositController.dispose();
+    ratingController.dispose();
     super.dispose();
   }
 
@@ -58,29 +77,34 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     final description = descriptionController.text.trim();
     final price = double.tryParse(priceController.text) ?? 0;
     final deposit = double.tryParse(depositController.text) ?? 0;
+    final rating = double.tryParse(ratingController.text) ?? -1.0;
+    final cubit = context.read<AddItemCubit>();
 
     if (title.isEmpty ||
         description.isEmpty ||
         price <= 0 ||
         deposit < 0 ||
-        selectedCondition == null) {
+        rating < 0.0 ||
+        rating > 5.0 ||
+        selectedCondition == null ||
+        cubit.state.keyFeatures.length < 3) {
       showFeedbackDialog(
         context,
         icon: Icons.warning_amber_rounded,
         color: AppColors.warning,
         title: 'Incomplete Information',
-        message: 'Please complete all required fields.',
+        message:
+            'Please complete all required fields. Rating must be between 0.0 and 5.0, and at least 3 features must be selected.',
       );
       return;
     }
-
-    final cubit = context.read<AddItemCubit>();
 
     cubit.updateTitle(title);
     cubit.updateDescription(description);
     cubit.updateDailyPrice(price);
     cubit.updateSecurityDeposit(deposit);
     cubit.updateCondition(selectedCondition!);
+    cubit.updateRating(rating);
 
     Navigator.pushNamed(
       context,
@@ -98,90 +122,17 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
         child: Column(
           children: [
             // Header (unchanged)
-            Padding(
-              padding: .symmetric(horizontal: 20.w, vertical: 12.h),
-              child: Row(
-                children: [
-                  //
-                  HeaderButton(
-                    icon: Icons.arrow_back,
-                    onTap: () => Navigator.pop(context),
-                  ),
-                  //
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        'Add New Listing',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  HeaderButton(
-                    icon: Icons.close,
-                    onTap: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
+            CustomAppBar(text: "Add New Listing"),
+
+            AddItemProgressBar(
+              title: "Item details",
+              stepNumber: "Step 4 of 7",
             ),
-            // Progress (unchanged)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Item details',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.grey,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        'Step 4 of 6',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  verticalSpace(10),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Container(
-                            height: 6.h,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: 6.h,
-                            color: AppColors.grey.withOpacity(0.3),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
             // Content (unchanged, but we may want to use Cubit state for initial values)
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+                padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 20.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -241,7 +192,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        horizontalSpace(12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,45 +212,114 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                       ],
                     ),
                     verticalSpace(18),
-                    const SectionTitle(title: 'Item condition', required: true),
+                    const SectionTitle(title: 'Item condition & Rating', required: true),
                     verticalSpace(8),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.grey.withOpacity(0.3),
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: selectedCondition,
-                          isExpanded: true,
-                          hint: const Text(
-                            'Select condition',
-                            style: TextStyle(color: AppColors.grey),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: AppColors.grey.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: selectedCondition,
+                                isExpanded: true,
+                                hint: const Text(
+                                  'Condition',
+                                  style: TextStyle(color: AppColors.grey),
+                                ),
+                                icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                items: conditions.map((condition) {
+                                  return DropdownMenuItem<String>(
+                                    value: condition,
+                                    child: Text(condition),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedCondition = value;
+                                  });
+                                },
+                              ),
+                            ),
                           ),
-                          icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                          items: conditions.map((condition) {
-                            return DropdownMenuItem<String>(
-                              value: condition,
-                              child: Text(condition),
+                        ),
+                        horizontalSpace(12),
+                        Expanded(
+                          child: CustomTextFormField(
+                            controller: ratingController,
+                            hintText: 'Rating (0-5)',
+                            icon: Icons.star_border,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          ),
+                        ),
+                      ],
+                    ),
+                    verticalSpace(22),
+                    const SectionTitle(
+                      title: 'Key Features (Select at least 3)',
+                      required: true,
+                    ),
+                    verticalSpace(12),
+                    BlocBuilder<AddItemCubit, AddItemState>(
+                      builder: (context, state) {
+                        return Wrap(
+                          spacing: 8.w,
+                          runSpacing: 10.h,
+                          children: availableFeatures.map((feature) {
+                            final isSelected = state.keyFeatures.contains(
+                              feature,
+                            );
+                            return FilterChip(
+                              label: Text(
+                                feature,
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color: isSelected
+                                      ? AppColors.white
+                                      : AppColors.black,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
+                                ),
+                              ),
+                              selected: isSelected,
+                              showCheckmark: false,
+                              onSelected: (_) {
+                                context.read<AddItemCubit>().toggleKeyFeature(
+                                  feature,
+                                );
+                              },
+                              selectedColor: AppColors.primaryColor,
+                              backgroundColor: AppColors.white,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 4.w,
+                                vertical: 8.h,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(
+                                  color: isSelected
+                                      ? AppColors.primaryColor
+                                      : AppColors.grey.withValues(alpha: 0.3),
+                                ),
+                              ),
                             );
                           }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCondition = value;
-                            });
-                          },
-                        ),
-                      ),
+                        );
+                      },
                     ),
-                    verticalSpace(18),
+                    verticalSpace(22),
                     Container(
                       padding: EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withOpacity(.06),
+                        color: AppColors.primaryColor.withValues(alpha: 0.06),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
@@ -331,68 +351,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
             // Bottom buttons
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 56.h,
-                      child: OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: AppColors.white,
-                          side: BorderSide.none,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                        child: Text(
-                          'Back',
-                          style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  horizontalSpace(10),
-                  Expanded(
-                    flex: 2,
-                    child: SizedBox(
-                      height: 56.h,
-                      child: ElevatedButton(
-                        onPressed: onNext,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          foregroundColor: AppColors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Next',
-                              style: TextStyle(
-                                fontSize: 17.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            horizontalSpace(8),
-                            Icon(Icons.arrow_forward_rounded),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: CustomButton(text: "Next", onPressed: onNext),
             ),
           ],
         ),
@@ -400,3 +359,4 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     );
   }
 }
+// 403

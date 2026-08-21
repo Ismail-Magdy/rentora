@@ -6,12 +6,14 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/manager/add_item_state.dart';
+import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 import 'package:rentora/features/add_item/presentation/widgets/add_photo_card.dart';
 import 'package:rentora/features/add_item/presentation/widgets/additional_photo_card.dart';
-import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
 import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
 
 class AddPhotosScreen extends StatefulWidget {
@@ -38,86 +40,9 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
             child: Column(
               children: [
                 // Header
-                Padding(
-                  padding: .symmetric(horizontal: 20.w, vertical: 12.h),
-                  child: Row(
-                    children: [
-                      HeaderButton(
-                        icon: Icons.arrow_back,
-                        onTap: () => Navigator.pop(context),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Add New Listing',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      HeaderButton(
-                        icon: Icons.close,
-                        onTap: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-                ),
-                // Progress (unchanged)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.w),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Photos',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-
-                              color: AppColors.grey.withOpacity(0.7),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Step 5 of 6',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      verticalSpace(10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 5,
-                              child: Container(
-                                height: 6.h,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                height: 6.h,
-                                color: AppColors.grey.withOpacity(0.3),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                CustomAppBar(text: "Add New Listing"),
+                // Progress
+                AddItemProgressBar(title: "Photos", stepNumber: "Step 5 of 7"),
                 // Content
                 Expanded(
                   child: SingleChildScrollView(
@@ -261,34 +186,9 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                 // Continue button
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () => _onContinue(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Continue',
-                            style: TextStyle(
-                              fontSize: 17.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          horizontalSpace(8),
-                          Icon(Icons.arrow_forward_rounded),
-                        ],
-                      ),
-                    ),
+                  child: CustomButton(
+                    text: "Continue",
+                    onPressed: () => _onContinue(context),
                   ),
                 ),
               ],
@@ -300,7 +200,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
   }
 
-  // ========== Image Picker Methods ==========
+  //  Image Picker Methods
   Future<void> _pickImage(BuildContext context, {int? replaceIndex}) async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
@@ -333,7 +233,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
   void _onContinue(BuildContext context) {
     Navigator.pushNamed(
       context,
-      Routes.reviewScreen,
+      Routes.addItemAvailabilityScreen,
       arguments: context.read<AddItemCubit>(),
     );
   }
@@ -374,4 +274,4 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
   }
 }
-// 388
+// 

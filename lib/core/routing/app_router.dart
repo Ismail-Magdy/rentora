@@ -8,11 +8,13 @@ import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/archive/presentation/screens/archive_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_item_details_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_photos_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/choose_category_screens.dart';
 import 'package:rentora/features/add_item/presentation/screens/data_entry_choice_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/initial_photo_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/add_item_availability_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
@@ -41,6 +43,7 @@ import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
 import 'package:rentora/features/chat/data/models/chat_screen_args.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
+import 'package:rentora/features/chat/manager/chat_state.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
@@ -185,6 +188,17 @@ class AppRouter {
           ),
         );
 
+      case Routes.addItemAvailabilityScreen:
+        final cubit = settings.arguments as AddItemCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(
+              value: cubit,
+              child: const AddItemAvailabilityScreen(),
+            ),
+          ),
+        );
+
       case Routes.reviewScreen:
         final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
@@ -225,9 +239,20 @@ class AppRouter {
             MultiBlocProvider(
               providers: [
                 BlocProvider(create: (context) => getIt<HomeCubit>()),
+                BlocProvider(create: (context) => getIt<BookingCubit>()),
                 BlocProvider(create: (context) => getIt<ChatCubit>()),
               ],
               child: const RootScreen(),
+            ),
+          ),
+        );
+
+      case Routes.archiveScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<BookingCubit>(),
+              child: const ArchiveScreen(),
             ),
           ),
         );
@@ -237,19 +262,35 @@ class AppRouter {
             ? args.chatId
             : (args is String ? args : '');
         final receiverName = args is ChatScreenArgs ? args.receiverName : null;
-        final receiverAvatar =
-            args is ChatScreenArgs ? args.receiverAvatar : null;
+        final receiverAvatar = args is ChatScreenArgs
+            ? args.receiverAvatar
+            : null;
         final itemTitle = args is ChatScreenArgs ? args.itemTitle : null;
 
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(
               create: (_) => getIt<ChatCubit>(),
-              child: ChatScreen(
-                chatId: chatId,
-                receiverName: receiverName,
-                receiverAvatar: receiverAvatar,
-                itemTitle: itemTitle,
+              child: BlocListener<ChatCubit, ChatState>(
+                listenWhen: (previous, current) =>
+                    current is ChatImageUploadSuccess || current is ChatError,
+                listener: (context, state) {
+                  if (state is ChatImageUploadSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Image sent successfully')),
+                    );
+                  } else if (state is ChatError) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                  }
+                },
+                child: ChatScreen(
+                  chatId: chatId,
+                  receiverName: receiverName,
+                  receiverAvatar: receiverAvatar,
+                  itemTitle: itemTitle,
+                ),
               ),
             ),
           ),

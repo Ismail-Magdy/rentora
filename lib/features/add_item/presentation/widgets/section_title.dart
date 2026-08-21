@@ -1,17 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class SectionTitle extends StatelessWidget {
-   const SectionTitle({
-    required this.title,
-    this.required = false,
-  });
+  const SectionTitle({super.key, required this.title, this.required = false});
   final String title;
   final bool required;
-
- 
 
   @override
   Widget build(BuildContext context) {
