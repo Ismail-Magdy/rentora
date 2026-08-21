@@ -7,6 +7,8 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
+import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
+import 'package:rentora/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/archive/presentation/screens/archive_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_item_details_screen.dart';
@@ -70,15 +72,18 @@ class AppRouter {
   Widget _withNetwork(Widget screen) {
     return BlocProvider.value(
       value: getIt<NetworkCubit>(),
-      child: BlocBuilder<NetworkCubit, NetworkState>(
-        builder: (context, state) {
-          return Stack(
-            children: [
-              screen,
-              if (state is NetworkDisconnected) const OfflineModeWidget(),
-            ],
-          );
-        },
+      child: BlocProvider.value(
+        value: getIt<FavoritesCubit>(),
+        child: BlocBuilder<NetworkCubit, NetworkState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                screen,
+                if (state is NetworkDisconnected) const OfflineModeWidget(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -303,7 +308,20 @@ class AppRouter {
 
       /// Home Screen
       case Routes.homeScreen:
-        return MaterialPageRoute(builder: (_) => _withNetwork( BlocProvider(create: (context) => getIt<HomeCubit>(), child: const HomeScreen())));
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<HomeCubit>(),
+              child: const HomeScreen(),
+            ),
+          ),
+        );
+
+      /// Favorites Screen
+      case Routes.favoritesScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const FavoritesScreen()),
+        );
 
       /// Category Details Screen
       case Routes.categoryDetailsScreen:
@@ -557,7 +575,7 @@ class AppRouter {
             ),
           ),
         );
-        case Routes.searchFilterScreen:
+      case Routes.searchFilterScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(
@@ -566,7 +584,7 @@ class AppRouter {
             ),
           ),
         );
-        case Routes.searchResultsScreen:
+      case Routes.searchResultsScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(

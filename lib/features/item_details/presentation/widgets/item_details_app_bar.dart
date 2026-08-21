@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/extensions.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
 
 class ItemDetailsAppBar extends StatefulWidget {
@@ -39,13 +39,14 @@ class _ItemDetailsAppBarState extends State<ItemDetailsAppBar> {
       scrolledUnderElevation: 0,
       actions: [
         Padding(
-          padding: .only(right: 20.w),
+          padding: .only(right: 20.w, left: 15.w),
           child: GestureDetector(
             onTap: () {},
             child: const Icon(Icons.share_outlined, color: Colors.black87),
           ),
         ),
       ],
+      //
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           alignment: .bottomCenter,

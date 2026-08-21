@@ -22,6 +22,7 @@ class Routes {
   static const String viewMapScreen = "/viewMapScreen";
   //
   static const String notificationsScreen = "/notificationsScreen";
+  static const String favoritesScreen = "/favoritesScreen";
 
   /// Add Item flow
   static const String initialPhotoScreen = "/initialPhotoScreen";
@@ -60,5 +61,5 @@ class Routes {
   static const String verificationPendingScreen = "/verificationPendingScreen";
   static const String searchScreen = "/searchScreen";
   static const String searchResultsScreen = "/searchResultsScreen";
-  static const String  searchFilterScreen = "/searchFilterScreen";
+  static const String searchFilterScreen = "/searchFilterScreen";
 }
