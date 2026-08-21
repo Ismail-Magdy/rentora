@@ -41,6 +41,9 @@ import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
+import 'package:rentora/features/search/manager/search_cubit.dart';
+import 'package:rentora/features/search/presentation/screens/search_filter_screen.dart';
+import 'package:rentora/features/search/presentation/screens/search_screen.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
@@ -233,7 +236,7 @@ class AppRouter {
 
       /// Home Screen
       case Routes.homeScreen:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => _withNetwork( BlocProvider(create: (context) => getIt<HomeCubit>(), child: const HomeScreen())));
 
       /// Category Details Screen
       case Routes.categoryDetailsScreen:
@@ -465,6 +468,33 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             _withVerificationCubit(const VerificationPendingScreen(), args),
+          ),
+        );
+      case Routes.searchScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchScreen(),
+            ),
+          ),
+        );
+        case Routes.searchFilterScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchFilterScreen(),
+            ),
+          ),
+        );
+        case Routes.searchResultsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchScreen(),
+            ),
           ),
         );
 
