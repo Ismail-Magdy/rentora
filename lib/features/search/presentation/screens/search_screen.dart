@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rentora/core/routing/app_router.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/manager/search_state.dart';
-import 'package:rentora/features/search/presentation/screens/search_filter_screen.dart';
 import 'package:rentora/features/search/presentation/screens/search_results_screen.dart';
 import 'package:rentora/features/search/presentation/widgets/search_input.dart';
 
