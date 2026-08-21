@@ -28,9 +28,7 @@ class _SearchInputState extends State<SearchInput> {
   void initState() {
     super.initState();
 
-    _controller = TextEditingController(
-      text: widget.initialValue ?? '',
-    );
+    _controller = TextEditingController(text: widget.initialValue ?? '');
   }
 
   @override
@@ -45,10 +43,8 @@ class _SearchInputState extends State<SearchInput> {
       height: 54.h,
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: AppColors.lightGrey,
-        ),
+        borderRadius: .circular(16.r),
+        border: Border.all(color: AppColors.lightGrey),
         boxShadow: [
           BoxShadow(
             color: AppColors.black.withValues(alpha: 0.04),
@@ -65,7 +61,6 @@ class _SearchInputState extends State<SearchInput> {
             size: 24.sp,
             color: AppColors.primaryColor,
           ),
-          // SizedBox(width: 10.w),
           horizontalSpace(10),
           Expanded(
             child: TextField(
@@ -73,12 +68,9 @@ class _SearchInputState extends State<SearchInput> {
               onChanged: widget.onChanged,
               onSubmitted: widget.onSubmitted,
               textInputAction: TextInputAction.search,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColors.black,
-              ),
+              style: TextStyle(fontSize: 14.sp, color: AppColors.black),
               decoration: InputDecoration(
-                hintText: 'Search items...',
+                hintText: 'Search items',
                 hintStyle: TextStyle(
                   fontSize: 14.sp,
                   color: AppColors.darkGrey,
@@ -88,11 +80,7 @@ class _SearchInputState extends State<SearchInput> {
               ),
             ),
           ),
-          Container(
-            width: 1.w,
-            height: 28.h,
-            color: AppColors.lightGrey,
-          ),
+          Container(width: 1.w, height: 28.h, color: AppColors.lightGrey),
           IconButton(
             onPressed: widget.onFilterPressed,
             icon: Icon(
@@ -102,7 +90,7 @@ class _SearchInputState extends State<SearchInput> {
             ),
             tooltip: 'Filters',
           ),
-          horizontalSpace(4)
+          horizontalSpace(4),
         ],
       ),
     );

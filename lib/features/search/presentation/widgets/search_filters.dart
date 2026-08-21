@@ -30,12 +30,7 @@ class _SearchFiltersState extends State<SearchFilters> {
     'Travel',
   ];
 
-  static const List<String> _conditions = [
-    'New',
-    'Like New',
-    'Good',
-    'Fair',
-  ];
+  static const List<String> _conditions = ['New', 'Like New', 'Good', 'Fair'];
 
   @override
   void initState() {
@@ -51,9 +46,7 @@ class _SearchFiltersState extends State<SearchFilters> {
       text: filter.maxPrice?.toString() ?? '',
     );
 
-    _locationController = TextEditingController(
-      text: filter.location ?? '',
-    );
+    _locationController = TextEditingController(text: filter.location ?? '');
   }
 
   @override
@@ -72,12 +65,7 @@ class _SearchFiltersState extends State<SearchFilters> {
 
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(
-            16.w,
-            10.h,
-            16.w,
-            30.h,
-          ),
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 30.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -91,7 +79,6 @@ class _SearchFiltersState extends State<SearchFilters> {
                 ),
               ),
 
-            
               verticalSpace(26),
 
               FilterSection(
@@ -101,19 +88,14 @@ class _SearchFiltersState extends State<SearchFilters> {
                   minController: _minPriceController,
                   maxController: _maxPriceController,
                   onMinChanged: (value) {
-                    cubit.updateMinPrice(
-                      double.tryParse(value),
-                    );
+                    cubit.updateMinPrice(double.tryParse(value));
                   },
                   onMaxChanged: (value) {
-                    cubit.updateMaxPrice(
-                      double.tryParse(value),
-                    );
+                    cubit.updateMaxPrice(double.tryParse(value));
                   },
                 ),
               ),
 
-             
               verticalSpace(26),
 
               FilterSection(
@@ -126,8 +108,7 @@ class _SearchFiltersState extends State<SearchFilters> {
                 ),
               ),
 
-              
-               verticalSpace(26),
+              verticalSpace(26),
 
               FilterSection(
                 title: 'Location',
@@ -196,19 +177,12 @@ class _ConditionChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 10.h,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: selected
-              ? AppColors.primaryColor
-              : AppColors.white,
+          color: selected ? AppColors.primaryColor : AppColors.white,
           borderRadius: BorderRadius.circular(22.r),
           border: Border.all(
-            color: selected
-                ? AppColors.primaryColor
-                : AppColors.lightGrey,
+            color: selected ? AppColors.primaryColor : AppColors.lightGrey,
           ),
         ),
         child: Text(
@@ -216,9 +190,7 @@ class _ConditionChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w600,
-            color: selected
-                ? AppColors.white
-                : AppColors.darkGrey,
+            color: selected ? AppColors.white : AppColors.darkGrey,
           ),
         ),
       ),
@@ -230,31 +202,20 @@ class _LocationField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
-  const _LocationField({
-    required this.controller,
-    required this.onChanged,
-  });
+  const _LocationField({required this.controller, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
       onChanged: (value) {
-        onChanged(
-          value.trim().isEmpty ? null.toString() : value,
-        );
+        onChanged(value.trim().isEmpty ? null.toString() : value);
       },
       textInputAction: TextInputAction.done,
-      style: TextStyle(
-        fontSize: 14.sp,
-        color: AppColors.black,
-      ),
+      style: TextStyle(fontSize: 14.sp, color: AppColors.black),
       decoration: InputDecoration(
         hintText: 'Enter location',
-        hintStyle: TextStyle(
-          fontSize: 13.sp,
-          color: AppColors.darkGrey,
-        ),
+        hintStyle: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
         prefixIcon: Icon(
           Icons.location_on_outlined,
           color: AppColors.primaryColor,
@@ -262,28 +223,18 @@ class _LocationField extends StatelessWidget {
         ),
         filled: true,
         fillColor: AppColors.white,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 14.w,
-          vertical: 15.h,
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 15.h),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(
-            color: AppColors.lightGrey,
-          ),
+          borderSide: const BorderSide(color: AppColors.lightGrey),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(
-            color: AppColors.lightGrey,
-          ),
+          borderSide: const BorderSide(color: AppColors.lightGrey),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(
-            color: AppColors.primaryColor,
-            width: 1.5.w,
-          ),
+          borderSide: BorderSide(color: AppColors.primaryColor, width: 1.5.w),
         ),
       ),
     );

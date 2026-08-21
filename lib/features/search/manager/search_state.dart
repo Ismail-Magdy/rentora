@@ -1,8 +1,6 @@
 import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/search/data/models/search_filter_model.dart';
 
-
-
 enum SearchStatus {
   initial,
   loading,
@@ -12,20 +10,17 @@ enum SearchStatus {
   smartSearchLoading,
 }
 
-
 class SearchState {
   final SearchStatus status;
   final SearchFilterModel filter;
   final List<ProductModel> results;
   final String? errorMessage;
 
-
   const SearchState({
     this.status = SearchStatus.initial,
     this.filter = const SearchFilterModel(),
     this.results = const [],
     this.errorMessage,
-
   });
 
   SearchState copyWith({
@@ -40,9 +35,7 @@ class SearchState {
       status: status ?? this.status,
       filter: filter ?? this.filter,
       results: results ?? this.results,
-      errorMessage:
-          clearError ? null : errorMessage ?? this.errorMessage,
-     
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
     );
   }
 }

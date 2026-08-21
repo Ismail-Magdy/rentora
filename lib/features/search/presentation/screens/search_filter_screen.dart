@@ -48,17 +48,10 @@ class SearchFilterScreen extends StatelessWidget {
           SizedBox(width: 8.w),
         ],
       ),
-      body: const SafeArea(
-        child: SearchFilters(),
-      ),
+      body: const SafeArea(child: SearchFilters()),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            16.w,
-            10.h,
-            16.w,
-            16.h,
-          ),
+          padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 16.h),
           child: SizedBox(
             height: 52.h,
             child: ElevatedButton(
@@ -79,10 +72,7 @@ class SearchFilterScreen extends StatelessWidget {
               ),
               child: Text(
                 'Apply Filters',
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
               ),
             ),
           ),

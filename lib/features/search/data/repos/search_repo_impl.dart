@@ -68,5 +68,4 @@ class SearchRepoImpl implements SearchRepo {
       return Left(ServerFailure('Failed to search products.'));
     }
   }
-
 }

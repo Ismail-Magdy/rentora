@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
-
 class FilterSection extends StatelessWidget {
   final String title;
   final IconData? icon;
@@ -24,12 +23,8 @@ class FilterSection extends StatelessWidget {
         Row(
           children: [
             if (icon != null) ...[
-              Icon(
-                icon,
-                size: 20.sp,
-                color: AppColors.primaryColor,
-              ),
-              
+              Icon(icon, size: 20.sp, color: AppColors.primaryColor),
+
               horizontalSpace(8),
             ],
             Text(
@@ -43,7 +38,7 @@ class FilterSection extends StatelessWidget {
           ],
         ),
         verticalSpace(12),
-       
+
         child,
       ],
     );
