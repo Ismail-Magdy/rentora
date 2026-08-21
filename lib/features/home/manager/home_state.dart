@@ -10,11 +10,15 @@ class HomeLoaded extends HomeState {
   final List<String> categories;
   final List<ProductModel> products;
   final String selectedCategory;
+  final double? userLatitude;
+  final double? userLongitude;
 
   HomeLoaded({
     required this.categories,
     required this.products,
     required this.selectedCategory,
+    this.userLatitude,
+    this.userLongitude,
   });
 }
 

@@ -13,6 +13,7 @@ import 'package:rentora/features/add_item/presentation/screens/add_photos_screen
 import 'package:rentora/features/add_item/presentation/screens/choose_category_screens.dart';
 import 'package:rentora/features/add_item/presentation/screens/data_entry_choice_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/initial_photo_screen.dart';
+import 'package:rentora/features/add_item/presentation/screens/add_item_availability_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/review_publish_screen.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/presentation/screens/forget_password_screen.dart';
@@ -179,6 +180,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider.value(value: cubit, child: const AddPhotosScreen()),
+          ),
+        );
+
+      case Routes.addItemAvailabilityScreen:
+        final cubit = settings.arguments as AddItemCubit;
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider.value(value: cubit, child: const AddItemAvailabilityScreen()),
           ),
         );
 

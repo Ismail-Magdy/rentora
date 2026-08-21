@@ -89,4 +89,27 @@ class HomeRepoImpl implements HomeRepo {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, GeoPoint?>> getUserLocation() async {
+    try {
+      final String userId = _firebaseAuth.currentUser?.uid ?? '';
+      if (userId.isEmpty) {
+        return const Right(null);
+      }
+
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      if (userDoc.exists && userDoc.data() != null) {
+        final data = userDoc.data()!;
+        if (data.containsKey('location') && data['location'] is GeoPoint) {
+          return Right(data['location'] as GeoPoint);
+        }
+      }
+      return const Right(null);
+    } on FirebaseException catch (e) {
+      return Left(ServerFailure(e.message ?? 'Firebase Error: Failed to fetch location.'));
+    } catch (e) {
+      return Left(ServerFailure('An unexpected error occurred while fetching location.'));
+    }
+  }
 }

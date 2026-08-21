@@ -28,7 +28,7 @@ class _ItemDetailsAppBarState extends State<ItemDetailsAppBar> {
         child: const Icon(Icons.arrow_back_ios, color: Colors.black87),
       ),
       title: Text(
-        "Rentora",
+        widget.item.name.isNotEmpty ? widget.item.name : 'Rentora',
         style: TextStyle(
           color: AppColors.secondaryColor,
           fontWeight: .bold,

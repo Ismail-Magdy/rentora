@@ -16,7 +16,10 @@ class ItemDetailsModel {
   final String ownerAvatar;
   final double ownerRating;
   final bool isSuperHost;
+  final String ownerVerificationStatus;
   final List<DateTime> bookedDates;
+  final DateTime? availableFrom;
+  final DateTime? availableTo;
   final bool isFavorite;
 
   ItemDetailsModel({
@@ -35,7 +38,10 @@ class ItemDetailsModel {
     this.ownerAvatar = '',
     this.ownerRating = 0.0,
     this.isSuperHost = false,
+    this.ownerVerificationStatus = 'unverified',
     this.bookedDates = const [],
+    this.availableFrom,
+    this.availableTo,
     this.isFavorite = false,
   });
 
@@ -45,8 +51,8 @@ class ItemDetailsModel {
   ) {
     return ItemDetailsModel(
       id: documentId,
-      name: json['name'] ?? '',
-      price: (json['price'] ?? 0).toDouble(),
+      name: json['title'] ?? json['name'] ?? '',
+      price: (json['dailyPrice'] ?? json['price'] ?? 0).toDouble(),
       rating: (json['rating'] ?? 0).toDouble(),
       reviewsCount: json['reviewsCount'] ?? 0,
       distance: (json['distance'] ?? 0).toDouble(),
@@ -59,6 +65,7 @@ class ItemDetailsModel {
       ownerAvatar: json['ownerAvatar'] ?? '',
       ownerRating: (json['ownerRating'] ?? 0).toDouble(),
       isSuperHost: json['isSuperHost'] ?? false,
+      ownerVerificationStatus: json['ownerVerificationStatus'] ?? 'unverified',
       bookedDates:
           (json['bookedDates'] as List<dynamic>?)?.map((timestamp) {
             if (timestamp is Timestamp) {
@@ -69,6 +76,8 @@ class ItemDetailsModel {
             return DateTime.now();
           }).toList() ??
           [],
+      availableFrom: json['availableFrom'] != null ? DateTime.parse(json['availableFrom']) : null,
+      availableTo: json['availableTo'] != null ? DateTime.parse(json['availableTo']) : null,
       isFavorite: json['isFavorite'] ?? false,
     );
   }
@@ -89,7 +98,10 @@ class ItemDetailsModel {
       'ownerAvatar': ownerAvatar,
       'ownerRating': ownerRating,
       'isSuperHost': isSuperHost,
+      'ownerVerificationStatus': ownerVerificationStatus,
       'bookedDates': bookedDates,
+      'availableFrom': availableFrom?.toIso8601String(),
+      'availableTo': availableTo?.toIso8601String(),
       'isFavorite': isFavorite,
     };
   }

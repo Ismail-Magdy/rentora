@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
+  final double? userLat;
+  final double? userLng;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCard({super.key, required this.product, this.userLat, this.userLng});
 
   @override
   Widget build(BuildContext context) {
@@ -138,22 +141,45 @@ class ProductCard extends StatelessWidget {
                       ],
                     ),
                     //
-                    Row(
-                      children: [
-                        Text(
-                          '${product.distance} km',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: AppColors.grey,
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: Builder(
+                              builder: (context) {
+                                String distanceText = 'Distance unknown';
+                                if (userLat != null && userLng != null && product.latitude != null && product.longitude != null) {
+                                  final distanceInMeters = Geolocator.distanceBetween(
+                                    userLat!, userLng!, product.latitude!, product.longitude!
+                                  );
+                                  final distanceInKm = distanceInMeters / 1000;
+                                  distanceText = '${distanceInKm.toStringAsFixed(1)} km';
+                                } else if (product.locationName.isNotEmpty) {
+                                  distanceText = product.locationName;
+                                }
+
+                                return Text(
+                                  distanceText,
+                                  style: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: AppColors.grey,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.right,
+                                );
+                              }
+                            ),
                           ),
-                        ),
-                        horizontalSpace(2),
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: AppColors.grey,
-                          size: 12.sp,
-                        ),
-                      ],
+                          horizontalSpace(2),
+                          Icon(
+                            Icons.location_on_outlined,
+                            color: AppColors.grey,
+                            size: 12.sp,
+                          ),
+                        ],
+                      ),
                     ),
                     //
                   ],

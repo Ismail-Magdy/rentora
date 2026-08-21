@@ -22,41 +22,32 @@ class OwnerInfoCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 24.r,
-            backgroundImage: NetworkImage(item.ownerAvatar),
+            backgroundColor: AppColors.primaryColor.withValues(alpha: 0.1),
+            backgroundImage: item.ownerAvatar.isNotEmpty ? NetworkImage(item.ownerAvatar) : null,
+            child: item.ownerAvatar.isEmpty
+                ? Icon(Icons.person, color: AppColors.primaryColor)
+                : null,
           ),
           horizontalSpace(12),
           Expanded(
             child: Column(
-              crossAxisAlignment: .start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   children: [
                     Text(
-                      item.ownerName,
-                      style: TextStyle(fontSize: 14.sp, fontWeight: .bold),
+                      item.ownerName.isNotEmpty ? item.ownerName : 'Unknown Owner',
+                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                     ),
-                    horizontalSpace(4),
-                    if (item.isSuperHost)
+                    if (item.ownerVerificationStatus == 'verified') ...[
+                      horizontalSpace(4),
                       Icon(
                         Icons.verified,
-                        color: AppColors.primaryColor,
-                        size: 14.sp,
+                        color: Colors.blue,
+                        size: 18.sp,
                       ),
-                  ],
-                ),
-                verticalSpace(4),
-                Row(
-                  children: [
-                    Text(
-                      'Rental Confirmed',
-                      style: TextStyle(fontSize: 10.sp, color: Colors.grey),
-                    ),
-                    horizontalSpace(8),
-                    Text(
-                      item.ownerRating.toString(),
-                      style: TextStyle(fontSize: 10.sp, fontWeight: .bold),
-                    ),
-                    Icon(Icons.star, color: Colors.orange, size: 10.sp),
+                    ],
                   ],
                 ),
               ],

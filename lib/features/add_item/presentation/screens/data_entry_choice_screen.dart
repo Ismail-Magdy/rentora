@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +6,10 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/manager/add_item_state.dart';
-import 'package:rentora/features/add_item/presentation/widgets/header_button.dart';
+import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 
 class DataEntryChoiceScreen extends StatelessWidget {
   const DataEntryChoiceScreen({super.key});
@@ -23,91 +23,12 @@ class DataEntryChoiceScreen extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                // Header
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 12.h,
-                  ),
-                  child: Row(
-                    children: [
-                      HeaderButton(
-                        icon: Icons.arrow_back,
-                        onTap: () => Navigator.pop(context),
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Add New Listing',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                      HeaderButton(
-                        icon: Icons.close_rounded,
-                        onTap: () => Navigator.popUntil(
-                          context,
-                          (route) => route.isFirst,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                CustomAppBar(text: "Add New Listing"),
 
                 // Progress Bar (Step 2)
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.w),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Details Method',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.grey.withValues(alpha: 0.7),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Step 2 of 6',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                      verticalSpace(10),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                height: 6.h,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 4,
-                              child: Container(
-                                height: 6.h,
-                                color: AppColors.grey.withValues(alpha: 0.3),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                AddItemProgressBar(
+                  title: "Details Method",
+                  stepNumber: "Step 2 of 7",
                 ),
 
                 // Content
@@ -185,10 +106,9 @@ class DataEntryChoiceScreen extends StatelessWidget {
                         _buildChoiceCard(
                           context,
                           icon: Icons.auto_awesome_rounded,
-                          title: 'Auto-fill with AI',
+                          title: 'Auto fill with AI',
                           subtitle: 'Let AI suggest details from photo',
                           onTap: null, // Disabled
-                          badge: 'Coming Soon',
                           isPrimary: false,
                         ),
                       ],
