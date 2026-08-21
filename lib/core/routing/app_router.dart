@@ -55,6 +55,8 @@ import 'package:rentora/features/verification/presentation/screens/verification_
 import 'package:rentora/features/verification/presentation/screens/verification_id_front_upload_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_intro_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_pending_screen.dart';
+import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
+import 'package:rentora/features/view_map/presentation/screens/view_map_screen.dart';
 
 class AppRouter {
   /// Function to wrap the screen with NetworkCubit and OfflineModeWidget
@@ -188,7 +190,10 @@ class AppRouter {
         final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BlocProvider.value(value: cubit, child: const AddItemAvailabilityScreen()),
+            BlocProvider.value(
+              value: cubit,
+              child: const AddItemAvailabilityScreen(),
+            ),
           ),
         );
 
@@ -276,6 +281,17 @@ class AppRouter {
             BlocProvider(
               create: (context) => getIt<ItemDetailsCubit>(),
               child: ItemDetailsScreen(itemId: itemId),
+            ),
+          ),
+        );
+
+      /// View Map Screen
+      case Routes.viewMapScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<ViewMapCubit>(),
+              child: const ViewMapScreen(),
             ),
           ),
         );

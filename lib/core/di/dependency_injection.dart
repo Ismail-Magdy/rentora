@@ -27,6 +27,7 @@ import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/verification/data/repo/verification_repo.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
+import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rentora/features/auth/data/repos/auth_repo.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
@@ -97,6 +98,9 @@ Future<void> initGetIt() async {
     () => HomeRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
   );
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+
+  /// View Map
+  getIt.registerFactory<ViewMapCubit>(() => ViewMapCubit(getIt<HomeRepo>()));
 
   /// Item Details
   getIt.registerLazySingleton<ItemDetailsRepo>(

@@ -20,4 +20,3 @@ void main() async {
 
   runApp(Rentora(appRouter: AppRouter()));
 }
-
