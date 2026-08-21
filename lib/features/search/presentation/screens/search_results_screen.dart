@@ -55,8 +55,7 @@ class SearchResultsScreen extends StatelessWidget {
 
               case SearchStatus.error:
                 return _ErrorResults(
-                  message:
-                      state.errorMessage ?? 'Failed to load results.',
+                  message: state.errorMessage ?? 'Failed to load results.',
                 );
 
               case SearchStatus.initial:
@@ -129,9 +128,7 @@ class _EmptyResults extends StatelessWidget {
 class _ErrorResults extends StatelessWidget {
   final String message;
 
-  const _ErrorResults({
-    required this.message,
-  });
+  const _ErrorResults({required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -159,35 +156,23 @@ class _ErrorResults extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13.sp,
-                color: AppColors.darkGrey,
-              ),
+              style: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
             ),
             SizedBox(height: 20.h),
             ElevatedButton.icon(
               onPressed: () {
                 context.read<SearchCubit>().search();
               },
-              icon: Icon(
-                Icons.refresh_rounded,
-                size: 19.sp,
-              ),
+              icon: Icon(Icons.refresh_rounded, size: 19.sp),
               label: Text(
                 'Try Again',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 foregroundColor: AppColors.white,
                 elevation: 0,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.w,
-                  vertical: 12.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),

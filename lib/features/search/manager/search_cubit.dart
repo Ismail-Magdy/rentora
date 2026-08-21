@@ -6,8 +6,7 @@ import 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   final SearchRepo _searchRepo;
 
-  SearchCubit(this._searchRepo)
-      : super(const SearchState());
+  SearchCubit(this._searchRepo) : super(const SearchState());
 
   void updateText(String value) {
     final text = value.trim();
@@ -80,25 +79,13 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> search() async {
     if (state.filter.isEmpty) {
-      emit(
-        state.copyWith(
-          status: SearchStatus.initial,
-          results: const [],
-        ),
-      );
+      emit(state.copyWith(status: SearchStatus.initial, results: const []));
       return;
     }
 
-    emit(
-      state.copyWith(
-        status: SearchStatus.loading,
-        clearError: true,
-      ),
-    );
+    emit(state.copyWith(status: SearchStatus.loading, clearError: true));
 
-    final result = await _searchRepo.searchListings(
-      state.filter,
-    );
+    final result = await _searchRepo.searchListings(state.filter);
 
     result.fold(
       (failure) {
@@ -111,27 +98,14 @@ class SearchCubit extends Cubit<SearchState> {
       },
       (products) {
         if (products.isEmpty) {
-          emit(
-            state.copyWith(
-              status: SearchStatus.empty,
-              results: const [],
-            ),
-          );
+          emit(state.copyWith(status: SearchStatus.empty, results: const []));
           return;
         }
 
-        emit(
-          state.copyWith(
-            status: SearchStatus.success,
-            results: products,
-          ),
-        );
+        emit(state.copyWith(status: SearchStatus.success, results: products));
       },
     );
   }
-
-
-
 
   Future<void> applyFilters() {
     return search();
@@ -140,8 +114,4 @@ class SearchCubit extends Cubit<SearchState> {
   void clearFilters() {
     emit(const SearchState());
   }
-
-
-
-
 }

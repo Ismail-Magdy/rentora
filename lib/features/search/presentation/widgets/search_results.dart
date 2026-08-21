@@ -38,10 +38,7 @@ class SearchResults extends StatelessWidget {
                 Text(
                   errorMessage!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    color: AppColors.darkGrey,
-                  ),
+                  style: TextStyle(fontSize: 15.sp, color: AppColors.darkGrey),
                 ),
               ],
             ),
@@ -81,10 +78,7 @@ class SearchResults extends StatelessWidget {
                 Text(
                   'Try changing your search or filters.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: AppColors.darkGrey,
-                  ),
+                  style: TextStyle(fontSize: 14.sp, color: AppColors.darkGrey),
                 ),
               ],
             ),
@@ -93,9 +87,6 @@ class SearchResults extends StatelessWidget {
       );
     }
 
-    return HomeProductsGrid(
-      products: products,
-      isLoading: isLoading,
-    );
+    return HomeProductsGrid(products: products, isLoading: isLoading);
   }
 }

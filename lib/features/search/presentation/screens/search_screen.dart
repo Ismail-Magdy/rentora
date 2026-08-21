@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/manager/search_state.dart';
-import 'package:rentora/features/search/presentation/screens/search_results_screen.dart';
 import 'package:rentora/features/search/presentation/widgets/search_input.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -22,44 +24,27 @@ class SearchScreen extends StatelessWidget {
       return;
     }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const SearchResultsScreen()),
-    );
+    context.pushNamed(Routes.searchResultsScreen);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.scaffoldBackground,
-        elevation: 0,
-        centerTitle: false,
-        title: Text(
-          'Search',
-          style: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w700,
-            color: AppColors.black,
-          ),
-        ),
-      ),
+      backgroundColor: AppColors.white,
+      appBar: CustomAppBar(text: "Search"),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          padding: .symmetric(horizontal: 16.w, vertical: 12.h),
           child: Column(
             children: [
               SearchInput(
                 initialValue: context.read<SearchCubit>().state.filter.text,
                 onChanged: context.read<SearchCubit>().updateText,
                 onSubmitted: (_) => _performSearch(context),
-                onFilterPressed: () {
-                  Navigator.pushNamed(context, Routes.searchFilterScreen);
-                },
+                onFilterPressed: () =>
+                    context.pushNamed(Routes.searchFilterScreen),
               ),
-
-              SizedBox(height: 24.h),
+              verticalSpace(24),
 
               Expanded(
                 child: BlocBuilder<SearchCubit, SearchState>(
@@ -204,3 +189,4 @@ class _SearchError extends StatelessWidget {
     );
   }
 }
+// 205

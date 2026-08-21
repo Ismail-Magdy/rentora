@@ -29,7 +29,7 @@ class PriceRangeFields extends StatelessWidget {
             onChanged: onMinChanged,
           ),
         ),
-     
+
         horizontalSpace(12),
         Expanded(
           child: _PriceField(
@@ -59,9 +59,7 @@ class _PriceField extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: onChanged,
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-      ),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: TextInputAction.next,
       style: TextStyle(
         fontSize: 14.sp,
@@ -70,10 +68,7 @@ class _PriceField extends StatelessWidget {
       ),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
-          fontSize: 13.sp,
-          color: AppColors.darkGrey,
-        ),
+        hintStyle: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
         prefixIcon: Icon(
           Icons.currency_exchange_rounded,
           size: 19.sp,
@@ -81,28 +76,18 @@ class _PriceField extends StatelessWidget {
         ),
         filled: true,
         fillColor: AppColors.white,
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 12.w,
-          vertical: 15.h,
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(
-            color: AppColors.lightGrey,
-          ),
+          borderSide: const BorderSide(color: AppColors.lightGrey),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(
-            color: AppColors.lightGrey,
-          ),
+          borderSide: const BorderSide(color: AppColors.lightGrey),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(
-            color: AppColors.primaryColor,
-            width: 1.5,
-          ),
+          borderSide: BorderSide(color: AppColors.primaryColor, width: 1.5),
         ),
       ),
     );

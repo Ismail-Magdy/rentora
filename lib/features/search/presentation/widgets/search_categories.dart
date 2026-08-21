@@ -54,26 +54,17 @@ class _CategoryChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 10.h,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primaryColor
-              : AppColors.white,
+          color: isSelected ? AppColors.primaryColor : AppColors.white,
           borderRadius: BorderRadius.circular(22.r),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primaryColor
-                : AppColors.lightGrey,
+            color: isSelected ? AppColors.primaryColor : AppColors.lightGrey,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.primaryColor.withValues(
-                      alpha: 0.15,
-                    ),
+                    color: AppColors.primaryColor.withValues(alpha: 0.15),
                     blurRadius: 8.r,
                     offset: Offset(0, 3.h),
                   ),
@@ -85,9 +76,7 @@ class _CategoryChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w600,
-            color: isSelected
-                ? AppColors.white
-                : AppColors.darkGrey,
+            color: isSelected ? AppColors.white : AppColors.darkGrey,
           ),
         ),
       ),
