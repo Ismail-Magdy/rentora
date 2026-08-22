@@ -1,1 +1,41 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"rentora-67218","appId":"1:653688654264:android:462c12b9b43a3abf1d274d","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"rentora-67218","configurations":{"android":"1:653688654264:android:462c12b9b43a3abf1d274d","ios":"1:653688654264:ios:c0a142707e112fcf1d274d","web":"1:653688654264:web:f17aac634b21c86f1d274d"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "rentora-67218",
+          "appId": "1:653688654264:android:462c12b9b43a3abf1d274d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "rentora-67218",
+          "configurations": {
+            "android": "1:653688654264:android:462c12b9b43a3abf1d274d",
+            "ios": "1:653688654264:ios:c0a142707e112fcf1d274d",
+            "web": "1:653688654264:web:f17aac634b21c86f1d274d"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}

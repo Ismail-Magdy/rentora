@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/widgets/error_screen.dart';
 import 'package:rentora/features/home/manager/home_cubit.dart';
 import 'package:rentora/features/home/presentation/widgets/home_products_grid.dart';
@@ -56,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // Map Button
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Navigate to Map Screen
+          context.pushNamed(Routes.viewMapScreen);
         },
         backgroundColor: Colors.teal,
         icon: SvgPicture.asset(
@@ -94,8 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? _dummyProducts
                 : (state as HomeLoaded).products;
 
-            final double? userLat = isLoading ? null : (state as HomeLoaded).userLatitude;
-            final double? userLng = isLoading ? null : (state as HomeLoaded).userLongitude;
+            final double? userLat = isLoading
+                ? null
+                : (state as HomeLoaded).userLatitude;
+            final double? userLng = isLoading
+                ? null
+                : (state as HomeLoaded).userLongitude;
 
             return Skeletonizer(
               enabled: isLoading,
@@ -126,4 +132,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-// 123

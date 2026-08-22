@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
@@ -6,7 +7,11 @@ import 'package:rentora/core/helpers/verification_guard.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
+import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
+import 'package:rentora/features/favorites/manager/favorites_state.dart';
+import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
 
 class ItemBottomNavBar extends StatelessWidget {
@@ -62,14 +67,48 @@ class ItemBottomNavBar extends StatelessWidget {
                 border: .all(color: Colors.grey.shade300),
                 borderRadius: .circular(12.r),
               ),
-              child: IconButton(
-                icon: Icon(
-                  item.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: item.isFavorite
-                      ? AppColors.error
-                      : AppColors.grey.withValues(alpha: 0.9),
+              child: BlocListener<FavoritesCubit, FavoritesState>(
+                listener: (context, state) {
+                  if (state is FavoritesActionSuccess && state.productId == item.id) {
+                    showFeedbackDialog(
+                      context,
+                      icon: state.isAdded ? Icons.favorite : Icons.favorite_border,
+                      color: AppColors.primaryColor,
+                      title: state.isAdded ? 'Added to Favorites' : 'Removed from Favorites',
+                      message: state.message,
+                    );
+                  }
+                },
+                child: BlocBuilder<FavoritesCubit, FavoritesState>(
+                  builder: (context, state) {
+                    final isFav = context.read<FavoritesCubit>().isFavorite(
+                      item.id,
+                    );
+                    return IconButton(
+                      icon: Icon(
+                        isFav ? Icons.favorite : Icons.favorite_border,
+                        color: isFav
+                            ? AppColors.error
+                            : AppColors.grey.withValues(alpha: 0.9),
+                      ),
+                      onPressed: () {
+                        context.read<FavoritesCubit>().toggleFavorite(
+                          ProductModel(
+                            id: item.id,
+                            name: item.name,
+                            category: '',
+                            price: item.price,
+                            rating: item.rating,
+                            distance: item.distance,
+                            imageUrl: item.imageUrls.isNotEmpty
+                                ? item.imageUrls.first
+                                : '',
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
-                onPressed: () {},
               ),
             ),
             //

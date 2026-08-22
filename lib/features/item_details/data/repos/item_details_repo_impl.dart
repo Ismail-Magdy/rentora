@@ -24,7 +24,11 @@ class ItemDetailsRepoImpl implements ItemDetailsRepo {
       }
 
       final Map<String, dynamic> data = Map<String, dynamic>.from(doc.data()!);
-      final ownerId = data['userId'] ?? data['ownerId'];
+      // Listings are saved with `userId`, while the details model expects `ownerId`.
+      // Normalize the field before creating the model so the Contact button gets
+      // the real Firebase UID instead of an empty ownerId.
+      final ownerId = data['ownerId'] ?? data['userId'];
+      data['ownerId'] = ownerId?.toString() ?? '';
       if (ownerId != null && ownerId.toString().isNotEmpty) {
         try {
           final userDoc = await _firestore.collection('users').doc(ownerId.toString()).get();

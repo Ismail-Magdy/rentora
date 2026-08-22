@@ -14,12 +14,15 @@ class Routes {
   //
   static const String rootScreen = "/rootScreen";
   static const String archiveScreen = "/archiveScreen";
+  static const String chatScreen = "/chatScreen";
   //
   static const String homeScreen = "/homeScreen";
   static const String categoryDetailsScreen = "/categoryDetailsScreen";
   static const String itemDetailsScreen = "/itemDetailsScreen";
+  static const String viewMapScreen = "/viewMapScreen";
   //
   static const String notificationsScreen = "/notificationsScreen";
+  static const String favoritesScreen = "/favoritesScreen";
 
   /// Add Item flow
   static const String initialPhotoScreen = "/initialPhotoScreen";
@@ -61,4 +64,7 @@ class Routes {
 
   // Profile
   static const String profileScreen = "/profileScreen";
+  static const String searchScreen = "/searchScreen";
+  static const String searchResultsScreen = "/searchResultsScreen";
+  static const String searchFilterScreen = "/searchFilterScreen";
 }

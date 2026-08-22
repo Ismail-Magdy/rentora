@@ -124,7 +124,10 @@ class BookingSuccessScreen extends StatelessWidget {
               );
             },
             onBackToHome: () {
-              context.pushReplacementNamed(Routes.homeScreen);
+              context.pushNamedAndRemoveUntil(
+                Routes.rootScreen,
+                predicate: (_) => false,
+              );
             },
           ),
         ],

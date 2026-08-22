@@ -17,21 +17,33 @@ import 'package:rentora/features/category_details/manager/category_details_cubit
 import 'package:rentora/features/home/data/repos/home_repo.dart';
 import 'package:rentora/features/home/data/repos/home_repo_impl.dart';
 import 'package:rentora/features/home/manager/home_cubit.dart';
+import 'package:rentora/features/notifications/data/repos/notifications_repo.dart';
+import 'package:rentora/features/notifications/data/repos/notifications_repo_impl.dart';
+import 'package:rentora/features/notifications/manager/notifications_cubit.dart';
 import 'package:rentora/features/item_details/data/repos/item_details_repo.dart';
 import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/profile/data/repo/profile_repo.dart';
 import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
+import 'package:rentora/features/search/data/repos/search_repo.dart';
+import 'package:rentora/features/search/data/repos/search_repo_impl.dart';
+import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/setup_profile/data/repos/setup_profile_repo.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/booking/data/repo/booking_repo_imp.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
+import 'package:rentora/features/chat/data/repo/chat_repo_imp.dart';
+import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/features/verification/data/repo/verification_repo.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
+import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rentora/features/auth/data/repos/auth_repo.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
+import 'package:rentora/features/favorites/data/repos/favorites_repo.dart';
+import 'package:rentora/features/favorites/data/repos/favorites_repo_impl.dart';
+import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -100,6 +112,9 @@ Future<void> initGetIt() async {
   );
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
 
+  /// View Map
+  getIt.registerFactory<ViewMapCubit>(() => ViewMapCubit(getIt<HomeRepo>()));
+
   /// Item Details
   getIt.registerLazySingleton<ItemDetailsRepo>(
     () => ItemDetailsRepoImpl(FirebaseFirestore.instance),
@@ -107,6 +122,12 @@ Future<void> initGetIt() async {
 
   getIt.registerFactory<ItemDetailsCubit>(
     () => ItemDetailsCubit(getIt<ItemDetailsRepo>()),
+  );
+
+  // Notifications
+  getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepoImpl());
+  getIt.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(getIt<NotificationsRepo>()),
   );
 
   /// Category Details
@@ -125,6 +146,16 @@ Future<void> initGetIt() async {
   getIt.registerFactory<BookingCubit>(
     () => BookingCubit(bookingRepository: getIt<BookingRepository>()),
   );
+
+  /// Chat
+  getIt.registerLazySingleton<ChatRepo>(
+    () => ChatRepo(
+      getIt<ChatsFirestoreService>(),
+      getIt<FirebaseFirestore>(),
+      getIt<CloudinaryService>(),
+    ),
+  );
+  getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt<ChatRepo>()));
 
   /// Verification
   getIt.registerLazySingleton<VerificationRepo>(
@@ -162,4 +193,18 @@ Future<void> initGetIt() async {
     ),
   );
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
+  /// Search
+  getIt.registerLazySingleton<SearchRepo>(
+    () => SearchRepoImpl(getIt<FirebaseFirestore>()),
+  );
+
+  getIt.registerFactory<SearchCubit>(() => SearchCubit(getIt<SearchRepo>()));
+
+  /// Favorites
+  getIt.registerLazySingleton<FavoritesRepo>(
+    () => FavoritesRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
+  );
+  getIt.registerLazySingleton<FavoritesCubit>(
+    () => FavoritesCubit(getIt<SharedPreferences>()),
+  );
 }

@@ -4,6 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
+import 'package:rentora/features/favorites/manager/favorites_state.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
@@ -11,7 +15,12 @@ class ProductCard extends StatelessWidget {
   final double? userLat;
   final double? userLng;
 
-  const ProductCard({super.key, required this.product, this.userLat, this.userLng});
+  const ProductCard({
+    super.key,
+    required this.product,
+    this.userLat,
+    this.userLng,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +54,49 @@ class ProductCard extends StatelessWidget {
                 Positioned(
                   top: 8.h,
                   right: 8.w,
-                  child: GestureDetector(
-                    onTap: () {
-                      // TODO: Toggle Favorite logic later
+                  child: BlocListener<FavoritesCubit, FavoritesState>(
+                    listener: (context, state) {
+                      if (state is FavoritesActionSuccess &&
+                          state.productId == product.id) {
+                        showFeedbackDialog(
+                          context,
+                          icon: state.isAdded
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: AppColors.primaryColor,
+                          title: state.isAdded
+                              ? 'Added to Favorites'
+                              : 'Removed from Favorites',
+                          message: state.message,
+                        );
+                      }
                     },
-                    child: Container(
-                      padding: .all(6.r),
-                      decoration: BoxDecoration(
-                        color: AppColors.white.withValues(alpha: 0.8),
-                        shape: .circle,
-                      ),
-                      child: SvgPicture.asset(
-                        product.isFavorite
-                            ? 'assets/svgs/home/heart_fill.svg'
-                            : 'assets/svgs/home/heart.svg',
-                        width: 18.w,
-                        height: 18.h,
-                        colorFilter: .mode(
-                          product.isFavorite
-                              ? AppColors.error
-                              : AppColors.black,
-                          .srcIn,
-                        ),
-                      ),
+                    child: BlocBuilder<FavoritesCubit, FavoritesState>(
+                      builder: (context, state) {
+                        final isFav = context.read<FavoritesCubit>().isFavorite(
+                          product.id,
+                        );
+                        return GestureDetector(
+                          onTap: () => context
+                              .read<FavoritesCubit>()
+                              .toggleFavorite(product),
+
+                          child: Container(
+                            padding: EdgeInsets.all(6.r),
+                            decoration: BoxDecoration(
+                              color: AppColors.white.withValues(alpha: 0.8),
+                              shape: BoxShape.circle,
+                            ),
+                            child: SvgPicture.asset(
+                              isFav
+                                  ? 'assets/svgs/home/heart_fill.svg'
+                                  : 'assets/svgs/home/heart.svg',
+                              width: 18.w,
+                              height: 18.h,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -149,12 +178,20 @@ class ProductCard extends StatelessWidget {
                             child: Builder(
                               builder: (context) {
                                 String distanceText = 'Distance unknown';
-                                if (userLat != null && userLng != null && product.latitude != null && product.longitude != null) {
-                                  final distanceInMeters = Geolocator.distanceBetween(
-                                    userLat!, userLng!, product.latitude!, product.longitude!
-                                  );
+                                if (userLat != null &&
+                                    userLng != null &&
+                                    product.latitude != null &&
+                                    product.longitude != null) {
+                                  final distanceInMeters =
+                                      Geolocator.distanceBetween(
+                                        userLat!,
+                                        userLng!,
+                                        product.latitude!,
+                                        product.longitude!,
+                                      );
                                   final distanceInKm = distanceInMeters / 1000;
-                                  distanceText = '${distanceInKm.toStringAsFixed(1)} km';
+                                  distanceText =
+                                      '${distanceInKm.toStringAsFixed(1)} km';
                                 } else if (product.locationName.isNotEmpty) {
                                   distanceText = product.locationName;
                                 }
@@ -169,7 +206,7 @@ class ProductCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.right,
                                 );
-                              }
+                              },
                             ),
                           ),
                           horizontalSpace(2),

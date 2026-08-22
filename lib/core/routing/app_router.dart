@@ -7,6 +7,10 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/widgets/exit_confirmation_wrapper.dart';
 import 'package:rentora/core/widgets/offline_mode_widget.dart';
 import 'package:rentora/core/widgets/unknown_route_screen.dart';
+import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
+import 'package:rentora/features/favorites/presentation/screens/favorites_screen.dart';
+import 'package:rentora/features/notifications/manager/notifications_cubit.dart';
+import 'package:rentora/features/notifications/presentation/screens/notifications_screen.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/archive/presentation/screens/archive_screen.dart';
 import 'package:rentora/features/add_item/presentation/screens/add_item_details_screen.dart';
@@ -41,12 +45,19 @@ import 'package:rentora/features/category_details/presentation/screens/category_
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
+import 'package:rentora/features/chat/data/models/chat_screen_args.dart';
+import 'package:rentora/features/chat/manager/chat_cubit.dart';
+import 'package:rentora/features/chat/manager/chat_state.dart';
+import 'package:rentora/features/chat/presentation/screens/chat_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
 import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
 import 'package:rentora/features/profile/presentation/screens/profile_screen.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/help_center_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
+import 'package:rentora/features/search/manager/search_cubit.dart';
+import 'package:rentora/features/search/presentation/screens/search_filter_screen.dart';
+import 'package:rentora/features/search/presentation/screens/search_screen.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
@@ -59,21 +70,26 @@ import 'package:rentora/features/verification/presentation/screens/verification_
 import 'package:rentora/features/verification/presentation/screens/verification_id_front_upload_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_intro_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_pending_screen.dart';
+import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
+import 'package:rentora/features/view_map/presentation/screens/view_map_screen.dart';
 
 class AppRouter {
   /// Function to wrap the screen with NetworkCubit and OfflineModeWidget
   Widget _withNetwork(Widget screen) {
     return BlocProvider.value(
       value: getIt<NetworkCubit>(),
-      child: BlocBuilder<NetworkCubit, NetworkState>(
-        builder: (context, state) {
-          return Stack(
-            children: [
-              screen,
-              if (state is NetworkDisconnected) const OfflineModeWidget(),
-            ],
-          );
-        },
+      child: BlocProvider.value(
+        value: getIt<FavoritesCubit>(),
+        child: BlocBuilder<NetworkCubit, NetworkState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                screen,
+                if (state is NetworkDisconnected) const OfflineModeWidget(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -251,9 +267,7 @@ class AppRouter {
               providers: [
                 BlocProvider(create: (context) => getIt<HomeCubit>()),
                 BlocProvider(create: (context) => getIt<BookingCubit>()),
-                // BlocProvider(
-                //   create: (context) => getIt<ChatCubit>(),
-                // ),
+                BlocProvider(create: (context) => getIt<ChatCubit>()),
               ],
               child: const RootScreen(),
             ),
@@ -270,9 +284,73 @@ class AppRouter {
           ),
         );
 
+      case Routes.chatScreen:
+        final chatId = args is ChatScreenArgs
+            ? args.chatId
+            : (args is String ? args : '');
+        final receiverName = args is ChatScreenArgs ? args.receiverName : null;
+        final receiverAvatar = args is ChatScreenArgs
+            ? args.receiverAvatar
+            : null;
+        final itemTitle = args is ChatScreenArgs ? args.itemTitle : null;
+
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (_) => getIt<ChatCubit>(),
+              child: BlocListener<ChatCubit, ChatState>(
+                listenWhen: (previous, current) =>
+                    current is ChatImageUploadSuccess || current is ChatError,
+                listener: (context, state) {
+                  if (state is ChatImageUploadSuccess) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Image sent successfully')),
+                    );
+                  } else if (state is ChatError) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                  }
+                },
+                child: ChatScreen(
+                  chatId: chatId,
+                  receiverName: receiverName,
+                  receiverAvatar: receiverAvatar,
+                  itemTitle: itemTitle,
+                ),
+              ),
+            ),
+          ),
+        );
+
       /// Home Screen
       case Routes.homeScreen:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<HomeCubit>(),
+              child: const HomeScreen(),
+            ),
+          ),
+        );
+
+      /// Favorites Screen
+      case Routes.favoritesScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const FavoritesScreen()),
+        );
+
+      /// Notifications Screen
+      case Routes.notificationsScreen:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<NotificationsCubit>(),
+              child: const NotificationsScreen(),
+            ),
+          ),
+        );
 
       /// Category Details Screen
       case Routes.categoryDetailsScreen:
@@ -294,6 +372,17 @@ class AppRouter {
             BlocProvider(
               create: (context) => getIt<ItemDetailsCubit>(),
               child: ItemDetailsScreen(itemId: itemId),
+            ),
+          ),
+        );
+
+      /// View Map Screen
+      case Routes.viewMapScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<ViewMapCubit>(),
+              child: const ViewMapScreen(),
             ),
           ),
         );
@@ -504,6 +593,33 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             _withVerificationCubit(const VerificationPendingScreen(), args),
+          ),
+        );
+      case Routes.searchScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchScreen(),
+            ),
+          ),
+        );
+      case Routes.searchFilterScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchFilterScreen(),
+            ),
+          ),
+        );
+      case Routes.searchResultsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (context) => getIt<SearchCubit>(),
+              child: const SearchScreen(),
+            ),
           ),
         );
 

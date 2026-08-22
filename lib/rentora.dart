@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/routing/app_router.dart';
 import 'package:rentora/core/routing/routes.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class Rentora extends StatelessWidget {
   const Rentora({super.key, required this.appRouter});
 
@@ -17,6 +19,7 @@ class Rentora extends StatelessWidget {
       builder: (_, child) => GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: MaterialApp(
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: "Poppins"),
           onGenerateRoute: appRouter.generateRoute,
