@@ -50,7 +50,11 @@ import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/features/chat/manager/chat_state.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
+import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
+import 'package:rentora/features/profile/presentation/screens/profile_screen.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
+import 'package:rentora/features/setting/presentation/screens/help_center_screen.dart';
+import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/presentation/screens/search_filter_screen.dart';
 import 'package:rentora/features/search/presentation/screens/search_screen.dart';
@@ -242,6 +246,17 @@ class AppRouter {
               child: const InterestsScreen(),
             ),
           ),
+        );
+
+      ///!setting screen
+      case Routes.settingsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const SettingsScreen()),
+        );
+
+      case '/helpCenterScreen':
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const HelpCenterScreen()),
         );
 
       /// Root
@@ -604,6 +619,17 @@ class AppRouter {
             BlocProvider(
               create: (context) => getIt<SearchCubit>(),
               child: const SearchScreen(),
+            ),
+          ),
+        );
+
+      ///profile screen
+      case '/profileScreen':
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (_) => getIt<ProfileCubit>()..loadProfile(),
+              child: ProfileScreen(),
             ),
           ),
         );

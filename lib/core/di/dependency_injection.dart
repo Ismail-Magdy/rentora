@@ -23,6 +23,8 @@ import 'package:rentora/features/notifications/manager/notifications_cubit.dart'
 import 'package:rentora/features/item_details/data/repos/item_details_repo.dart';
 import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
+import 'package:rentora/features/profile/data/repo/profile_repo.dart';
+import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
 import 'package:rentora/features/search/data/repos/search_repo.dart';
 import 'package:rentora/features/search/data/repos/search_repo_impl.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
@@ -182,6 +184,15 @@ Future<void> initGetIt() async {
     () => AddItemCubit(getIt<AddItemRepositoryImpl>(), getIt<FirebaseAuth>()),
   );
 
+  //profile
+  getIt.registerLazySingleton<ProfileRepo>(
+    () => ProfileRepo(
+      usersService: getIt<UsersFirestoreService>(),
+      cloudinaryService: getIt<CloudinaryService>(),
+      authService: getIt<FirebaseAuthService>(),
+    ),
+  );
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
   /// Search
   getIt.registerLazySingleton<SearchRepo>(
     () => SearchRepoImpl(getIt<FirebaseFirestore>()),

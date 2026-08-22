@@ -8,6 +8,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/archive/presentation/screens/archive_screen.dart';
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
+import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_list_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _RootScreenState extends State<RootScreen> {
     const HomeScreen(),
     const ChatListScreen(),
     const ArchiveScreen(),
-    const Center(child: Text('Settings Screen')),
+    const SettingsScreen(),
   ];
   @override
   Widget build(BuildContext context) {
