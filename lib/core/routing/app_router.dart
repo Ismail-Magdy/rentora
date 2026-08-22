@@ -42,7 +42,11 @@ import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
+import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
+import 'package:rentora/features/profile/presentation/screens/profile_screen.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
+import 'package:rentora/features/setting/presentation/screens/help_center_screen.dart';
+import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/setup_profile/presentation/screens/interests_screen.dart';
@@ -188,7 +192,10 @@ class AppRouter {
         final cubit = settings.arguments as AddItemCubit;
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BlocProvider.value(value: cubit, child: const AddItemAvailabilityScreen()),
+            BlocProvider.value(
+              value: cubit,
+              child: const AddItemAvailabilityScreen(),
+            ),
           ),
         );
 
@@ -223,6 +230,17 @@ class AppRouter {
               child: const InterestsScreen(),
             ),
           ),
+        );
+
+      ///!setting screen
+      case Routes.settingsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const SettingsScreen()),
+        );
+
+      case '/helpCenterScreen':
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const HelpCenterScreen()),
         );
 
       /// Root
@@ -486,6 +504,17 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             _withVerificationCubit(const VerificationPendingScreen(), args),
+          ),
+        );
+
+      ///profile screen
+      case '/profileScreen':
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(
+            BlocProvider(
+              create: (_) => getIt<ProfileCubit>()..loadProfile(),
+              child: ProfileScreen(),
+            ),
           ),
         );
 
