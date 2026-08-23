@@ -63,16 +63,22 @@ class _SearchInputState extends State<SearchInput> {
       child: Row(
         children: [
           horizontalSpace(14),
-          Icon(
-            Icons.search_rounded,
-            size: 24.sp,
-            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+          GestureDetector(
+            onTap: () => widget.onSubmitted?.call(_controller.text),
+            child: Icon(
+              Icons.search_rounded,
+              size: 24.sp,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+            ),
           ),
           horizontalSpace(10),
           Expanded(
             child: TextField(
               controller: _controller,
-              onChanged: widget.onChanged,
+              onChanged: (val) {
+                setState(() {});
+                widget.onChanged?.call(val);
+              },
               onSubmitted: widget.onSubmitted,
               textInputAction: TextInputAction.search,
               style: TextStyle(
@@ -90,6 +96,22 @@ class _SearchInputState extends State<SearchInput> {
               ),
             ),
           ),
+          if (_controller.text.isNotEmpty)
+            GestureDetector(
+              onTap: () {
+                _controller.clear();
+                setState(() {});
+                widget.onChanged?.call('');
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Icon(
+                  Icons.close_rounded,
+                  size: 18.sp,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.grey,
+                ),
+              ),
+            ),
           Container(
             width: 1.w,
             height: 28.h,

@@ -46,9 +46,15 @@ class SearchResultsScreen extends StatelessWidget {
                 );
 
               case SearchStatus.success:
-                return HomeProductsGrid(
-                  products: state.results,
-                  isLoading: false,
+                return CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(child: SizedBox(height: 12.h)),
+                    HomeProductsGrid(
+                      products: state.results,
+                      isLoading: false,
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 30.h)),
+                  ],
                 );
 
               case SearchStatus.empty:

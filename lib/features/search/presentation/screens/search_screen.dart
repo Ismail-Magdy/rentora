@@ -6,75 +6,112 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/features/home/presentation/widgets/home_products_grid.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/manager/search_state.dart';
+import 'package:rentora/features/search/presentation/widgets/search_categories.dart';
 import 'package:rentora/features/search/presentation/widgets/search_input.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
-  Future<void> _performSearch(BuildContext context) async {
-    final cubit = context.read<SearchCubit>();
-
-    await cubit.search();
-
-    if (!context.mounted) return;
-
-    if (cubit.state.status == SearchStatus.initial) {
-      return;
-    }
-
-    context.pushNamed(Routes.searchResultsScreen);
-  }
+  static const List<String> _popularCategories = [
+    'Cameras',
+    'Gaming',
+    'Sports',
+    'Tools',
+    'Books',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: CustomAppBar(text: "Search"),
+      appBar: CustomAppBar(text: l10n.searchItems),
       body: SafeArea(
-        child: Padding(
-          padding: .symmetric(horizontal: 16.w, vertical: 12.h),
-          child: Column(
-            children: [
-              SearchInput(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              child: SearchInput(
                 initialValue: context.read<SearchCubit>().state.filter.text,
                 onChanged: context.read<SearchCubit>().updateText,
-                onSubmitted: (_) => _performSearch(context),
-                onFilterPressed: () =>
-                    context.pushNamed(Routes.searchFilterScreen),
-              ),
-              verticalSpace(24),
-
-              Expanded(
-                child: BlocBuilder<SearchCubit, SearchState>(
-                  buildWhen: (previous, current) =>
-                      previous.status != current.status,
-                  builder: (context, state) {
-                    if (state.status == SearchStatus.loading) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.primaryColor,
-                        ),
-                      );
-                    }
-
-                    if (state.status == SearchStatus.error) {
-                      return _SearchError(
-                        message: state.errorMessage ?? 'Something went wrong.',
-                      );
-                    }
-
-                    if (state.status == SearchStatus.empty) {
-                      return const _EmptySearch();
-                    }
-
-                    return const _SearchHint();
-                  },
+                onSubmitted: (_) => context.read<SearchCubit>().search(),
+                onFilterPressed: () => context.pushNamed(
+                  Routes.searchFilterScreen,
+                  arguments: context.read<SearchCubit>(),
                 ),
               ),
-            ],
-          ),
+            ),
+            verticalSpace(8),
+
+            Expanded(
+              child: BlocBuilder<SearchCubit, SearchState>(
+                builder: (context, state) {
+                  if (state.status == SearchStatus.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                      ),
+                    );
+                  }
+
+                  if (state.status == SearchStatus.error) {
+                    return _SearchError(
+                      message: state.errorMessage ?? 'Something went wrong.',
+                    );
+                  }
+
+                  if (state.status == SearchStatus.empty) {
+                    return const _EmptySearch();
+                  }
+
+                  if (state.status == SearchStatus.success) {
+                    return CustomScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(child: verticalSpace(8)),
+                        HomeProductsGrid(
+                          products: state.results,
+                          isLoading: false,
+                        ),
+                        SliverToBoxAdapter(child: verticalSpace(30)),
+                      ],
+                    );
+                  }
+
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.categories,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: context.isDarkMode
+                                ? AppColors.darkTextPrimary
+                                : AppColors.black,
+                          ),
+                        ),
+                        verticalSpace(12),
+                        SearchCategories(
+                          categories: _popularCategories,
+                          selectedCategory: state.filter.category,
+                          onCategorySelected: (cat) =>
+                              context.read<SearchCubit>().updateCategory(cat),
+                        ),
+                        verticalSpace(40),
+                        const _SearchHint(),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

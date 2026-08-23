@@ -11,26 +11,45 @@ class SearchCubit extends Cubit<SearchState> {
   void updateText(String value) {
     final text = value.trim();
 
-    emit(
-      state.copyWith(
-        filter: state.filter.copyWith(
-          text: text.isEmpty ? null : text,
-          clearText: text.isEmpty,
+    if (text.isEmpty) {
+      final updatedFilter = state.filter.copyWith(
+        text: null,
+        clearText: true,
+      );
+      emit(
+        state.copyWith(
+          filter: updatedFilter,
+          status: updatedFilter.isEmpty ? SearchStatus.initial : state.status,
+          results: updatedFilter.isEmpty ? const [] : state.results,
+          clearError: true,
         ),
-        clearError: true,
-      ),
-    );
+      );
+    } else {
+      emit(
+        state.copyWith(
+          filter: state.filter.copyWith(
+            text: text,
+            clearText: false,
+          ),
+          clearError: true,
+        ),
+      );
+      search();
+    }
   }
 
   void updateCategory(String? category) {
+    final updatedFilter = state.filter.copyWith(
+      category: category,
+      clearCategory: category == null,
+    );
     emit(
       state.copyWith(
-        filter: state.filter.copyWith(
-          category: category,
-          clearCategory: category == null,
-        ),
+        filter: updatedFilter,
+        clearError: true,
       ),
     );
+    search();
   }
 
   void updateMinPrice(double? minPrice) {
