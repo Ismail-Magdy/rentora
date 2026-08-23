@@ -87,8 +87,9 @@ class _ViewMapScreenState extends State<ViewMapScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBar(
         text: l10n.viewMap,
         actions: [
@@ -105,7 +106,7 @@ class _ViewMapScreenState extends State<ViewMapScreen> {
             },
             child: Icon(
               Icons.my_location_rounded,
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             ),
           ),
           horizontalSpace(10),

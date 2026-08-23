@@ -30,7 +30,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBar(text: "Search"),
       body: SafeArea(
         child: Padding(
@@ -86,6 +86,7 @@ class _SearchHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +94,9 @@ class _SearchHint extends StatelessWidget {
           Icon(
             Icons.search_rounded,
             size: 64.sp,
-            color: AppColors.primaryColor.withValues(alpha: 0.35),
+            color: isDark
+                ? AppColors.secondaryColor.withValues(alpha: 0.5)
+                : AppColors.primaryColor.withValues(alpha: 0.35),
           ),
           SizedBox(height: 14.h),
           Text(
@@ -101,13 +104,16 @@ class _SearchHint extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.darkGrey,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.darkGrey,
             ),
           ),
           SizedBox(height: 6.h),
           Text(
             'Search for items to rent',
-            style: TextStyle(fontSize: 13.sp, color: AppColors.grey),
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+            ),
           ),
         ],
       ),
@@ -120,6 +126,7 @@ class _EmptySearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +134,7 @@ class _EmptySearch extends StatelessWidget {
           Icon(
             Icons.search_off_rounded,
             size: 64.sp,
-            color: AppColors.darkGrey,
+            color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
           ),
           SizedBox(height: 14.h),
           Text(
@@ -135,14 +142,17 @@ class _EmptySearch extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.black,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
             ),
           ),
           SizedBox(height: 6.h),
           Text(
             'Try changing your search or filters.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
+            style: TextStyle(
+              fontSize: 13.sp,
+              color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+            ),
           ),
         ],
       ),
@@ -157,6 +167,7 @@ class _SearchError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -174,14 +185,17 @@ class _SearchError extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
-                color: AppColors.black,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
             ),
             SizedBox(height: 8.h),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+              ),
             ),
           ],
         ),

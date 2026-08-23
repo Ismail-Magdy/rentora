@@ -20,17 +20,18 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.lightGrey,
+          color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.025),
+            color: isDark ? AppColors.darkShadow : Colors.black.withOpacity(.025),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -44,15 +45,16 @@ class ReviewCard extends StatelessWidget {
                 width: 38.sp,
                 height: 38.sp,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor
-                      .withOpacity(.08),
+                  color: (isDark
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor)
+                      .withOpacity(.12),
                   borderRadius:
                       BorderRadius.circular(11),
                 ),
                 child: Icon(
                   icon,
-                  color:
-                      AppColors.primaryColor,
+                  color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                   size: 20.sp,
                 ),
               ),
@@ -65,6 +67,7 @@ class ReviewCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w800,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
               ),
@@ -79,8 +82,7 @@ class ReviewCard extends StatelessWidget {
                     child: Icon(
                       Icons.edit_outlined,
                       size: 20,
-                      color:
-                          AppColors.primaryColor,
+                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                     ),
                   ),
                 ),

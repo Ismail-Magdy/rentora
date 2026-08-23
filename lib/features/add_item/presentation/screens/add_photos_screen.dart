@@ -33,9 +33,10 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
       builder: (context, state) {
         final images = state.images;
         final existingImageUrls = state.existingImageUrls;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
@@ -56,7 +57,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                             fontSize: 27.sp,
                             height: 1.2.h,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
 
@@ -274,4 +275,4 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
   }
 }
-// 
+//

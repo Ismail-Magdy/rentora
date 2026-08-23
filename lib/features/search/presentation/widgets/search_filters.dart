@@ -173,16 +173,21 @@ class _ConditionChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: selected ? AppColors.primaryColor : AppColors.white,
+          color: selected
+              ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+              : (isDark ? AppColors.darkSurface : AppColors.white),
           borderRadius: BorderRadius.circular(22.r),
           border: Border.all(
-            color: selected ? AppColors.primaryColor : AppColors.lightGrey,
+            color: selected
+                ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                : (isDark ? AppColors.darkBorder : AppColors.lightGrey),
           ),
         ),
         child: Text(
@@ -190,7 +195,9 @@ class _ConditionChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w600,
-            color: selected ? AppColors.white : AppColors.darkGrey,
+            color: selected
+                ? AppColors.white
+                : (isDark ? AppColors.darkTextSecondary : AppColors.darkGrey),
           ),
         ),
       ),
@@ -206,35 +213,49 @@ class _LocationField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return TextField(
       controller: controller,
       onChanged: (value) {
         onChanged(value.trim().isEmpty ? null.toString() : value);
       },
       textInputAction: TextInputAction.done,
-      style: TextStyle(fontSize: 14.sp, color: AppColors.black),
+      style: TextStyle(
+        fontSize: 14.sp,
+        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+      ),
       decoration: InputDecoration(
         hintText: 'Enter location',
-        hintStyle: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
+        hintStyle: TextStyle(
+          fontSize: 13.sp,
+          color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
+        ),
         prefixIcon: Icon(
           Icons.location_on_outlined,
-          color: AppColors.primaryColor,
+          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
           size: 22.sp,
         ),
         filled: true,
-        fillColor: AppColors.white,
+        fillColor: isDark ? AppColors.darkSurface : AppColors.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 15.h),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(color: AppColors.lightGrey),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(color: AppColors.lightGrey),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(color: AppColors.primaryColor, width: 1.5.w),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+            width: 1.5.w,
+          ),
         ),
       ),
     );

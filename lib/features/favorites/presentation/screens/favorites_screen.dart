@@ -31,8 +31,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBar(text: "Favourites"),
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
@@ -90,19 +91,21 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? AppColors.primaryColor
-                                  : Colors.white,
+                                  : (isDark ? AppColors.darkSurface : Colors.white),
                               borderRadius: BorderRadius.circular(20.r),
                               border: Border.all(
                                 color: isSelected
                                     ? AppColors.primaryColor
-                                    : Colors.grey.shade300,
+                                    : (isDark ? AppColors.darkBorder : Colors.grey.shade300),
                               ),
                             ),
                             alignment: Alignment.center,
                             child: Text(
                               category,
                               style: TextStyle(
-                                color: isSelected ? Colors.white : Colors.black87,
+                                color: isSelected
+                                    ? Colors.white
+                                    : (isDark ? AppColors.darkTextPrimary : Colors.black87),
                                 fontWeight: isSelected
                                     ? FontWeight.bold
                                     : FontWeight.normal,

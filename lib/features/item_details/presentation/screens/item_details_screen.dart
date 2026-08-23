@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/widgets/item_availability_section.dart';
@@ -60,7 +59,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
       builder: (context, state) {
         if (state is ItemDetailsError) {
           return Scaffold(
-            backgroundColor: AppColors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: Center(child: Text(state.error)),
           );
         }
@@ -74,7 +73,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
         return Skeletonizer(
           enabled: isLoading,
           child: Scaffold(
-            backgroundColor: AppColors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             //
             bottomNavigationBar: ItemBottomNavBar(item: item),
             //

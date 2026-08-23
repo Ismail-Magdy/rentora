@@ -24,6 +24,7 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedTime = _formatTime(message.timestamp?.toDate());
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Align(
       alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
@@ -34,7 +35,9 @@ class MessageBubble extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 4.h),
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isMine ? AppColors.primaryColor : AppColors.white,
+          color: isMine
+              ? AppColors.primaryColor
+              : (isDark ? AppColors.darkSurface : AppColors.white),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.r),
             topRight: Radius.circular(18.r),
@@ -44,14 +47,16 @@ class MessageBubble extends StatelessWidget {
           border: isMine
               ? null
               : Border.all(
-                  color: AppColors.dividerColor,
+                  color: isDark ? AppColors.darkBorder : AppColors.dividerColor,
                   width: 1.w,
                 ),
           boxShadow: [
             BoxShadow(
               color: isMine
                   ? AppColors.primaryColor.withValues(alpha: 0.18)
-                  : AppColors.black.withValues(alpha: 0.04),
+                  : (isDark
+                      ? AppColors.darkShadow
+                      : AppColors.black.withValues(alpha: 0.04)),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -122,7 +127,9 @@ class MessageBubble extends StatelessWidget {
               Text(
                 message.text,
                 style: TextStyle(
-                  color: isMine ? AppColors.white : AppColors.black,
+                  color: isMine
+                      ? AppColors.white
+                      : (isDark ? AppColors.darkTextPrimary : AppColors.black),
                   fontSize: 14.5.sp,
                   height: 1.35,
                   fontWeight: FontWeight.w400,
@@ -139,7 +146,7 @@ class MessageBubble extends StatelessWidget {
                       fontSize: 10.sp,
                       color: isMine
                           ? AppColors.white.withValues(alpha: 0.75)
-                          : AppColors.darkGrey,
+                          : (isDark ? AppColors.darkTextMuted : AppColors.darkGrey),
                       fontWeight: FontWeight.w500,
                     ),
                   ),

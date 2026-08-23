@@ -6,7 +6,6 @@ import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -67,14 +66,14 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'Select Dates'),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-                padding: EdgeInsets.all(16.r),
-                children: [
+              padding: EdgeInsets.all(16.r),
+              children: [
                 ListingInfoCard(
                   title: widget.listingTitle,
                   imageUrl: widget.listingImageUrl,

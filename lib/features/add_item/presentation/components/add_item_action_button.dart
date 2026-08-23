@@ -19,17 +19,24 @@ class AddItemActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: isDark ? AppColors.darkSurface : AppColors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.grey.withValues(alpha: 0.2)),
+          border: Border.all(
+            color: isDark
+                ? AppColors.darkBorder
+                : AppColors.grey.withValues(alpha: 0.2),
+          ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withValues(alpha: 0.03),
+              color: isDark
+                  ? AppColors.darkShadow
+                  : AppColors.black.withValues(alpha: 0.03),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -41,10 +48,17 @@ class AddItemActionButton extends StatelessWidget {
               width: 50.w,
               height: 50.w,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.1),
+                color: (isDark
+                        ? AppColors.secondaryColor
+                        : AppColors.primaryColor)
+                    .withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Icon(icon, color: AppColors.primaryColor, size: 26.sp),
+              child: Icon(
+                icon,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                size: 26.sp,
+              ),
             ),
             horizontalSpace(16),
             Expanded(
@@ -56,20 +70,23 @@ class AddItemActionButton extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 17.sp,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.black,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                     ),
                   ),
                   verticalSpace(4),
                   Text(
                     subtitle,
-                    style: TextStyle(fontSize: 13.sp, color: AppColors.grey),
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                    ),
                   ),
                 ],
               ),
             ),
             Icon(
               Icons.chevron_right_rounded,
-              color: AppColors.grey,
+              color: isDark ? AppColors.secondaryColor : AppColors.grey,
               size: 28.sp,
             ),
           ],

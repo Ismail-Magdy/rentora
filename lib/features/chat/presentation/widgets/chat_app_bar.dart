@@ -22,16 +22,17 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final hasAvatar = receiverAvatar != null && receiverAvatar!.isNotEmpty;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AppBar(
-      backgroundColor: AppColors.white,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
       scrolledUnderElevation: 0,
       elevation: 0,
       leading: GestureDetector(
         onTap: () => context.pop(),
-        child: const Icon(
+        child: Icon(
           Icons.arrow_back_ios_new,
-          color: AppColors.primaryColor,
+          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
         ),
       ),
       titleSpacing: 0,
@@ -39,7 +40,10 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           CircleAvatar(
             radius: 19.r,
-            backgroundColor: AppColors.primaryColor.withValues(alpha: 0.1),
+            backgroundColor: (isDark
+                    ? AppColors.secondaryColor
+                    : AppColors.primaryColor)
+                .withValues(alpha: 0.15),
             backgroundImage: hasAvatar ? NetworkImage(receiverAvatar!) : null,
             child: !hasAvatar
                 ? Text(
@@ -49,7 +53,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor,
+                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                     ),
                   )
                 : null,
@@ -67,7 +71,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.black,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
                 if (itemTitle != null && itemTitle!.isNotEmpty) ...[
@@ -79,7 +83,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                     style: TextStyle(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.primaryColor,
+                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                     ),
                   ),
                 ],

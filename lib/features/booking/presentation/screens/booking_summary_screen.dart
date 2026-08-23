@@ -59,7 +59,7 @@ class BookingSummaryScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.lightGrey,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: const CustomAppBar(text: 'Booking Summary'),
         body: Column(
           children: [

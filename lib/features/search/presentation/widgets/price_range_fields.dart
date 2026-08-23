@@ -56,6 +56,7 @@ class _PriceField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return TextField(
       controller: controller,
       onChanged: onChanged,
@@ -64,30 +65,40 @@ class _PriceField extends StatelessWidget {
       style: TextStyle(
         fontSize: 14.sp,
         fontWeight: FontWeight.w500,
-        color: AppColors.black,
+        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
       ),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
+        hintStyle: TextStyle(
+          fontSize: 13.sp,
+          color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
+        ),
         prefixIcon: Icon(
           Icons.currency_exchange_rounded,
           size: 19.sp,
-          color: AppColors.primaryColor,
+          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
         ),
         filled: true,
-        fillColor: AppColors.white,
+        fillColor: isDark ? AppColors.darkSurface : AppColors.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(color: AppColors.lightGrey),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: const BorderSide(color: AppColors.lightGrey),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14.r),
-          borderSide: BorderSide(color: AppColors.primaryColor, width: 1.5),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+            width: 1.5,
+          ),
         ),
       ),
     );

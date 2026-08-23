@@ -55,7 +55,7 @@ class BookingSuccessScreen extends StatelessWidget {
     final dateRange = _formatDateRange(cubit?.startDate, cubit?.endDate);
 
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBarWithNoLeading(text: 'Booking Confirmed'),
       body: Column(
         children: [

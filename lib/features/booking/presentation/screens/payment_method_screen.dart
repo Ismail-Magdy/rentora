@@ -91,8 +91,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     double totalAmount,
     BookingCubit cubit,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'Payment Method'),
       body: Column(
         children: [
@@ -111,7 +112,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.black,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
                 verticalSpace(16),

@@ -55,8 +55,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         }
       },
       builder: (context, state) {
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: CustomAppBar(text: l10n.forgotPassword),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -72,7 +73,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         l10n.enterEmailResetDescription,
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: AppColors.grey,
+                          color: isDark
+                              ? AppColors.darkTextSecondary
+                              : AppColors.grey,
                           height: 1.5,
                         ),
                         textAlign: .center,
@@ -85,7 +88,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: .w600,
-                          color: AppColors.black,
+                          color: isDark
+                              ? AppColors.darkTextPrimary
+                              : AppColors.black,
                         ),
                       ),
                       verticalSpace(8),

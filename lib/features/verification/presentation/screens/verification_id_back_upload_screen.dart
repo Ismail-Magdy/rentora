@@ -63,7 +63,7 @@ class _VerificationIdBackUploadScreenState
         final isLoading = state is VerificationLoading || _isPicking;
 
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
           body: IdUploadScreenContent(
             title: l10n.uploadIdBack,

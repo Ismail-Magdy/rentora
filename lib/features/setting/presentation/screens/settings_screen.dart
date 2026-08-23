@@ -40,8 +40,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: Text(
           localizations.settingsTitle,
-          style: const TextStyle(
-            color: AppColors.primaryColor,
+          style: TextStyle(
+            color: controller?.isDarkMode == true
+                ? AppColors.darkTextPrimary
+                : AppColors.primaryColor,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -89,6 +91,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ? localizations.arabic
                     : localizations.english,
                 trailing: DropdownButton<Locale>(
+                  dropdownColor: controller?.isDarkMode == true
+                      ? AppColors.darkSurface
+                      : Colors.white,
                   value: controller?.locale ?? const Locale('en'),
                   underline: const SizedBox.shrink(),
                   items: [
@@ -143,18 +148,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                style:
-                    OutlinedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      side: BorderSide.none,
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      elevation: 1.5,
-                    ).copyWith(
-                      shadowColor: WidgetStateProperty.all(AppColors.darkGrey),
-                    ),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: controller?.isDarkMode == true
+                      ? AppColors.darkSurface
+                      : Colors.white,
+                  side: BorderSide.none,
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  elevation: 1.5,
+                ).copyWith(
+                  shadowColor: WidgetStateProperty.all(
+                    controller?.isDarkMode == true
+                        ? AppColors.darkShadow
+                        : AppColors.darkGrey,
+                  ),
+                ),
                 onPressed: () {
                   showLogoutDialog(context, onConfirm: _logout);
                 },

@@ -32,13 +32,14 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: _buildCustomBottomNavigationBar(l10n),
     );
   }
 
   Widget _buildCustomBottomNavigationBar(AppLocalizations l10n) {
+    final isDark = context.isDarkMode;
     return SizedBox(
       height: 105.h,
       child: Stack(
@@ -48,11 +49,13 @@ class _RootScreenState extends State<RootScreen> {
           Container(
             height: 85.h,
             decoration: BoxDecoration(
-              color: AppColors.lightGrey,
+              color: isDark ? AppColors.darkSurface : AppColors.lightGrey,
               borderRadius: .vertical(top: .circular(24.r)),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.black.withValues(alpha: 0.05),
+                  color: isDark
+                      ? AppColors.darkShadow
+                      : AppColors.black.withValues(alpha: 0.05),
                   blurRadius: 19.r,
                   offset: const Offset(0, -5),
                 ),
@@ -82,7 +85,9 @@ class _RootScreenState extends State<RootScreen> {
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: .w500,
-                            color: AppColors.darkGrey,
+                            color: isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.darkGrey,
                           ),
                         ),
                         //
@@ -139,7 +144,14 @@ class _RootScreenState extends State<RootScreen> {
     required String iconName,
     required String label,
   }) {
+    final isDark = context.isDarkMode;
     final isSelected = _currentIndex == index;
+    final selectedColor = isDark
+        ? AppColors.secondaryColor
+        : AppColors.primaryColor;
+    final unselectedColor = isDark
+        ? AppColors.darkTextMuted
+        : AppColors.grey;
 
     return GestureDetector(
       onTap: () => setState(() {
@@ -158,7 +170,7 @@ class _RootScreenState extends State<RootScreen> {
               padding: .all(8.r),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.primaryColor.withValues(alpha: 0.3)
+                    ? selectedColor.withValues(alpha: 0.25)
                     : Colors.transparent,
                 shape: .circle,
               ),
@@ -167,7 +179,7 @@ class _RootScreenState extends State<RootScreen> {
                 width: 22.w,
                 height: 22.h,
                 colorFilter: ColorFilter.mode(
-                  isSelected ? AppColors.primaryColor : AppColors.grey,
+                  isSelected ? selectedColor : unselectedColor,
                   .srcIn,
                 ),
               ),
@@ -180,7 +192,7 @@ class _RootScreenState extends State<RootScreen> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: isSelected ? .bold : .w500,
-                color: isSelected ? AppColors.primaryColor : AppColors.grey,
+                color: isSelected ? selectedColor : unselectedColor,
               ),
             ),
           ],

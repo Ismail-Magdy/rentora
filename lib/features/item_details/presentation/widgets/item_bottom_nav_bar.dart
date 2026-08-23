@@ -21,13 +21,16 @@ class ItemBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: .symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -64,7 +67,9 @@ class ItemBottomNavBar extends StatelessWidget {
             //
             Container(
               decoration: BoxDecoration(
-                border: .all(color: Colors.grey.shade300),
+                border: Border.all(
+                  color: isDark ? AppColors.darkBorder : Colors.grey.shade300,
+                ),
                 borderRadius: .circular(12.r),
               ),
               child: BlocListener<FavoritesCubit, FavoritesState>(

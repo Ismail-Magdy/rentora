@@ -41,15 +41,20 @@ class _SearchInputState extends State<SearchInput> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 54.h,
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: .circular(16.r),
-        border: Border.all(color: AppColors.lightGrey),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.04),
             blurRadius: 12.r,
             offset: Offset(0, 4.h),
           ),
@@ -61,7 +66,7 @@ class _SearchInputState extends State<SearchInput> {
           Icon(
             Icons.search_rounded,
             size: 24.sp,
-            color: AppColors.primaryColor,
+            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
           ),
           horizontalSpace(10),
           Expanded(
@@ -70,25 +75,32 @@ class _SearchInputState extends State<SearchInput> {
               onChanged: widget.onChanged,
               onSubmitted: widget.onSubmitted,
               textInputAction: TextInputAction.search,
-              style: TextStyle(fontSize: 14.sp, color: AppColors.black),
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+              ),
               decoration: InputDecoration(
                 hintText: l10n.searchItems,
                 hintStyle: TextStyle(
                   fontSize: 14.sp,
-                  color: AppColors.darkGrey,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
                 ),
                 border: InputBorder.none,
                 isDense: true,
               ),
             ),
           ),
-          Container(width: 1.w, height: 28.h, color: AppColors.lightGrey),
+          Container(
+            width: 1.w,
+            height: 28.h,
+            color: isDark ? AppColors.darkDivider : AppColors.lightGrey,
+          ),
           IconButton(
             onPressed: widget.onFilterPressed,
             icon: Icon(
               Icons.tune_rounded,
               size: 23.sp,
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             ),
             tooltip: l10n.filters,
           ),

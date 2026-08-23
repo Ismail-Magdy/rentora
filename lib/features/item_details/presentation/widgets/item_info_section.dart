@@ -11,6 +11,7 @@ class ItemInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -22,7 +23,11 @@ class ItemInfoSection extends StatelessWidget {
             Expanded(
               child: Text(
                 item.name,
-                style: TextStyle(fontSize: 22.sp, fontWeight: .bold),
+                style: TextStyle(
+                  fontSize: 22.sp,
+                  fontWeight: .bold,
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                ),
               ),
             ),
             //
@@ -37,7 +42,11 @@ class ItemInfoSection extends StatelessWidget {
                   //
                   Text(
                     item.rating.toStringAsFixed(1),
-                    style: TextStyle(fontSize: 12.sp, fontWeight: .bold),
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: .bold,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                    ),
                   ),
                   //
                   horizontalSpace(4),
@@ -62,7 +71,7 @@ class ItemInfoSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: .bold,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
               ),
             ),
             //
@@ -71,7 +80,7 @@ class ItemInfoSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: .bold,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
               ),
             ),
             //
@@ -82,7 +91,11 @@ class ItemInfoSection extends StatelessWidget {
         Container(
           padding: .all(12.r),
           decoration: BoxDecoration(
-            border: .all(color: AppColors.grey.withValues(alpha: 0.2)),
+            border: Border.all(
+              color: isDark
+                  ? AppColors.darkBorder
+                  : AppColors.grey.withValues(alpha: 0.2),
+            ),
             borderRadius: .circular(12.r),
           ),
           child: Row(
@@ -102,16 +115,27 @@ class ItemInfoSection extends StatelessWidget {
                   children: [
                     Text(
                       'Location',
-                      style: TextStyle(fontSize: 14.sp, fontWeight: .bold),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: .bold,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      ),
                     ),
                     Text(
                       '${item.locationName} (${item.distance} km)',
-                      style: TextStyle(fontSize: 12.sp, color: AppColors.grey),
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                      ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: AppColors.grey, size: 16.sp),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: isDark ? AppColors.darkTextMuted : AppColors.grey,
+                size: 16.sp,
+              ),
             ],
           ),
         ),

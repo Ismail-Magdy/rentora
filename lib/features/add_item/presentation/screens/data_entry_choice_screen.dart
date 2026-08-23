@@ -16,10 +16,11 @@ class DataEntryChoiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<AddItemCubit, AddItemState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
@@ -53,7 +54,9 @@ class DataEntryChoiceScreen extends StatelessWidget {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.black.withValues(alpha: 0.1),
+                                  color: isDark
+                                      ? AppColors.darkShadow
+                                      : AppColors.black.withValues(alpha: 0.1),
                                   blurRadius: 15,
                                   offset: const Offset(0, 5),
                                 ),
@@ -73,7 +76,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
                             fontSize: 27.sp,
                             height: 1.2.h,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
                         verticalSpace(12),
@@ -83,7 +86,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 15.sp,
                             height: 1.45.h,
-                            color: AppColors.grey,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                           ),
                         ),
                         verticalSpace(40),
@@ -133,6 +136,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
     String? badge,
   }) {
     final bool isEnabled = onTap != null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
@@ -142,19 +146,21 @@ class DataEntryChoiceScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           decoration: BoxDecoration(
             color: isPrimary
-                ? AppColors.primaryColor.withValues(alpha: 0.05)
-                : AppColors.white,
+                ? AppColors.primaryColor.withValues(alpha: isDark ? 0.2 : 0.05)
+                : (isDark ? AppColors.darkSurface : AppColors.white),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isPrimary
-                  ? AppColors.primaryColor.withValues(alpha: 0.5)
-                  : AppColors.grey.withValues(alpha: 0.2),
+                  ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                  : (isDark ? AppColors.darkBorder : AppColors.grey.withValues(alpha: 0.2)),
               width: isPrimary ? 2 : 1,
             ),
             boxShadow: isEnabled
                 ? [
                     BoxShadow(
-                      color: AppColors.black.withValues(alpha: 0.03),
+                      color: isDark
+                          ? AppColors.darkShadow
+                          : AppColors.black.withValues(alpha: 0.03),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -169,12 +175,16 @@ class DataEntryChoiceScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isPrimary
                       ? AppColors.primaryColor
-                      : AppColors.grey.withValues(alpha: 0.1),
+                      : (isDark
+                          ? AppColors.darkContainer
+                          : AppColors.grey.withValues(alpha: 0.1)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
                   icon,
-                  color: isPrimary ? AppColors.white : AppColors.darkGrey,
+                  color: isPrimary
+                      ? AppColors.white
+                      : (isDark ? AppColors.darkTextSecondary : AppColors.darkGrey),
                   size: 28.sp,
                 ),
               ),
@@ -190,7 +200,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 17.sp,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
                         if (badge != null) ...[
@@ -219,7 +229,10 @@ class DataEntryChoiceScreen extends StatelessWidget {
                     verticalSpace(6),
                     Text(
                       subtitle,
-                      style: TextStyle(fontSize: 13.sp, color: AppColors.grey),
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -227,7 +240,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
               if (isEnabled)
                 Icon(
                   Icons.chevron_right_rounded,
-                  color: isPrimary ? AppColors.primaryColor : AppColors.grey,
+                  color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                   size: 28.sp,
                 ),
             ],

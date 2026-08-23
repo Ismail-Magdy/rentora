@@ -113,20 +113,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       },
       builder: (context, state) {
         final isUpdating = state is ProfileUpdating;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF1F3F4),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
             title: Text(
               l10n.editProfile,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
               ),
             ),
             centerTitle: true,
-            backgroundColor: const Color(0xFFF1F3F4),
+            backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
             elevation: 0,
             actions: [
               isUpdating
@@ -137,7 +138,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: 18.w,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: AppColors.primaryColor,
+                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                         ),
                       ),
                     )
@@ -148,7 +149,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.primaryColor,
+                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                         ),
                       ),
                     ),
@@ -230,6 +231,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 20.h),
                   _sectionCard(
+                    context,
                     title: l10n.personalInformation,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,6 +273,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 16.h),
                   _sectionCard(
+                    context,
                     title: l10n.bio,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -357,19 +360,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _sectionCard({required String title, required Widget child}) {
+  Widget _sectionCard(
+    BuildContext context, {
+    required String title,
+    required Widget child,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+            ),
           ),
           SizedBox(height: 14.h),
           child,

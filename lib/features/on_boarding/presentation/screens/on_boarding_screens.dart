@@ -44,9 +44,10 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final items = getOnboardingData(l10n);
+    final isDark = context.isDarkMode;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -82,7 +83,7 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                   setState(() => _currentPage = index);
                 },
                 itemBuilder: (context, index) =>
-                    buildOnBoardingScreen(items[index]),
+                    buildOnBoardingScreen(context, items[index]),
               ),
             ),
             verticalSpace(80),
@@ -97,8 +98,8 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                   height: 8.h,
                   decoration: BoxDecoration(
                     color: isActive
-                        ? AppColors.primaryColor
-                        : AppColors.darkGrey,
+                        ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                        : (isDark ? AppColors.darkBorder : AppColors.darkGrey),
                     borderRadius: .circular(10.r),
                   ),
                 );

@@ -116,8 +116,9 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -129,7 +130,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
               stepNumber: "Step 4 of 7",
             ),
 
-            // Content (unchanged, but we may want to use Cubit state for initial values)
+            // Content
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 20.h),
@@ -142,7 +143,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                         fontSize: 27.sp,
                         height: 1.2,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.black,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                       ),
                     ),
 
@@ -222,14 +223,17 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 16.w),
                             decoration: BoxDecoration(
-                              color: AppColors.white,
+                              color: isDark ? AppColors.darkSurface : AppColors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: AppColors.grey.withValues(alpha: 0.3),
+                                color: isDark
+                                    ? AppColors.darkBorder
+                                    : AppColors.grey.withValues(alpha: 0.3),
                               ),
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
+                                dropdownColor: isDark ? AppColors.darkSurface : AppColors.white,
                                 value: selectedCondition,
                                 isExpanded: true,
                                 hint: Text(
@@ -242,7 +246,12 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                                 items: conditions.map((condition) {
                                   return DropdownMenuItem<String>(
                                     value: condition,
-                                    child: Text(condition),
+                                    child: Text(
+                                      condition,
+                                      style: TextStyle(
+                                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                                      ),
+                                    ),
                                   );
                                 }).toList(),
                                 onChanged: (value) {

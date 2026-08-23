@@ -22,11 +22,21 @@ class BookingActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+          ),
+        ],
       ),
       child: SafeArea(
         top: false,
@@ -40,13 +50,16 @@ class BookingActionBar extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: TextStyle(color: AppColors.grey, fontSize: 12.sp),
+                  style: TextStyle(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                    fontSize: 12.sp,
+                  ),
                 ),
                 verticalSpace(8),
                 Text(
                   totalText,
                   style: TextStyle(
-                    color: AppColors.black,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
                   ),

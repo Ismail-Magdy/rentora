@@ -190,6 +190,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return TextFormField(
       controller: widget.controller,
 
@@ -216,28 +218,58 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       autovalidateMode: widget.autovalidateMode,
 
       /// Text style inside the field.
-      style: TextStyle(color: AppColors.primaryColor, fontSize: 14.sp),
+      style: TextStyle(
+        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
+        fontSize: 14.sp,
+      ),
 
       ///
       decoration: InputDecoration(
         hintText: widget.hintText,
 
-        hintStyle: const TextStyle(color: Color(0x7F4A628A)),
+        hintStyle: TextStyle(
+          color: isDark ? AppColors.darkTextMuted : const Color(0x7F4A628A),
+        ),
         icon: widget.icon != null
-            ? Icon(widget.icon, color: Colors.grey)
+            ? Icon(
+                widget.icon,
+                color: isDark ? AppColors.darkTextSecondary : Colors.grey,
+              )
             : null,
 
         /// Optional prefix icon.
         prefixIcon: widget.prefixIcon != null
-            ? Icon(widget.prefixIcon, color: AppColors.grey)
+            ? Icon(
+                widget.prefixIcon,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+              )
             : null,
 
         filled: true,
-        fillColor: AppColors.grey.withValues(alpha: 0.08),
+        fillColor: isDark
+            ? AppColors.darkContainer
+            : AppColors.grey.withValues(alpha: 0.08),
 
         border: OutlineInputBorder(
           borderRadius: .circular(14),
-          borderSide: BorderSide.none,
+          borderSide: isDark
+              ? const BorderSide(color: AppColors.darkBorder)
+              : BorderSide.none,
+        ),
+
+        enabledBorder: OutlineInputBorder(
+          borderRadius: .circular(14),
+          borderSide: isDark
+              ? const BorderSide(color: AppColors.darkBorder)
+              : BorderSide.none,
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: .circular(14),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+            width: 1.5,
+          ),
         ),
 
         errorBorder: OutlineInputBorder(
@@ -260,7 +292,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 },
                 icon: Icon(
                   obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: AppColors.grey,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                 ),
               )
             : null,

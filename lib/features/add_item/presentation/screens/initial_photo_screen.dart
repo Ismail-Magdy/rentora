@@ -38,8 +38,9 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -78,7 +79,7 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
                         fontSize: 27.sp,
                         height: 1.2.h,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.black,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                       ),
                     ),
                     verticalSpace(12),
@@ -88,7 +89,7 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
                       style: TextStyle(
                         fontSize: 15.sp,
                         height: 1.45.h,
-                        color: AppColors.grey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                       ),
                     ),
                     verticalSpace(40),

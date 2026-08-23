@@ -71,7 +71,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
     if (currentUserId.isEmpty) {
       return Scaffold(
-        backgroundColor: AppColors.scaffoldBackground,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: CustomAppBarWithNoLeading(text: l10n.chats),
         body: ChatEmptyState(
           title: l10n.loginToViewChats,
@@ -82,7 +82,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBarWithNoLeading(text: l10n.chats),
       body: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {

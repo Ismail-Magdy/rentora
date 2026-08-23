@@ -79,8 +79,9 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -99,7 +100,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
                       fontSize: 27.sp,
                       height: 1.2.h,
                       fontWeight: FontWeight.w800,
-                      color: AppColors.black,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                     ),
                   ),
                   verticalSpace(8),

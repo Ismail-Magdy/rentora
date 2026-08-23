@@ -13,34 +13,35 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: AppColors.white,
+          backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
           scrolledUnderElevation: 0,
           elevation: 0,
           leading: GestureDetector(
             onTap: () => Navigator.of(context).pop(),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back_ios_new,
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
             ),
           ),
           title: Text(
             "Notifications",
             style: TextStyle(
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
               fontWeight: FontWeight.bold,
               fontSize: 18.sp,
             ),
           ),
           centerTitle: true,
           bottom: TabBar(
-            labelColor: AppColors.primaryColor,
-            unselectedLabelColor: AppColors.grey,
-            indicatorColor: AppColors.primaryColor,
+            labelColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+            unselectedLabelColor: isDark ? AppColors.darkTextMuted : AppColors.grey,
+            indicatorColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             tabs: const [
               Tab(text: "Unread"),
               Tab(text: "Read"),

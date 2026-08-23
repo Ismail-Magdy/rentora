@@ -72,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     if (widget.chatId.trim().isEmpty) {
       return Scaffold(
-        backgroundColor: AppColors.scaffoldBackground,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: ChatAppBar(
           receiverName: titleText,
           receiverAvatar: widget.receiverAvatar,
@@ -87,7 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: ChatAppBar(
         receiverName: titleText,
         receiverAvatar: widget.receiverAvatar,

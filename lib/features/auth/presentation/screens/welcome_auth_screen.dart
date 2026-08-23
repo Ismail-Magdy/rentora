@@ -44,8 +44,9 @@ class WelcomeAuthScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -73,7 +74,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                     //
                     CustomButton(
                       height: 52.h,
-                      color: AppColors.white,
+                      color: isDark ? AppColors.darkSurface : AppColors.white,
                       text: l10n.registration,
                       borderColor: AppColors.secondaryColor,
                       textColor: AppColors.secondaryColor,
@@ -94,10 +95,16 @@ class WelcomeAuthScreen extends StatelessWidget {
                           )
                         : CustomButton(
                             height: 52.h,
-                            color: AppColors.white,
+                            color: isDark
+                                ? AppColors.darkSurface
+                                : AppColors.white,
                             text: l10n.continueGoogle,
-                            textColor: AppColors.black,
-                            borderColor: AppColors.lightGrey,
+                            textColor: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.black,
+                            borderColor: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.lightGrey,
                             fontSize: 16.sp,
                             fontWeight: .w400,
                             prefixIcon: SvgPicture.asset(

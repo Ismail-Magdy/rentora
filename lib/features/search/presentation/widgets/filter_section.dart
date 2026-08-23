@@ -17,13 +17,18 @@ class FilterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 20.sp, color: AppColors.primaryColor),
+              Icon(
+                icon,
+                size: 20.sp,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+              ),
 
               horizontalSpace(8),
             ],
@@ -32,7 +37,7 @@ class FilterSection extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
-                color: AppColors.black,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
             ),
           ],

@@ -13,17 +13,23 @@ class PendingStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(24.r),
-        border: Border.all(color: AppColors.dividerColor, width: 1.w),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.dividerColor,
+          width: 1.w,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.05),
             blurRadius: 20,
             spreadRadius: 2,
             offset: const Offset(0, 6),
@@ -55,7 +61,9 @@ class PendingStatusCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
             decoration: BoxDecoration(
-              color: AppColors.amberLight,
+              color: isDark
+                  ? AppColors.amberDark.withValues(alpha: 0.2)
+                  : AppColors.amberLight,
               borderRadius: BorderRadius.circular(20.r),
               border: Border.all(
                 color: AppColors.amber.withValues(alpha: 0.3),
@@ -94,7 +102,7 @@ class PendingStatusCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.black,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
             ),
           ),
           verticalSpace(10),
@@ -105,7 +113,7 @@ class PendingStatusCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13.sp,
-              color: AppColors.darkGrey,
+              color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
               height: 1.5,
               fontWeight: FontWeight.w400,
             ),

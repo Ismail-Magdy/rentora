@@ -36,7 +36,7 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocConsumer<LocationCubit, LocationState>(
         listener: (context, state) {
           if (state is LocationError) {

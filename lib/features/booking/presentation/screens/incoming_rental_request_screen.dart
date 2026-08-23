@@ -32,8 +32,9 @@ class IncomingRentalRequestScreen extends StatelessWidget {
     final durationText = '${booking?.totalDays ?? 3} days';
     final totalAmount = (booking?.totalAmount ?? 1350).toDouble();
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'Rental Request'),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -46,7 +47,7 @@ class IncomingRentalRequestScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.black,
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                 ),
               ),
               verticalSpace(4),

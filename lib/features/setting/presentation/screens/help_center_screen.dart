@@ -94,24 +94,25 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F3F4),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           'Help Center',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.primaryColor,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
           ),
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFFF1F3F4),
+        backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'support_fab',
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Support chat is coming soon!')),
@@ -127,34 +128,47 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           Text(
             'How can we help you?',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 22.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+            ),
           ),
           SizedBox(height: 6.h),
           Text(
             'Search for articles, guides, and more.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade600,
+            ),
           ),
           SizedBox(height: 16.h),
 
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? AppColors.darkSurface : Colors.white,
               borderRadius: BorderRadius.circular(24.r),
-              border: Border.all(color: Colors.grey.shade300),
+              border: Border.all(
+                color: isDark ? AppColors.darkBorder : Colors.grey.shade300,
+              ),
             ),
             child: TextField(
               controller: searchController,
               onChanged: (value) => setState(() => _query = value),
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+              ),
               decoration: InputDecoration(
                 hintText: 'Search the Help Center...',
                 hintStyle: TextStyle(
                   fontSize: 12.sp,
-                  color: Colors.grey.shade500,
+                  color: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.grey.shade500,
+                  color: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
                   size: 20.w,
                 ),
                 border: InputBorder.none,
@@ -167,7 +181,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             alignment: AlignmentDirectional.centerStart,
             child: Text(
               'Categories',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+              ),
             ),
           ),
           SizedBox(height: 12.h),
@@ -188,12 +206,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: isDark ? AppColors.darkSurface : Colors.white,
                     borderRadius: BorderRadius.circular(12.r),
                     border: Border.all(
                       color: selected
-                          ? AppColors.primaryColor
-                          : Colors.transparent,
+                          ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                          : (isDark ? AppColors.darkBorder : Colors.transparent),
                       width: 1.5,
                     ),
                   ),
@@ -202,12 +220,13 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                     children: [
                       CircleAvatar(
                         radius: 20.r,
-                        backgroundColor: AppColors.primaryColor.withOpacity(
-                          0.15,
-                        ),
+                        backgroundColor: (isDark
+                                ? AppColors.secondaryColor
+                                : AppColors.primaryColor)
+                            .withValues(alpha: 0.15),
                         child: Icon(
                           category.icon,
-                          color: AppColors.primaryColor,
+                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                           size: 20.w,
                         ),
                       ),
@@ -220,6 +239,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                           style: TextStyle(
                             fontSize: 11.sp,
                             fontWeight: FontWeight.w600,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
                       ),
@@ -235,7 +255,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             alignment: AlignmentDirectional.centerStart,
             child: Text(
               'Frequently Asked Questions',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+              ),
             ),
           ),
           SizedBox(height: 12.h),
@@ -246,7 +270,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               child: Text(
                 'No results found. Try a different search.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade600,
+                ),
               ),
             )
           else
@@ -254,8 +281,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               (faq) => Container(
                 margin: EdgeInsets.only(bottom: 12.h),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isDark ? AppColors.darkSurface : Colors.white,
                   borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: isDark ? AppColors.darkBorder : Colors.transparent,
+                  ),
                 ),
                 child: ExpansionTile(
                   tilePadding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -266,13 +296,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  iconColor: AppColors.primaryColor,
-                  collapsedIconColor: Colors.grey.shade500,
+                  iconColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                  collapsedIconColor: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
                   title: Text(
                     faq.question,
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                     ),
                   ),
                   children: [
@@ -280,7 +311,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       faq.answer,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.grey.shade700,
+                        color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade700,
                         height: 1.6,
                       ),
                     ),

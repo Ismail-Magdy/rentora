@@ -63,8 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         final l10n = AppLocalizations.of(context)!;
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Form(
@@ -81,9 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             alignment: .centerLeft,
                             child: GestureDetector(
                               onTap: () => context.pop(),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.arrow_back_ios_new,
-                                color: AppColors.black,
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.black,
                               ),
                             ),
                           ),
@@ -109,7 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               fontSize: 28.sp,
                               fontWeight: .bold,
-                              color: AppColors.black,
+                              color: isDark
+                                  ? AppColors.darkTextPrimary
+                                  : AppColors.black,
                             ),
                           ),
                           //
@@ -119,7 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             l10n.loginContinue,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: AppColors.grey,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.grey,
                             ),
                           ),
                           //
@@ -191,7 +198,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 '${l10n.noAccount} ',
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: AppColors.grey,
+                                  color: isDark
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.grey,
                                 ),
                               ),
                               GestureDetector(
@@ -211,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           //
                           verticalSpace(32),
                           //
-                          AuthDivider(),
+                          const AuthDivider(),
                           //
                           verticalSpace(32),
 
@@ -224,10 +233,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )
                               : CustomButton(
                                   height: 52.h,
-                                  color: AppColors.white,
+                                  color: isDark
+                                      ? AppColors.darkSurface
+                                      : AppColors.white,
                                   text: l10n.continueGoogle,
-                                  textColor: AppColors.black,
-                                  borderColor: AppColors.lightGrey,
+                                  textColor: isDark
+                                      ? AppColors.darkTextPrimary
+                                      : AppColors.black,
+                                  borderColor: isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.lightGrey,
                                   fontSize: 16.sp,
                                   fontWeight: .w400,
                                   prefixIcon: SvgPicture.asset(

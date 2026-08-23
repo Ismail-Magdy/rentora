@@ -65,8 +65,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
       builder: (context, state) {
         final l10n = AppLocalizations.of(context)!;
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Form(
@@ -83,9 +84,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             alignment: .centerLeft,
                             child: GestureDetector(
                               onTap: () => context.pop(),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.arrow_back_ios_new,
-                                color: AppColors.black,
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.black,
                               ),
                             ),
                           ),
@@ -112,7 +115,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             style: TextStyle(
                               fontSize: 28.sp,
                               fontWeight: .bold,
-                              color: AppColors.black,
+                              color: isDark
+                                  ? AppColors.darkTextPrimary
+                                  : AppColors.black,
                             ),
                           ),
                           //
@@ -122,7 +127,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             l10n.joinCommunity,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: AppColors.grey,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.grey,
                             ),
                           ),
                           //
@@ -181,13 +188,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               horizontalSpace(10),
-                               Expanded(
+                              Expanded(
                                 child: RichText(
                                   text: TextSpan(
                                     text: "${l10n.agreeTo} ",
                                     style: TextStyle(
                                       fontSize: 14.sp,
-                                      color: AppColors.black,
+                                      color: isDark
+                                          ? AppColors.darkTextPrimary
+                                          : AppColors.black,
                                       fontWeight: .bold,
                                     ),
                                     children: [
@@ -254,7 +263,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 '${l10n.alreadyHaveAccount} ',
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: AppColors.grey,
+                                  color: isDark
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.grey,
                                 ),
                               ),
                               GestureDetector(
@@ -282,10 +293,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 )
                               : CustomButton(
                                   height: 52.h,
-                                  color: AppColors.white,
+                                  color: isDark
+                                      ? AppColors.darkSurface
+                                      : AppColors.white,
                                   text: l10n.continueGoogle,
-                                  textColor: AppColors.black,
-                                  borderColor: AppColors.lightGrey,
+                                  textColor: isDark
+                                      ? AppColors.darkTextPrimary
+                                      : AppColors.black,
+                                  borderColor: isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.lightGrey,
                                   fontSize: 16.sp,
                                   fontWeight: .w400,
                                   prefixIcon: SvgPicture.asset(

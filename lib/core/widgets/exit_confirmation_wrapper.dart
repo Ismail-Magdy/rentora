@@ -12,11 +12,12 @@ class ExitConfirmationWrapper extends StatelessWidget {
 
   Future<bool> _onWillPop(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final shouldExit = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.white,
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: .circular(16.r)),
         //
         title: Text(
@@ -24,13 +25,16 @@ class ExitConfirmationWrapper extends StatelessWidget {
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: .bold,
-            color: Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : Colors.black87,
           ),
         ),
         //
         content: Text(
           l10n.exitConfirmation,
-          style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade700,
+          ),
         ),
         //
         actions: [
@@ -40,7 +44,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
               l10n.cancel,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Colors.grey.shade600,
+                color: isDark ? AppColors.darkTextMuted : Colors.grey.shade600,
                 fontWeight: .w600,
               ),
             ),
@@ -51,7 +55,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
               l10n.exit,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                 fontWeight: .bold,
               ),
             ),

@@ -24,6 +24,7 @@ class CategoryDetailsScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final localizedCategoryTitle = CategoryModel(
       id: categoryName,
       name: categoryName,
@@ -31,25 +32,25 @@ class CategoryDetailsScreenContent extends StatelessWidget {
     ).getLocalizedName(l10n);
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           //
           SliverAppBar(
             pinned: true,
-            backgroundColor: AppColors.white,
+            backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
             elevation: 0,
             leading: GestureDetector(
               onTap: () => context.pop(),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios_new,
-                color: AppColors.black,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
             ),
             title: Text(
               localizedCategoryTitle,
               style: TextStyle(
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
               ),

@@ -9,17 +9,29 @@ class AuthDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
-        Expanded(child: Divider(color: AppColors.lightGrey)),
+        Expanded(
+          child: Divider(
+            color: isDark ? AppColors.darkDivider : AppColors.lightGrey,
+          ),
+        ),
         Padding(
           padding: .symmetric(horizontal: 16.w),
           child: Text(
             l10n.or,
-            style: TextStyle(color: AppColors.darkGrey, fontSize: 16.sp),
+            style: TextStyle(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+              fontSize: 16.sp,
+            ),
           ),
         ),
-        Expanded(child: Divider(color: AppColors.lightGrey)),
+        Expanded(
+          child: Divider(
+            color: isDark ? AppColors.darkDivider : AppColors.lightGrey,
+          ),
+        ),
       ],
     );
   }

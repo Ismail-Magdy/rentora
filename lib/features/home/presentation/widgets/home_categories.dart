@@ -34,6 +34,7 @@ class HomeCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     if (categories.isEmpty) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,11 @@ class HomeCategories extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: Text(
             l10n.categories,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+            ),
           ),
         ),
         //
@@ -80,10 +85,12 @@ class HomeCategories extends StatelessWidget {
                       width: 60.w,
                       height: 60.w,
                       decoration: BoxDecoration(
-                        color: AppColors.lightGrey,
+                        color: isDark ? AppColors.darkSurface : AppColors.lightGrey,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AppColors.grey.withValues(alpha: 0.2),
+                          color: isDark
+                              ? AppColors.darkBorder
+                              : AppColors.grey.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Center(
@@ -106,7 +113,9 @@ class HomeCategories extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.black.withValues(alpha: 0.7),
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.black.withValues(alpha: 0.7),
                       ),
                     ),
                     //

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/data/model/verification_route_args.dart';
@@ -52,7 +51,7 @@ class _VerificationIdFrontUploadScreenState
     final cubit = context.watch<VerificationCubit>();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
       body: IdUploadScreenContent(
         title: l10n.uploadIdFront,

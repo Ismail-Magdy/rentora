@@ -4,7 +4,6 @@ import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -37,14 +36,14 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
     final totalAmount = (dailyPrice * totalDays) + serviceFee + securityDeposit;
 
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'Pickup Method'),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-                padding: EdgeInsets.all(16.r),
-                children: [
+              padding: EdgeInsets.all(16.r),
+              children: [
                 ListingInfoCard(
                   title: widget.args.listingTitle,
                   imageUrl: widget.args.listingImageUrl,

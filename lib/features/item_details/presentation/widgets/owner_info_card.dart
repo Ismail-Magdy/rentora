@@ -19,11 +19,15 @@ class OwnerInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: .all(12.r),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F7F9),
+        color: isDark ? AppColors.darkSurface : const Color(0xFFF7F7F9),
         borderRadius: .circular(12.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
       ),
       child: Row(
         children: [
@@ -45,7 +49,11 @@ class OwnerInfoCard extends StatelessWidget {
                   children: [
                     Text(
                       item.ownerName.isNotEmpty ? item.ownerName : 'Unknown Owner',
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      ),
                     ),
                     if (item.ownerVerificationStatus == 'verified') ...[
                       horizontalSpace(4),

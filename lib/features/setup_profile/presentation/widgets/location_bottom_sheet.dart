@@ -24,13 +24,14 @@ class LocationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Align(
       alignment: .bottomCenter,
       child: Container(
         width: .infinity,
         padding: .symmetric(horizontal: 24.w, vertical: 32.h),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: isDark ? AppColors.darkSurface : AppColors.white,
           borderRadius: .vertical(top: .circular(30.r)),
         ),
         child: Column(
@@ -39,14 +40,21 @@ class LocationBottomSheet extends StatelessWidget {
             //
             Text(
               l10n.chooseLocationTitle,
-              style: TextStyle(fontSize: 20.sp, fontWeight: .bold),
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: .bold,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+              ),
             ),
             //
             verticalSpace(8),
             //
             Text(
               l10n.chooseLocationSubtitle,
-              style: TextStyle(color: AppColors.darkGrey, fontSize: 14.sp),
+              style: TextStyle(
+                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+                fontSize: 14.sp,
+              ),
             ),
             //
             verticalSpace(24),
@@ -69,14 +77,27 @@ class LocationBottomSheet extends StatelessWidget {
             Row(
               children: [
                 //
-                const Expanded(child: Divider()),
+                Expanded(
+                  child: Divider(
+                    color: isDark ? AppColors.darkDivider : AppColors.dividerColor,
+                  ),
+                ),
                 //
                 Padding(
                   padding: .symmetric(horizontal: 8.h),
-                  child: Text(l10n.or, style: TextStyle(color: AppColors.grey)),
+                  child: Text(
+                    l10n.or,
+                    style: TextStyle(
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                    ),
+                  ),
                 ),
                 //
-                const Expanded(child: Divider()),
+                Expanded(
+                  child: Divider(
+                    color: isDark ? AppColors.darkDivider : AppColors.dividerColor,
+                  ),
+                ),
                 //
               ],
             ),
@@ -92,12 +113,17 @@ class LocationBottomSheet extends StatelessWidget {
                   Container(
                     padding: .all(10.w),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withValues(alpha: 0.1),
+                      color: (isDark
+                              ? AppColors.secondaryColor
+                              : AppColors.primaryColor)
+                          .withValues(alpha: 0.15),
                       shape: .circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.my_location,
-                      color: AppColors.primaryColor,
+                      color: isDark
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor,
                     ),
                   ),
                   //
@@ -111,14 +137,18 @@ class LocationBottomSheet extends StatelessWidget {
                         l10n.useCurrentLocation,
                         style: TextStyle(
                           fontWeight: .bold,
-                          color: AppColors.primaryColor,
+                          color: isDark
+                              ? AppColors.secondaryColor
+                              : AppColors.primaryColor,
                         ),
                       ),
                       //
                       Text(
                         l10n.allowAccessOnce,
                         style: TextStyle(
-                          color: AppColors.grey,
+                          color: isDark
+                              ? AppColors.darkTextMuted
+                              : AppColors.grey,
                           fontSize: 12.sp,
                         ),
                       ),

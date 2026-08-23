@@ -10,17 +10,18 @@ class SearchFilterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.scaffoldBackground,
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.scaffoldBackground,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 19.sp,
-            color: AppColors.black,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
           ),
         ),
         title: Text(
@@ -28,7 +29,7 @@ class SearchFilterScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 21.sp,
             fontWeight: FontWeight.w700,
-            color: AppColors.black,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
           ),
         ),
         actions: [
@@ -41,7 +42,7 @@ class SearchFilterScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
               ),
             ),
           ),

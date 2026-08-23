@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/presentation/widgets/rental_request_status_actions.dart';
@@ -15,7 +14,7 @@ class RequestAcceptedStatusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBarWithNoLeading(text: 'Request Status'),
       body: SafeArea(
         child: Padding(

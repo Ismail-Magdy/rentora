@@ -28,7 +28,7 @@ class VerificationPendingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBarWithNoLeading(text: l10n.verificationAppBarTitle),
       body: SafeArea(
         child: Padding(

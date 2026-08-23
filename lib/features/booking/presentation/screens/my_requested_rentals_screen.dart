@@ -25,7 +25,7 @@ class MyRequestedRentalsScreen extends StatelessWidget {
         : FirebaseFirestore.instance.collection('bookings');
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'My Requested Rentals'),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/helpers/spacing.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -30,7 +29,7 @@ class RenterOrderDetailsScreen extends StatelessWidget {
     final totalAmount = (dailyPrice * totalDays) + securityDeposit;
 
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'Booking Details'),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.r),

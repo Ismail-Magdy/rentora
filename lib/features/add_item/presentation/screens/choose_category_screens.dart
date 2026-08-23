@@ -64,9 +64,10 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -96,7 +97,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                   fontSize: 27.sp,
                                   height: 1.2,
                                   fontWeight: FontWeight.w800,
-                                  color: AppColors.black,
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                                 ),
                               ),
                               verticalSpace(10),
@@ -105,7 +106,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                   height: 1.4,
-                                  color: AppColors.grey,
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                                 ),
                               ),
                             ],
@@ -136,15 +137,15 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                             duration: const Duration(milliseconds: 300),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? AppColors.primaryColor.withValues(
-                                      alpha: 0.1,
-                                    )
-                                  : const Color(0xFFF7F7F9),
+                                  ? (isDark
+                                      ? AppColors.secondaryColor.withValues(alpha: 0.2)
+                                      : AppColors.primaryColor.withValues(alpha: 0.1))
+                                  : (isDark ? AppColors.darkSurface : const Color(0xFFF7F7F9)),
                               borderRadius: BorderRadius.circular(20.r),
                               border: Border.all(
                                 color: isSelected
-                                    ? AppColors.primaryColor
-                                    : Colors.transparent,
+                                    ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                                    : (isDark ? AppColors.darkBorder : Colors.transparent),
                                 width: 2,
                               ),
                             ),
@@ -156,7 +157,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                         Icons.more_horiz,
                                         size: 35.sp,
                                         color: isSelected
-                                            ? AppColors.primaryColor
+                                            ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
                                             : AppColors.secondaryColor,
                                       )
                                     : SvgPicture.asset(
@@ -165,7 +166,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                         height: 35.sp,
                                         colorFilter: ColorFilter.mode(
                                           isSelected
-                                              ? AppColors.primaryColor
+                                              ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
                                               : AppColors.secondaryColor,
                                           BlendMode.srcIn,
                                         ),
@@ -180,8 +181,8 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                         ? FontWeight.bold
                                         : FontWeight.w500,
                                     color: isSelected
-                                        ? AppColors.primaryColor
-                                        : Colors.black87,
+                                        ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                                        : (isDark ? AppColors.darkTextPrimary : Colors.black87),
                                   ),
                                 ),
                               ],

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rentora/core/helpers/spacing.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:rentora/features/archive/presentation/widgets/archive_tab_bar.dart';
@@ -39,7 +38,7 @@ class _ArchiveScreenState extends State<ArchiveScreen>
 
     if (currentUserId == null || currentUserId.isEmpty) {
       return Scaffold(
-        backgroundColor: AppColors.scaffoldBackground,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: CustomAppBarWithNoLeading(text: l10n.archiveTitle),
         body: CustomEmptyState(
           icon: Icons.lock_outline_rounded,
@@ -50,7 +49,7 @@ class _ArchiveScreenState extends State<ArchiveScreen>
     }
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBarWithNoLeading(text: l10n.archiveTitle),
       body: SafeArea(
         child: Column(

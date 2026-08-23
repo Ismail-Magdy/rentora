@@ -59,9 +59,10 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
       },
       builder: (context, state) {
         final isPublishing = state.status == .loading;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
@@ -79,12 +80,12 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Review your listing',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF171717),
+                            color: isDark ? AppColors.darkTextPrimary : const Color(0xFF171717),
                           ),
                         ),
                         verticalSpace(7),
@@ -391,10 +392,10 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFA),
+                    color: isDark ? AppColors.darkSurface : const Color(0xFFF8FAFA),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(.04),
+                        color: isDark ? AppColors.darkShadow : Colors.black.withOpacity(.04),
                         blurRadius: 12,
                         offset: const Offset(0, -4),
                       ),

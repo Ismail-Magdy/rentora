@@ -26,6 +26,7 @@ class VerificationUploadActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -46,9 +47,9 @@ class VerificationUploadActions extends StatelessWidget {
           onPressed: isLoading ? null : onSecondaryPressed,
           height: 50.h,
           borderRadius: 14.r,
-          color: AppColors.white,
-          textColor: AppColors.primaryColor,
-          borderColor: AppColors.primaryColor,
+          color: isDark ? AppColors.darkSurface : AppColors.white,
+          textColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+          borderColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
           fontSize: 15.sp,
         ),
       ],

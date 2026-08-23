@@ -25,7 +25,7 @@ class MyRentalListingsScreen extends StatelessWidget {
         : FirebaseFirestore.instance.collection('listings');
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: const CustomAppBar(text: 'My Listings'),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

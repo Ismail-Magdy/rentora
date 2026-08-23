@@ -12,13 +12,18 @@ class ItemFeaturesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: .start,
       children: [
         //
         Text(
           l10n.keyFeatures,
-          style: TextStyle(fontSize: 16.sp, fontWeight: .bold),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: .bold,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+          ),
         ),
         //
         verticalSpace(12),
@@ -30,7 +35,11 @@ class ItemFeaturesSection extends StatelessWidget {
             return Container(
               padding: .symmetric(horizontal: 12.w, vertical: 8.h),
               decoration: BoxDecoration(
-                border: .all(color: AppColors.grey.withValues(alpha: 0.4)),
+                border: Border.all(
+                  color: isDark
+                      ? AppColors.darkBorder
+                      : AppColors.grey.withValues(alpha: 0.4),
+                ),
                 borderRadius: .circular(8.r),
               ),
               child: Row(
@@ -38,11 +47,17 @@ class ItemFeaturesSection extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.check_circle_outline,
-                    color: AppColors.primaryColor,
+                    color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                     size: 16.sp,
                   ),
                   horizontalSpace(8),
-                  Text(feature, style: TextStyle(fontSize: 12.sp)),
+                  Text(
+                    feature,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                    ),
+                  ),
                 ],
               ),
             );

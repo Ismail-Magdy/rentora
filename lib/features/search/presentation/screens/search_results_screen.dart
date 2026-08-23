@@ -11,17 +11,18 @@ class SearchResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.scaffoldBackground,
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.scaffoldBackground,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 19.sp,
-            color: AppColors.black,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
           ),
         ),
         title: Text(
@@ -29,7 +30,7 @@ class SearchResultsScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 21.sp,
             fontWeight: FontWeight.w700,
-            color: AppColors.black,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
           ),
         ),
       ),
@@ -80,6 +81,7 @@ class _EmptyResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -90,13 +92,15 @@ class _EmptyResults extends StatelessWidget {
               width: 86.w,
               height: 86.w,
               decoration: BoxDecoration(
-                color: AppColors.infoLight,
+                color: isDark
+                    ? AppColors.primaryColor.withValues(alpha: 0.2)
+                    : AppColors.infoLight,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.inventory_2_outlined,
                 size: 42.sp,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
               ),
             ),
             SizedBox(height: 18.h),
@@ -105,7 +109,7 @@ class _EmptyResults extends StatelessWidget {
               style: TextStyle(
                 fontSize: 19.sp,
                 fontWeight: FontWeight.w700,
-                color: AppColors.black,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
             ),
             SizedBox(height: 8.h),
@@ -115,7 +119,7 @@ class _EmptyResults extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13.sp,
                 height: 1.5,
-                color: AppColors.darkGrey,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
               ),
             ),
           ],
@@ -132,6 +136,7 @@ class _ErrorResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -149,14 +154,17 @@ class _ErrorResults extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
-                color: AppColors.black,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
             ),
             SizedBox(height: 8.h),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13.sp, color: AppColors.darkGrey),
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+              ),
             ),
             SizedBox(height: 20.h),
             ElevatedButton.icon(

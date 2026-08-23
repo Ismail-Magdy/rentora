@@ -21,8 +21,9 @@ class VerificationIntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = context.isDarkMode;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
       body: SafeArea(
         child: Column(
@@ -43,7 +44,7 @@ class VerificationIntroScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.black,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                       ),
                     ),
                     verticalSpace(8),
@@ -52,7 +53,7 @@ class VerificationIntroScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        color: AppColors.darkGrey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                         height: 1.45,
                         fontWeight: FontWeight.w400,
                       ),
@@ -80,8 +81,13 @@ class VerificationIntroScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: EdgeInsets.all(16.r),
                       decoration: BoxDecoration(
-                        color: AppColors.lightGrey.withValues(alpha: 0.6),
+                        color: isDark
+                            ? AppColors.darkSurface
+                            : AppColors.lightGrey.withValues(alpha: 0.6),
                         borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(
+                          color: isDark ? AppColors.darkBorder : Colors.transparent,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +97,7 @@ class VerificationIntroScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.black,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                             ),
                           ),
                           verticalSpace(14),
