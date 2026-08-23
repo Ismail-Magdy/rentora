@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
@@ -23,14 +24,24 @@ class WelcomeAuthScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          //
+          final user = state.user;
+          final bool hasFinishedSetup =
+              user.location != null || user.interests.isNotEmpty;
+
+          if (hasFinishedSetup) {
+            SharedPrefHelper.setData('hasFinishedSetup', true);
+          }
+
           showFeedbackDialog(
             context,
             icon: Icons.check_circle_outline,
             color: AppColors.primaryGreen,
             title: l10n.success,
             message: l10n.loginSuccess,
-            onFinish: () => context.pushReplacementNamed(Routes.locationScreen),
+            onFinish: () => context.pushNamedAndRemoveUntil(
+              hasFinishedSetup ? Routes.rootScreen : Routes.locationScreen,
+              predicate: (route) => false,
+            ),
           );
         } else if (state is AuthError) {
           //

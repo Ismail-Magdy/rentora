@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
+import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/rentora.dart';
 import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
@@ -21,10 +23,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _logout() async {
     await getIt<FirebaseAuthService>().signOut();
+    await SharedPrefHelper.removeData('hasFinishedSetup');
     if (!mounted) return;
     Navigator.pushNamedAndRemoveUntil(
       context,
-      '/welcomeAuthScreen',
+      Routes.welcomeAuthScreen,
       (route) => false,
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
@@ -48,6 +49,14 @@ class _LoginScreenState extends State<LoginScreen> {
             message: state.failure.message,
           );
         } else if (state is AuthSuccess) {
+          final user = state.user;
+          final bool hasFinishedSetup =
+              user.location != null || user.interests.isNotEmpty;
+
+          if (hasFinishedSetup) {
+            SharedPrefHelper.setData('hasFinishedSetup', true);
+          }
+
           showFeedbackDialog(
             context,
             icon: Icons.check_circle_outline_rounded,
@@ -55,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             title: l10n.welcomeBack,
             message: l10n.loginSuccess,
             onFinish: () => context.pushNamedAndRemoveUntil(
-              Routes.locationScreen,
+              hasFinishedSetup ? Routes.rootScreen : Routes.locationScreen,
               predicate: (route) => false,
             ),
           );

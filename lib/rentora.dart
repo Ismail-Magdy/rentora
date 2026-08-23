@@ -35,7 +35,7 @@ class Rentora extends StatelessWidget {
             supportedLocales: const [Locale('en'), Locale('ar')],
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             onGenerateRoute: appRouter.generateRoute,
-            initialRoute: Routes.welcomeAuthScreen,
+            initialRoute: Routes.splashScreen,
           ),
         ),
       ),
