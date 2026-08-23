@@ -6,6 +6,7 @@ import 'package:rentora/features/archive/presentation/widgets/owner_earnings_sum
 import 'package:rentora/features/archive/presentation/widgets/owner_history_card.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/presentation/widgets/custom_empty_state.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class OwnerHistoryTab extends StatelessWidget {
   final String userId;
@@ -14,6 +15,7 @@ class OwnerHistoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: FirebaseFirestore.instance
           .collection('bookings')
@@ -62,13 +64,12 @@ class OwnerHistoryTab extends StatelessWidget {
               ),
             ),
             if (bookings.isEmpty)
-              const SliverFillRemaining(
+              SliverFillRemaining(
                 hasScrollBody: false,
                 child: CustomEmptyState(
                   icon: Icons.inventory_2_outlined,
-                  title: 'No Listing Rentals Yet',
-                  message:
-                      'When people rent your listed items, history and income will appear here.',
+                  title: l10n.noListingRentals,
+                  message: l10n.noListingRentalsMessage,
                 ),
               )
             else

@@ -127,7 +127,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
 
             AddItemProgressBar(
               title: l10n.itemDetailsLabel,
-              stepNumber: "Step 4 of 7",
+              stepNumber: l10n.stepOf("4", "7"),
             ),
 
             // Content

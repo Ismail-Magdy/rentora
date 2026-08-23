@@ -72,7 +72,7 @@ class ProductCard extends StatelessWidget {
                           color: AppColors.primaryColor,
                           title: state.isAdded
                               ? l10n.addedToFavorites
-                              : 'Removed from Favorites',
+                              : l10n.removedFromFavorites,
                           message: state.message,
                         );
                       }

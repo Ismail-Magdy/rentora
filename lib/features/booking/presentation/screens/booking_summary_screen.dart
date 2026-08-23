@@ -14,6 +14,7 @@ import 'package:rentora/features/booking/presentation/widgets/booking_action_bar
 import 'package:rentora/features/booking/presentation/widgets/booking_period_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/price_details_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class BookingSummaryScreen extends StatelessWidget {
   final BookingSummaryArgs args;
@@ -27,6 +28,7 @@ class BookingSummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final cubit = args.bookingCubit ?? getIt<BookingCubit>();
     final totalDays = cubit.totalDays == 0 ? 2 : cubit.totalDays;
     final dailyPrice = args.dailyPrice.toDouble();
@@ -53,14 +55,14 @@ class BookingSummaryScreen extends StatelessWidget {
             context,
             icon: Icons.error_outline,
             color: AppColors.error,
-            title: 'Booking Failed',
+            title: l10n.bookingFailed,
             message: state.message,
           );
         }
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar: const CustomAppBar(text: 'Booking Summary'),
+        appBar: CustomAppBar(text: l10n.bookingSummary),
         body: Column(
           children: [
             Expanded(
@@ -76,7 +78,7 @@ class BookingSummaryScreen extends StatelessWidget {
                   BookingPeriodCard(
                     startDate: _formatDate(cubit.startDate),
                     endDate: _formatDate(cubit.endDate),
-                    totalDays: '$totalDays days',
+                    totalDays: '$totalDays ${l10n.days}',
                   ),
                   verticalSpace(16),
                   PriceDetailsCard(
@@ -89,9 +91,9 @@ class BookingSummaryScreen extends StatelessWidget {
               ),
             ),
             BookingActionBar(
-              label: 'Total Due',
-              totalText: '${totalAmount.toStringAsFixed(0)} SAR',
-              buttonText: 'Send Rental Request',
+              label: l10n.total,
+              totalText: '${totalAmount.toStringAsFixed(0)} ${l10n.sar}',
+              buttonText: l10n.sendRentalRequest,
               buttonWidth: 170.w,
               onPressed: () {
                 context.pushNamed(Routes.pickupOptionsScreen, arguments: args);

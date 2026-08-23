@@ -13,6 +13,7 @@ import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
 import 'package:rentora/features/favorites/manager/favorites_state.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ItemBottomNavBar extends StatelessWidget {
   final ItemDetailsModel item;
@@ -21,6 +22,7 @@ class ItemBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: .symmetric(horizontal: 16.w, vertical: 16.h),
@@ -42,7 +44,7 @@ class ItemBottomNavBar extends StatelessWidget {
             //
             Expanded(
               child: CustomButton(
-                text: "Book Now",
+                text: l10n.bookNow,
                 onPressed: () => VerificationGuard.check(
                   context,
                   onVerified: () => context.pushNamed(
@@ -79,7 +81,7 @@ class ItemBottomNavBar extends StatelessWidget {
                       context,
                       icon: state.isAdded ? Icons.favorite : Icons.favorite_border,
                       color: AppColors.primaryColor,
-                      title: state.isAdded ? 'Added to Favorites' : 'Removed from Favorites',
+                      title: state.isAdded ? l10n.addedToFavorites : l10n.removedFromFavorites,
                       message: state.message,
                     );
                   }

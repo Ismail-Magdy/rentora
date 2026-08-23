@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class HelpCenterScreen extends StatefulWidget {
   const HelpCenterScreen({super.key});
@@ -92,14 +93,34 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     super.dispose();
   }
 
+  String _getLocalizedCategory(String title, AppLocalizations l10n) {
+    switch (title) {
+      case 'Renting':
+        return l10n.helpRenting;
+      case 'Getting Started':
+        return l10n.helpGettingStarted;
+      case 'Payments':
+        return l10n.helpPayments;
+      case 'Lending':
+        return l10n.helpLending;
+      case 'Account Management':
+        return l10n.helpAccountManagement;
+      case 'Safety & Trust':
+        return l10n.helpSafetyTrust;
+      default:
+        return title;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'Help Center',
+          l10n.helpCenter,
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
@@ -115,7 +136,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         backgroundColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Support chat is coming soon!')),
+            SnackBar(content: Text(l10n.supportChatSoon)),
           );
         },
         child: const Icon(Icons.headset_mic, color: Colors.white),
@@ -126,7 +147,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         children: [
           SizedBox(height: 8.h),
           Text(
-            'How can we help you?',
+            l10n.howCanWeHelp,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 22.sp,
@@ -136,7 +157,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           ),
           SizedBox(height: 6.h),
           Text(
-            'Search for articles, guides, and more.',
+            l10n.searchHelpSubtitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12.sp,
@@ -161,7 +182,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
               decoration: InputDecoration(
-                hintText: 'Search the Help Center...',
+                hintText: l10n.searchHelp,
                 hintStyle: TextStyle(
                   fontSize: 12.sp,
                   color: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
@@ -180,7 +201,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Text(
-              'Categories',
+              l10n.categories,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w600,
@@ -234,7 +255,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Text(
-                          category.title,
+                          _getLocalizedCategory(category.title, l10n),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 11.sp,
@@ -254,7 +275,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: Text(
-              'Frequently Asked Questions',
+              l10n.frequentlyAskedQuestions,
               style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.w600,
@@ -268,7 +289,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 24.h),
               child: Text(
-                'No results found. Try a different search.',
+                l10n.noFaqResults,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12.sp,

@@ -12,6 +12,7 @@ import 'package:rentora/features/booking/presentation/widgets/info_notice_card.d
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/pickup_location_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/pickup_option_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class PickupOptionsScreen extends StatefulWidget {
   final BookingSummaryArgs args;
@@ -28,6 +29,7 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final dailyPrice = widget.args.dailyPrice.toDouble();
     final cubit = widget.args.bookingCubit ?? getIt<BookingCubit>();
     final totalDays = cubit.totalDays == 0 ? 2 : cubit.totalDays;
@@ -37,13 +39,13 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBar(text: 'Pickup Method'),
+      appBar: CustomAppBar(text: l10n.pickupMethod),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(16.r),
-              children: [
+                padding: EdgeInsets.all(16.r),
+                children: [
                 ListingInfoCard(
                   title: widget.args.listingTitle,
                   imageUrl: widget.args.listingImageUrl,
@@ -52,30 +54,30 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
                 verticalSpace(16),
                 PickupLocationCard(
                   title: selectedMethod == 'pickup'
-                      ? 'Personal pickup'
-                      : 'Home delivery',
-                  address: 'Meet the owner at a specific location',
-                  distance: 'Free',
+                      ? l10n.personalPickup
+                      : l10n.homeDelivery,
+                  address: l10n.meetOwnerLocation,
+                  distance: l10n.free,
                 ),
                 verticalSpace(16),
                 PickupOptionCard(
-                  title: 'Personal pickup',
-                  subtitle: 'Meet the owner at a specific location',
+                  title: l10n.personalPickup,
+                  subtitle: l10n.meetOwnerLocation,
                   isSelected: selectedMethod == 'pickup',
                   onTap: () => setState(() => selectedMethod = 'pickup'),
                 ),
                 verticalSpace(12),
                 PickupOptionCard(
-                  title: 'Home delivery',
-                  subtitle: 'Safe delivery to your doorstep',
+                  title: l10n.homeDelivery,
+                  subtitle: l10n.safeDeliveryDoorstep,
                   isSelected: selectedMethod == 'delivery',
                   onTap: () => setState(() => selectedMethod = 'delivery'),
                 ),
                 verticalSpace(16),
                 InfoNoticeCard(
                   message: selectedMethod == 'pickup'
-                      ? 'The exact pickup time will be arranged with the owner after your request is confirmed.'
-                      : 'Delivery charges may apply and will be confirmed after your request is approved.',
+                      ? l10n.pickupTimeNotice
+                      : l10n.deliveryChargesNotice,
                 ),
               ],
             ),
@@ -83,9 +85,9 @@ class _PickupOptionsScreenState extends State<PickupOptionsScreen> {
         ],
       ),
       bottomNavigationBar: BookingActionBar(
-        label: 'Total',
-        totalText: '${totalAmount.toStringAsFixed(0)} SAR',
-        buttonText: 'Confirm Method',
+        label: l10n.total,
+        totalText: '${totalAmount.toStringAsFixed(0)} ${l10n.sar}',
+        buttonText: l10n.confirmMethod,
         buttonWidth: 170.w,
         onPressed: () {
           context.pushNamed(Routes.paymentMethodScreen, arguments: widget.args);

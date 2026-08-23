@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/presentation/widgets/search_filters.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SearchFilterScreen extends StatelessWidget {
   const SearchFilterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -25,7 +27,7 @@ class SearchFilterScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Filters',
+          l10n.filters,
           style: TextStyle(
             fontSize: 21.sp,
             fontWeight: FontWeight.w700,
@@ -38,7 +40,7 @@ class SearchFilterScreen extends StatelessWidget {
               context.read<SearchCubit>().clearFilters();
             },
             child: Text(
-              'Clear',
+              l10n.clear,
               style: TextStyle(
                 fontSize: 13.sp,
                 fontWeight: FontWeight.w600,
@@ -72,7 +74,7 @@ class SearchFilterScreen extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Apply Filters',
+                l10n.applyFilters,
                 style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
               ),
             ),

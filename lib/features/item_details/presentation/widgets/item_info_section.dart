@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ItemInfoSection extends StatelessWidget {
   final ItemDetailsModel item;
@@ -11,6 +12,7 @@ class ItemInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: .start,
@@ -76,7 +78,7 @@ class ItemInfoSection extends StatelessWidget {
             ),
             //
             Text(
-              ' LE / day',
+              ' ${l10n.sar}/${l10n.day}',
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: .bold,
@@ -114,7 +116,7 @@ class ItemInfoSection extends StatelessWidget {
                   crossAxisAlignment: .start,
                   children: [
                     Text(
-                      'Location',
+                      l10n.location,
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: .bold,

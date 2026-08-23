@@ -6,6 +6,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/archive/presentation/widgets/renter_history_card.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/presentation/widgets/custom_empty_state.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RenterHistoryTab extends StatelessWidget {
   final String userId;
@@ -14,6 +15,7 @@ class RenterHistoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: FirebaseFirestore.instance
           .collection('bookings')
@@ -38,10 +40,10 @@ class RenterHistoryTab extends StatelessWidget {
         final docs = snapshot.data?.docs ?? [];
 
         if (docs.isEmpty) {
-          return const CustomEmptyState(
+          return CustomEmptyState(
             icon: Icons.history_rounded,
-            title: 'No Rental History',
-            message: 'You have not rented any items yet.',
+            title: l10n.noRentalHistory,
+            message: l10n.noRentalsYet,
           );
         }
 

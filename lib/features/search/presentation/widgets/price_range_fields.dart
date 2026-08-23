@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class PriceRangeFields extends StatelessWidget {
   final TextEditingController minController;
@@ -20,12 +21,13 @@ class PriceRangeFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: _PriceField(
             controller: minController,
-            hint: 'Min Price',
+            hint: l10n.minPrice,
             onChanged: onMinChanged,
           ),
         ),
@@ -34,7 +36,7 @@ class PriceRangeFields extends StatelessWidget {
         Expanded(
           child: _PriceField(
             controller: maxController,
-            hint: 'Max Price',
+            hint: l10n.maxPrice,
             onChanged: onMaxChanged,
           ),
         ),

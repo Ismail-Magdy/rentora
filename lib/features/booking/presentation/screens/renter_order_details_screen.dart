@@ -8,6 +8,7 @@ import 'package:rentora/features/booking/manager/booking_cubit.dart';
 import 'package:rentora/features/booking/presentation/widgets/info_notice_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/renter_order_header_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/trip_details_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RenterOrderDetailsScreen extends StatelessWidget {
   final BookingSummaryArgs? args;
@@ -21,6 +22,7 @@ class RenterOrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final safeArgs = args ?? BookingSummaryArgs();
     final cubit = safeArgs.bookingCubit ?? getIt<BookingCubit>();
     final totalDays = cubit.totalDays == 0 ? 2 : cubit.totalDays;
@@ -30,7 +32,7 @@ class RenterOrderDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBar(text: 'Booking Details'),
+      appBar: CustomAppBar(text: l10n.rentalDetails),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.r),
         child: Column(
@@ -44,15 +46,14 @@ class RenterOrderDetailsScreen extends StatelessWidget {
             TripDetailsCard(
               checkIn: _formatDate(cubit.startDate),
               checkOut: _formatDate(cubit.endDate),
-              duration: '$totalDays days',
-              dailyPrice: '${dailyPrice.toStringAsFixed(0)} SAR',
-              securityDeposit: '${securityDeposit.toStringAsFixed(0)} SAR',
-              total: '${totalAmount.toStringAsFixed(0)} SAR',
+              duration: '$totalDays ${l10n.days}',
+              dailyPrice: '${dailyPrice.toStringAsFixed(0)} ${l10n.sar}',
+              securityDeposit: '${securityDeposit.toStringAsFixed(0)} ${l10n.sar}',
+              total: '${totalAmount.toStringAsFixed(0)} ${l10n.sar}',
             ),
             verticalSpace(16),
-            const InfoNoticeCard(
-              message:
-                  'Owner review is pending. You will be notified once the request is approved.',
+            InfoNoticeCard(
+              message: l10n.stepOwnerReview,
             ),
           ],
         ),

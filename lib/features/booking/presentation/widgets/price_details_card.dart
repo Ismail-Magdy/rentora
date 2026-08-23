@@ -54,15 +54,15 @@ class PriceDetailsCard extends StatelessWidget {
           verticalSpace(16),
           _priceRow(
             title:
-                '${l10n.rentalCost} (${l10n.sar} ${dailyPrice.toInt()} × $totalDays ${l10n.days})',
-            value: "$rentalTotal SAR",
+                '${l10n.rentalCost} (${dailyPrice.toInt()} ${l10n.sar} × $totalDays ${l10n.days})',
+            value: "$rentalTotal ${l10n.sar}",
           ),
           verticalSpace(12),
-          _priceRow(title: l10n.serviceFee, value: "$serviceFee SAR"),
+          _priceRow(title: l10n.serviceFee, value: "$serviceFee ${l10n.sar}"),
           verticalSpace(12),
           _priceRow(
             title: l10n.securityDepositLabel,
-            value: "$securityDeposit SAR",
+            value: "$securityDeposit ${l10n.sar}",
           ),
           verticalSpace(14),
           Divider(height: 1.h, color: AppColors.dividerColor),
@@ -79,7 +79,7 @@ class PriceDetailsCard extends StatelessWidget {
                 ),
               ),
               Text(
-                "$grandTotal SAR",
+                "$grandTotal ${l10n.sar}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.sp,

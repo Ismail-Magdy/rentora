@@ -5,17 +5,22 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/presentation/widgets/home_products_grid.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/manager/search_state.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SearchResultsScreen extends StatelessWidget {
   const SearchResultsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkSurface : AppColors.scaffoldBackground,
+        backgroundColor: isDark
+            ? AppColors.darkSurface
+            : AppColors.scaffoldBackground,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -26,7 +31,7 @@ class SearchResultsScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Search Results',
+          l10n.searchItems,
           style: TextStyle(
             fontSize: 21.sp,
             fontWeight: FontWeight.w700,
@@ -39,20 +44,24 @@ class SearchResultsScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state.status) {
               case SearchStatus.loading:
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.primaryColor,
+                return Skeletonizer(
+                  enabled: true,
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(child: SizedBox(height: 12.h)),
+                      HomeProductsGrid(
+                        products: state.results,
+                        isLoading: true,
+                      ),
+                      SliverToBoxAdapter(child: SizedBox(height: 30.h)),
+                    ],
                   ),
                 );
-
               case SearchStatus.success:
                 return CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(child: SizedBox(height: 12.h)),
-                    HomeProductsGrid(
-                      products: state.results,
-                      isLoading: false,
-                    ),
+                    HomeProductsGrid(products: state.results, isLoading: false),
                     SliverToBoxAdapter(child: SizedBox(height: 30.h)),
                   ],
                 );
@@ -87,6 +96,7 @@ class _EmptyResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
@@ -106,12 +116,14 @@ class _EmptyResults extends StatelessWidget {
               child: Icon(
                 Icons.inventory_2_outlined,
                 size: 42.sp,
-                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                color: isDark
+                    ? AppColors.secondaryColor
+                    : AppColors.primaryColor,
               ),
             ),
             SizedBox(height: 18.h),
             Text(
-              'No items found',
+              l10n.noProductsFound,
               style: TextStyle(
                 fontSize: 19.sp,
                 fontWeight: FontWeight.w700,
@@ -120,12 +132,14 @@ class _EmptyResults extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             Text(
-              'Try changing your search or filters to find more items.',
+              l10n.tryChangingSearchFilters,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13.sp,
                 height: 1.5,
-                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.darkGrey,
               ),
             ),
           ],
@@ -142,6 +156,7 @@ class _ErrorResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
@@ -156,7 +171,7 @@ class _ErrorResults extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Something went wrong',
+              l10n.somethingWentWrong,
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
@@ -169,7 +184,9 @@ class _ErrorResults extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13.sp,
-                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.darkGrey,
               ),
             ),
             SizedBox(height: 20.h),
@@ -179,7 +196,7 @@ class _ErrorResults extends StatelessWidget {
               },
               icon: Icon(Icons.refresh_rounded, size: 19.sp),
               label: Text(
-                'Try Again',
+                l10n.retry,
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
               ),
               style: ElevatedButton.styleFrom(

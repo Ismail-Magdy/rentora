@@ -10,12 +10,14 @@ import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/manager/add_item_state.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class DataEntryChoiceScreen extends StatelessWidget {
   const DataEntryChoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<AddItemCubit, AddItemState>(
       builder: (context, state) {
@@ -24,12 +26,12 @@ class DataEntryChoiceScreen extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                CustomAppBar(text: "Add New Listing"),
+                CustomAppBar(text: l10n.addNewListing),
 
                 // Progress Bar (Step 2)
                 AddItemProgressBar(
-                  title: "Details Method",
-                  stepNumber: "Step 2 of 7",
+                  title: l10n.detailsMethod,
+                  stepNumber: l10n.stepOf("2", "7"),
                 ),
 
                 // Content
@@ -70,7 +72,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
 
                         verticalSpace(30),
                         Text(
-                          'How would you like to add details?',
+                          l10n.howAddDetails,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 27.sp,
@@ -81,7 +83,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
                         ),
                         verticalSpace(12),
                         Text(
-                          'You can fill in the details manually or let our AI suggest them based on your photo.',
+                          l10n.detailsMethodDesc,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.sp,
@@ -95,8 +97,8 @@ class DataEntryChoiceScreen extends StatelessWidget {
                         _buildChoiceCard(
                           context,
                           icon: Icons.edit_note_rounded,
-                          title: 'Fill Manually',
-                          subtitle: 'Enter all details yourself',
+                          title: l10n.fillManually,
+                          subtitle: l10n.enterDetails,
                           onTap: () {
                             context.pushNamed(
                               Routes.categoryScreen,
@@ -109,8 +111,8 @@ class DataEntryChoiceScreen extends StatelessWidget {
                         _buildChoiceCard(
                           context,
                           icon: Icons.auto_awesome_rounded,
-                          title: 'Auto fill with AI',
-                          subtitle: 'Let AI suggest details from photo',
+                          title: l10n.autoFillAi,
+                          subtitle: l10n.suggestDetails,
                           onTap: null, // Disabled
                           isPrimary: false,
                         ),

@@ -6,6 +6,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class OwnerHistoryCard extends StatelessWidget {
   final BookingModel booking;
@@ -67,6 +68,7 @@ class OwnerHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final statusBg = _getStatusBgColor(booking.status, isDark);
     final statusText = _getStatusTextColor(booking.status, isDark);
@@ -159,7 +161,7 @@ class OwnerHistoryCard extends StatelessWidget {
                     ),
                     verticalSpace(4),
                     Text(
-                      'Renter ID: ${booking.renterId.isNotEmpty ? booking.renterId.substring(0, booking.renterId.length > 8 ? 8 : booking.renterId.length) : 'Guest'}',
+                      '${l10n.user}: ${booking.renterId.isNotEmpty ? booking.renterId.substring(0, booking.renterId.length > 8 ? 8 : booking.renterId.length) : 'Guest'}',
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
@@ -203,14 +205,14 @@ class OwnerHistoryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Your Earnings',
+                    l10n.income,
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                     ),
                   ),
                   Text(
-                    '${booking.totalAmount} SAR',
+                    '${booking.totalAmount} ${l10n.sar}',
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
@@ -220,7 +222,7 @@ class OwnerHistoryCard extends StatelessWidget {
                 ],
               ),
               CustomButton(
-                text: 'Review Request',
+                text: l10n.viewDetails,
                 width: 120.w,
                 height: 38.h,
                 fontSize: 12.5.sp,

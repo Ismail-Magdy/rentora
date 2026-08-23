@@ -20,6 +20,7 @@ import 'package:rentora/features/add_item/presentation/widgets/info_row.dart';
 import 'package:rentora/features/add_item/presentation/widgets/price_row.dart';
 import 'package:rentora/features/add_item/presentation/widgets/review_card.dart';
 import 'package:rentora/features/add_item/presentation/widgets/section_header.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ReviewAndPublishScreen extends StatefulWidget {
   const ReviewAndPublishScreen({super.key});
@@ -58,6 +59,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
         }
       },
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         final isPublishing = state.status == .loading;
         final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -67,11 +69,11 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
             child: Column(
               children: [
                 // Header (unchanged)
-                CustomAppBar(text: "Add New Listing"),
+                CustomAppBar(text: l10n.addNewListing),
                 // Progress (full)
                 AddItemProgressBar(
-                  title: "Review & Publish",
-                  stepNumber: "Step 7 of 7",
+                  title: l10n.reviewPublish,
+                  stepNumber: l10n.stepOf("7", "7"),
                 ),
                 // Content
                 Expanded(
@@ -81,7 +83,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Review your listing',
+                          l10n.reviewListing,
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
@@ -90,17 +92,17 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         ),
                         verticalSpace(7),
                         Text(
-                          'Make sure everything looks good before publishing.',
+                          l10n.reviewListingDesc,
                           style: TextStyle(
                             fontSize: 14.sp,
                             height: 1.4.h,
-                            color: Color(0xFF6D7478),
+                            color: const Color(0xFF6D7478),
                           ),
                         ),
                         verticalSpace(24),
                         // Photos
                         SectionHeader(
-                          title: 'Photos',
+                          title: l10n.photos,
                           onEdit: () => context.pushNamed(
                             Routes.addPhotosScreen,
                             arguments: context.read<AddItemCubit>(),
@@ -111,7 +113,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         verticalSpace(24),
                         // Item Details
                         ReviewCard(
-                          title: 'Item Details',
+                          title: l10n.itemDetails,
                           icon: Icons.inventory_2_outlined,
                           onEdit: () {
                             Navigator.pushNamed(
@@ -123,12 +125,12 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           child: Column(
                             children: [
                               InfoRow(
-                                label: 'Category',
+                                label: l10n.category,
                                 value: state.categoryId,
                               ),
                               Divider(height: 24.h),
                               InfoRow(
-                                label: 'Title',
+                                label: l10n.itemName,
                                 value: state.title,
                                 valueBold: true,
                               ),
@@ -136,7 +138,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                               DescriptionRow(description: state.description),
                               Divider(height: 24.h),
                               InfoRow(
-                                label: 'Condition',
+                                label: l10n.condition,
                                 value: state.condition,
                               ),
                             ],
@@ -148,7 +150,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         verticalSpace(16.h),
                         // Availability
                         ReviewCard(
-                          title: 'Availability',
+                          title: l10n.availability,
                           icon: Icons.calendar_today_outlined,
                           onEdit: () {
                             Navigator.pushNamed(
@@ -174,7 +176,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         verticalSpace(16.h),
                         // Rental Details
                         ReviewCard(
-                          title: 'Rental Details',
+                          title: l10n.rentalDetails,
                           icon: Icons.payments_outlined,
                           onEdit: () {
                             Navigator.pop(context);
@@ -182,16 +184,16 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                           child: Column(
                             children: [
                               PriceRow(
-                                label: 'Daily rental price',
+                                label: l10n.dailyPrice,
                                 value:
-                                    'EGP ${state.dailyPrice.toStringAsFixed(0)}',
+                                    '${state.dailyPrice.toStringAsFixed(0)} ${l10n.sar}',
                                 highlighted: true,
                               ),
                               const Divider(height: 24),
                               PriceRow(
-                                label: 'Security deposit',
+                                label: l10n.securityDepositLabel,
                                 value:
-                                    'EGP ${state.securityDeposit.toStringAsFixed(0)}',
+                                    '${state.securityDeposit.toStringAsFixed(0)} ${l10n.sar}',
                               ),
                             ],
                           ),
@@ -199,7 +201,7 @@ class _ReviewAndPublishScreenState extends State<ReviewAndPublishScreen> {
                         verticalSpace(16.h),
                         // Location
                         ReviewCard(
-                          title: 'Location',
+                          title: l10n.location,
                           icon: Icons.location_on_outlined,
                           child: Row(
                             children: [

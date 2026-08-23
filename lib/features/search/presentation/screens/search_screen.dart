@@ -12,6 +12,7 @@ import 'package:rentora/features/search/manager/search_state.dart';
 import 'package:rentora/features/search/presentation/widgets/search_categories.dart';
 import 'package:rentora/features/search/presentation/widgets/search_input.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -51,9 +52,17 @@ class SearchScreen extends StatelessWidget {
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {
                   if (state.status == SearchStatus.loading) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primaryColor,
+                    return Skeletonizer(
+                      enabled: true,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(child: SizedBox(height: 12.h)),
+                          HomeProductsGrid(
+                            products: state.results,
+                            isLoading: true,
+                          ),
+                          SliverToBoxAdapter(child: SizedBox(height: 30.h)),
+                        ],
                       ),
                     );
                   }
@@ -82,7 +91,10 @@ class SearchScreen extends StatelessWidget {
                   }
 
                   return SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -231,7 +243,9 @@ class _SearchError extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13.sp,
-                color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.darkGrey,
               ),
             ),
           ],

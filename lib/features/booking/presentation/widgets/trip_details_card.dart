@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class TripDetailsCard extends StatelessWidget {
   final String checkIn;
@@ -23,14 +24,22 @@ class TripDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.03),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.03),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -40,31 +49,27 @@ class TripDetailsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Trip Details',
+            l10n.priceDetails,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w700,
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             ),
           ),
           verticalSpace(14),
-          _detailRow('Check-in', checkIn),
+          _detailRow(l10n.days, duration, isDark),
           verticalSpace(12),
-          _detailRow('Check-out', checkOut),
+          _detailRow(l10n.dailyPrice, dailyPrice, isDark),
           verticalSpace(12),
-          _detailRow('Duration', duration),
+          _detailRow(l10n.securityDepositLabel, securityDeposit, isDark),
           verticalSpace(12),
-          _detailRow('Daily Price', dailyPrice),
-          verticalSpace(12),
-          _detailRow('Security Deposit', securityDeposit),
-          verticalSpace(12),
-          _detailRow('Total', total),
+          _detailRow(l10n.total, total, isDark),
         ],
       ),
     );
   }
 
-  Widget _detailRow(String label, String value) {
+  Widget _detailRow(String label, String value, bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -72,7 +77,7 @@ class TripDetailsCard extends StatelessWidget {
           label,
           style: TextStyle(
             fontSize: 13.sp,
-            color: AppColors.grey,
+            color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -81,7 +86,7 @@ class TripDetailsCard extends StatelessWidget {
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w700,
-            color: AppColors.black,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
           ),
         ),
       ],

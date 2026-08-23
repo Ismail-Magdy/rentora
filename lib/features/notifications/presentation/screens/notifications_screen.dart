@@ -6,6 +6,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/notifications/manager/notifications_cubit.dart';
 import 'package:rentora/features/notifications/manager/notifications_state.dart';
 import 'package:rentora/features/notifications/presentation/widgets/notification_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return DefaultTabController(
       length: 2,
@@ -30,7 +32,7 @@ class NotificationsScreen extends StatelessWidget {
             ),
           ),
           title: Text(
-            "Notifications",
+            l10n.notifications,
             style: TextStyle(
               color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
               fontWeight: FontWeight.bold,
@@ -42,9 +44,9 @@ class NotificationsScreen extends StatelessWidget {
             labelColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             unselectedLabelColor: isDark ? AppColors.darkTextMuted : AppColors.grey,
             indicatorColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
-            tabs: const [
-              Tab(text: "Unread"),
-              Tab(text: "Read"),
+            tabs: [
+              Tab(text: l10n.unread),
+              Tab(text: l10n.read),
             ],
           ),
         ),
@@ -66,8 +68,8 @@ class NotificationsScreen extends StatelessWidget {
 
             return TabBarView(
               children: [
-                _buildList(unreadList, isLoading, true),
-                _buildList(readList, isLoading, false),
+                _buildList(context, unreadList, isLoading, true),
+                _buildList(context, readList, isLoading, false),
               ],
             );
           },
@@ -76,7 +78,13 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildList(List notifications, bool isLoading, bool isUnread) {
+  Widget _buildList(
+    BuildContext context,
+    List notifications,
+    bool isLoading,
+    bool isUnread,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
     if (isLoading) {
       return Skeletonizer(
         enabled: true,
@@ -112,7 +120,7 @@ class NotificationsScreen extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              isUnread ? 'No unread notifications' : 'No read notifications',
+              isUnread ? l10n.noUnreadNotifications : l10n.noReadNotifications,
               style: TextStyle(
                 fontSize: 16.sp,
                 color: AppColors.grey,

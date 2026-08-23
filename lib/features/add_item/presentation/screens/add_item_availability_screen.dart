@@ -88,7 +88,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
             CustomAppBar(text: l10n.addNewListing),
             AddItemProgressBar(
               title: l10n.availability,
-              stepNumber: "Step 6 of 7",
+              stepNumber: l10n.stepOf("6", "7"),
             ),
             Expanded(
               child: ListView(

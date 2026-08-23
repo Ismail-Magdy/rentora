@@ -5,6 +5,7 @@ import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/presentation/widgets/rental_request_status_actions.dart';
 import 'package:rentora/features/booking/presentation/widgets/rental_request_status_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RequestRejectedStatusScreen extends StatelessWidget {
   final BookingModel? booking;
@@ -13,9 +14,10 @@ class RequestRejectedStatusScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: const CustomAppBarWithNoLeading(text: 'Request Status'),
+      appBar: CustomAppBarWithNoLeading(text: l10n.rentalRequest),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
@@ -24,9 +26,8 @@ class RequestRejectedStatusScreen extends StatelessWidget {
               const Spacer(),
               RentalRequestStatusCard(
                 isAccepted: false,
-                title: 'Request Declined',
-                message:
-                    'This rental request has been declined.\nThe renter will be notified about the decision.',
+                title: l10n.requestDeclined,
+                message: l10n.requestDeclinedMessage,
                 booking: booking,
               ),
               const Spacer(),

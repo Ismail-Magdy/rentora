@@ -7,6 +7,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RenterHistoryCard extends StatelessWidget {
   final BookingModel booking;
@@ -68,6 +69,7 @@ class RenterHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final statusBg = _getStatusBgColor(booking.status, isDark);
     final statusText = _getStatusTextColor(booking.status, isDark);
@@ -160,7 +162,7 @@ class RenterHistoryCard extends StatelessWidget {
                     ),
                     verticalSpace(4),
                     Text(
-                      'Order Code: ${booking.orderCode}',
+                      l10n.orderCode(booking.orderCode),
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
@@ -204,14 +206,14 @@ class RenterHistoryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Total Amount',
+                    l10n.totalAmount,
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                     ),
                   ),
                   Text(
-                    '${booking.totalAmount} SAR',
+                    '${booking.totalAmount} ${l10n.sar}',
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
@@ -221,7 +223,7 @@ class RenterHistoryCard extends StatelessWidget {
                 ],
               ),
               CustomButton(
-                text: 'Order Details',
+                text: l10n.viewDetails,
                 width: 110.w,
                 height: 38.h,
                 fontSize: 12.5.sp,

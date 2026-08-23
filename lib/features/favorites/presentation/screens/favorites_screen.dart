@@ -10,6 +10,7 @@ import 'package:rentora/features/favorites/manager/favorites_state.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/home/presentation/widgets/product_card.dart';
 import 'package:rentora/features/setup_profile/data/models/category_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -31,10 +32,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: CustomAppBar(text: "Favourites"),
+      appBar: CustomAppBar(text: l10n.favoritesTitle),
       body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
           final isLoading = state is FavoritesLoading || state is FavoritesInitial;
@@ -101,7 +103,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              category,
+                              category == 'All'
+                                  ? l10n.all
+                                  : CategoryModel(
+                                      id: category,
+                                      name: category,
+                                      iconPath: '',
+                                    ).getLocalizedName(l10n),
                               style: TextStyle(
                                 color: isSelected
                                     ? Colors.white
