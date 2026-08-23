@@ -10,25 +10,28 @@ import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/manager/add_item_state.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class DataEntryChoiceScreen extends StatelessWidget {
   const DataEntryChoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<AddItemCubit, AddItemState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
-                CustomAppBar(text: "Add New Listing"),
+                CustomAppBar(text: l10n.addNewListing),
 
                 // Progress Bar (Step 2)
                 AddItemProgressBar(
-                  title: "Details Method",
-                  stepNumber: "Step 2 of 7",
+                  title: l10n.detailsMethod,
+                  stepNumber: l10n.stepOf("2", "7"),
                 ),
 
                 // Content
@@ -53,7 +56,9 @@ class DataEntryChoiceScreen extends StatelessWidget {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.black.withValues(alpha: 0.1),
+                                  color: isDark
+                                      ? AppColors.darkShadow
+                                      : AppColors.black.withValues(alpha: 0.1),
                                   blurRadius: 15,
                                   offset: const Offset(0, 5),
                                 ),
@@ -67,23 +72,23 @@ class DataEntryChoiceScreen extends StatelessWidget {
 
                         verticalSpace(30),
                         Text(
-                          'How would you like to add details?',
+                          l10n.howAddDetails,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 27.sp,
                             height: 1.2.h,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
                         verticalSpace(12),
                         Text(
-                          'You can fill in the details manually or let our AI suggest them based on your photo.',
+                          l10n.detailsMethodDesc,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15.sp,
                             height: 1.45.h,
-                            color: AppColors.grey,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                           ),
                         ),
                         verticalSpace(40),
@@ -92,8 +97,8 @@ class DataEntryChoiceScreen extends StatelessWidget {
                         _buildChoiceCard(
                           context,
                           icon: Icons.edit_note_rounded,
-                          title: 'Fill Manually',
-                          subtitle: 'Enter all details yourself',
+                          title: l10n.fillManually,
+                          subtitle: l10n.enterDetails,
                           onTap: () {
                             context.pushNamed(
                               Routes.categoryScreen,
@@ -106,8 +111,8 @@ class DataEntryChoiceScreen extends StatelessWidget {
                         _buildChoiceCard(
                           context,
                           icon: Icons.auto_awesome_rounded,
-                          title: 'Auto fill with AI',
-                          subtitle: 'Let AI suggest details from photo',
+                          title: l10n.autoFillAi,
+                          subtitle: l10n.suggestDetails,
                           onTap: null, // Disabled
                           isPrimary: false,
                         ),
@@ -133,6 +138,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
     String? badge,
   }) {
     final bool isEnabled = onTap != null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
@@ -142,19 +148,21 @@ class DataEntryChoiceScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           decoration: BoxDecoration(
             color: isPrimary
-                ? AppColors.primaryColor.withValues(alpha: 0.05)
-                : AppColors.white,
+                ? AppColors.primaryColor.withValues(alpha: isDark ? 0.2 : 0.05)
+                : (isDark ? AppColors.darkSurface : AppColors.white),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isPrimary
-                  ? AppColors.primaryColor.withValues(alpha: 0.5)
-                  : AppColors.grey.withValues(alpha: 0.2),
+                  ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                  : (isDark ? AppColors.darkBorder : AppColors.grey.withValues(alpha: 0.2)),
               width: isPrimary ? 2 : 1,
             ),
             boxShadow: isEnabled
                 ? [
                     BoxShadow(
-                      color: AppColors.black.withValues(alpha: 0.03),
+                      color: isDark
+                          ? AppColors.darkShadow
+                          : AppColors.black.withValues(alpha: 0.03),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -169,12 +177,16 @@ class DataEntryChoiceScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isPrimary
                       ? AppColors.primaryColor
-                      : AppColors.grey.withValues(alpha: 0.1),
+                      : (isDark
+                          ? AppColors.darkContainer
+                          : AppColors.grey.withValues(alpha: 0.1)),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
                   icon,
-                  color: isPrimary ? AppColors.white : AppColors.darkGrey,
+                  color: isPrimary
+                      ? AppColors.white
+                      : (isDark ? AppColors.darkTextSecondary : AppColors.darkGrey),
                   size: 28.sp,
                 ),
               ),
@@ -190,7 +202,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 17.sp,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
                         if (badge != null) ...[
@@ -219,7 +231,10 @@ class DataEntryChoiceScreen extends StatelessWidget {
                     verticalSpace(6),
                     Text(
                       subtitle,
-                      style: TextStyle(fontSize: 13.sp, color: AppColors.grey),
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -227,7 +242,7 @@ class DataEntryChoiceScreen extends StatelessWidget {
               if (isEnabled)
                 Icon(
                   Icons.chevron_right_rounded,
-                  color: isPrimary ? AppColors.primaryColor : AppColors.grey,
+                  color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                   size: 28.sp,
                 ),
             ],

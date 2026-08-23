@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
 import 'package:rentora/features/auth/presentation/widgets/auth_divider.dart';
@@ -37,31 +39,42 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         if (state is AuthError) {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline_rounded,
             color: AppColors.error,
-            title: "Login Failed",
+            title: l10n.loginFailed,
             message: state.failure.message,
           );
         } else if (state is AuthSuccess) {
+          final user = state.user;
+          final bool hasFinishedSetup =
+              user.location != null || user.interests.isNotEmpty;
+
+          if (hasFinishedSetup) {
+            SharedPrefHelper.setData('hasFinishedSetup', true);
+          }
+
           showFeedbackDialog(
             context,
             icon: Icons.check_circle_outline_rounded,
             color: AppColors.primaryGreen,
-            title: "Welcome Back",
-            message: "You have successfully logged in",
+            title: l10n.welcomeBack,
+            message: l10n.loginSuccess,
             onFinish: () => context.pushNamedAndRemoveUntil(
-              Routes.locationScreen,
+              hasFinishedSetup ? Routes.rootScreen : Routes.locationScreen,
               predicate: (route) => false,
             ),
           );
         }
       },
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Form(
@@ -78,9 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             alignment: .centerLeft,
                             child: GestureDetector(
                               onTap: () => context.pop(),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.arrow_back_ios_new,
-                                color: AppColors.black,
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.black,
                               ),
                             ),
                           ),
@@ -102,21 +117,25 @@ class _LoginScreenState extends State<LoginScreen> {
                           verticalSpace(32),
                           //
                           Text(
-                            "Welcome Back",
+                            l10n.welcomeBack,
                             style: TextStyle(
                               fontSize: 28.sp,
                               fontWeight: .bold,
-                              color: AppColors.black,
+                              color: isDark
+                                  ? AppColors.darkTextPrimary
+                                  : AppColors.black,
                             ),
                           ),
                           //
                           verticalSpace(8),
                           //
                           Text(
-                            "Log in to continue",
+                            l10n.loginContinue,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: AppColors.grey,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.grey,
                             ),
                           ),
                           //
@@ -124,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           //
                           CustomTextFormField(
                             controller: emailController,
-                            hintText: "Enter your email address",
+                            hintText: l10n.enterEmail,
                             prefixIcon: Icons.mail_outline,
                             fieldType: .email,
                           ),
@@ -146,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Align(
                               alignment: .centerRight,
                               child: Text(
-                                'Forget password?',
+                                l10n.forgetPassword,
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: AppColors.secondaryColor,
@@ -166,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )
                               : CustomButton(
                                   height: 52.h,
-                                  text: 'Log In',
+                                  text: l10n.logIn,
                                   fontWeight: .w600,
                                   onPressed: () {
                                     if (!formKey.currentState!.validate()) {
@@ -185,17 +204,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: .center,
                             children: [
                               Text(
-                                "Don't have an account? ",
+                                '${l10n.noAccount} ',
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: AppColors.grey,
+                                  color: isDark
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.grey,
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () =>
                                     context.pushNamed(Routes.signupScreen),
                                 child: Text(
-                                  'Sign Up',
+                                  l10n.signUp,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     color: AppColors.primaryGreen,
@@ -208,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           //
                           verticalSpace(32),
                           //
-                          AuthDivider(),
+                          const AuthDivider(),
                           //
                           verticalSpace(32),
 
@@ -221,10 +242,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )
                               : CustomButton(
                                   height: 52.h,
-                                  color: AppColors.white,
-                                  text: "Continue with Google",
-                                  textColor: AppColors.black,
-                                  borderColor: AppColors.lightGrey,
+                                  color: isDark
+                                      ? AppColors.darkSurface
+                                      : AppColors.white,
+                                  text: l10n.continueGoogle,
+                                  textColor: isDark
+                                      ? AppColors.darkTextPrimary
+                                      : AppColors.black,
+                                  borderColor: isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.lightGrey,
                                   fontSize: 16.sp,
                                   fontWeight: .w400,
                                   prefixIcon: SvgPicture.asset(

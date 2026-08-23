@@ -7,6 +7,7 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_action_button.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
@@ -36,14 +37,19 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(text: "Add New Listing"),
+            CustomAppBar(text: l10n.addNewListing),
             // Progress Bar (Step 1)
-            AddItemProgressBar(title: "Add Photo", stepNumber: "Step 1 of 7"),
+            AddItemProgressBar(
+              title: l10n.addPhotoStep,
+              stepNumber: "Step 1 of 7",
+            ),
             // Content
             Expanded(
               child: SingleChildScrollView(
@@ -67,23 +73,23 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
                     ),
                     verticalSpace(30),
                     Text(
-                      'Let\'s start with a photo',
+                      l10n.startWithPhoto,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 27.sp,
                         height: 1.2.h,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.black,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                       ),
                     ),
                     verticalSpace(12),
                     Text(
-                      'Take a clear photo of the item you want to rent out. This will be the main photo for your listing.',
+                      l10n.photoInstruction,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15.sp,
                         height: 1.45.h,
-                        color: AppColors.grey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                       ),
                     ),
                     verticalSpace(40),
@@ -91,15 +97,15 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
                     // Action Buttons
                     AddItemActionButton(
                       icon: Icons.camera_alt_rounded,
-                      title: 'Take a Photo',
-                      subtitle: 'Use camera',
+                      title: l10n.takePhoto,
+                      subtitle: l10n.useCamera,
                       onTap: () => _pickImage(ImageSource.camera),
                     ),
                     verticalSpace(16),
                     AddItemActionButton(
                       icon: Icons.photo_library_rounded,
-                      title: 'Choose from Gallery',
-                      subtitle: 'Upload existing photo',
+                      title: l10n.chooseGallery,
+                      subtitle: l10n.uploadPhoto,
                       onTap: () => _pickImage(ImageSource.gallery),
                     ),
                   ],

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
@@ -24,10 +25,15 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: .circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
       ),
       child: Column(
         crossAxisAlignment: .start,
@@ -65,8 +71,8 @@ class ProductCard extends StatelessWidget {
                               : Icons.favorite_border,
                           color: AppColors.primaryColor,
                           title: state.isAdded
-                              ? 'Added to Favorites'
-                              : 'Removed from Favorites',
+                              ? l10n.addedToFavorites
+                              : l10n.removedFromFavorites,
                           message: state.message,
                         );
                       }
@@ -84,7 +90,9 @@ class ProductCard extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.all(6.r),
                             decoration: BoxDecoration(
-                              color: AppColors.white.withValues(alpha: 0.8),
+                              color: isDark
+                                  ? AppColors.darkCard.withValues(alpha: 0.85)
+                                  : AppColors.white.withValues(alpha: 0.8),
                               shape: BoxShape.circle,
                             ),
                             child: SvgPicture.asset(
@@ -117,7 +125,11 @@ class ProductCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         product.name,
-                        style: TextStyle(fontSize: 14.sp, fontWeight: .bold),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: .bold,
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                        ),
                         maxLines: 1,
                         overflow: .ellipsis,
                       ),
@@ -127,7 +139,11 @@ class ProductCard extends StatelessWidget {
                       children: [
                         Text(
                           product.rating.toStringAsFixed(1),
-                          style: TextStyle(fontSize: 12.sp, fontWeight: .bold),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: .bold,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                          ),
                         ),
                         horizontalSpace(4),
                         //
@@ -153,17 +169,17 @@ class ProductCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             fontWeight: .bold,
-                            color: AppColors.primaryColor,
+                            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                           ),
                         ),
                         //
                         horizontalSpace(4),
                         //
                         Text(
-                          'EGP/day',
+                          l10n.perDay,
                           style: TextStyle(
                             fontSize: 10.sp,
-                            color: AppColors.grey,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                           ),
                         ),
                         //
@@ -177,7 +193,7 @@ class ProductCard extends StatelessWidget {
                           Flexible(
                             child: Builder(
                               builder: (context) {
-                                String distanceText = 'Distance unknown';
+                                String distanceText = l10n.distanceUnknown;
                                 if (userLat != null &&
                                     userLng != null &&
                                     product.latitude != null &&
@@ -200,7 +216,7 @@ class ProductCard extends StatelessWidget {
                                   distanceText,
                                   style: TextStyle(
                                     fontSize: 10.sp,
-                                    color: AppColors.grey,
+                                    color: isDark ? AppColors.darkTextMuted : AppColors.grey,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -212,7 +228,7 @@ class ProductCard extends StatelessWidget {
                           horizontalSpace(2),
                           Icon(
                             Icons.location_on_outlined,
-                            color: AppColors.grey,
+                            color: isDark ? AppColors.darkTextMuted : AppColors.grey,
                             size: 12.sp,
                           ),
                         ],

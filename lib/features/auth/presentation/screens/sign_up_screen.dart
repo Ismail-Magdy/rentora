@@ -10,6 +10,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
 import 'package:rentora/features/auth/presentation/widgets/auth_divider.dart';
@@ -42,12 +43,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         if (state is AuthError) {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline_rounded,
             color: AppColors.error,
-            title: "Registration Failed",
+            title: l10n.registrationFailed,
             message: state.failure.message,
           );
         } else if (state is AuthSuccess) {
@@ -55,16 +57,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             context,
             icon: Icons.mark_email_unread_outlined,
             color: AppColors.primaryColor,
-            title: "Verify Your Email",
-            message:
-                "Account created successfully We've sent a verification link to your email. Please check your inbox and verify to login",
+            title: l10n.verifyEmailTitle,
+            message: l10n.accountCreatedVerify,
             onFinish: () => context.pushNamed(Routes.loginScreen),
           );
         }
       },
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: SingleChildScrollView(
               child: Form(
@@ -81,9 +84,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             alignment: .centerLeft,
                             child: GestureDetector(
                               onTap: () => context.pop(),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.arrow_back_ios_new,
-                                color: AppColors.black,
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.black,
                               ),
                             ),
                           ),
@@ -106,21 +111,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           verticalSpace(30),
                           //
                           Text(
-                            "Create Account",
+                            l10n.createAccountTitle,
                             style: TextStyle(
                               fontSize: 28.sp,
                               fontWeight: .bold,
-                              color: AppColors.black,
+                              color: isDark
+                                  ? AppColors.darkTextPrimary
+                                  : AppColors.black,
                             ),
                           ),
                           //
                           verticalSpace(8),
                           //
                           Text(
-                            "Join our community today",
+                            l10n.joinCommunity,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: AppColors.grey,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.grey,
                             ),
                           ),
                           //
@@ -128,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           //
                           CustomTextFormField(
                             controller: nameController,
-                            hintText: "Enter your full name",
+                            hintText: l10n.enterFullName,
                             prefixIcon: Icons.person_outline,
                           ),
                           //
@@ -182,23 +191,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Expanded(
                                 child: RichText(
                                   text: TextSpan(
-                                    text: "I agree to the ",
+                                    text: "${l10n.agreeTo} ",
                                     style: TextStyle(
                                       fontSize: 14.sp,
-                                      color: AppColors.black,
+                                      color: isDark
+                                          ? AppColors.darkTextPrimary
+                                          : AppColors.black,
                                       fontWeight: .bold,
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: "Terms & Conditions",
+                                        text: l10n.termsConditions,
                                         style: TextStyle(
                                           color: AppColors.secondaryColor,
                                           fontSize: 13.sp,
                                         ),
                                       ),
-                                      const TextSpan(text: " and "),
+                                      TextSpan(text: " ${l10n.and} "),
                                       TextSpan(
-                                        text: "Privacy Policy",
+                                        text: l10n.privacyPolicy,
                                         style: TextStyle(
                                           color: AppColors.secondaryColor,
                                         ),
@@ -218,7 +229,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 )
                               : CustomButton(
-                                  text: "Create Account",
+                                  text: l10n.createAccountTitle,
                                   onPressed: () {
                                     if (!formKey.currentState!.validate()) {
                                       return;
@@ -229,9 +240,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context,
                                         icon: Icons.warning_amber_rounded,
                                         color: Colors.orange,
-                                        title: "Action Required",
-                                        message:
-                                            "Please agree to the Terms & Conditions first",
+                                        title: l10n.actionRequired,
+                                        message: l10n.agreeTermsFirst,
                                       );
                                       return;
                                     }
@@ -250,17 +260,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mainAxisAlignment: .center,
                             children: [
                               Text(
-                                "Already have an account? ",
+                                '${l10n.alreadyHaveAccount} ',
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: AppColors.grey,
+                                  color: isDark
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.grey,
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () =>
                                     context.pushNamed(Routes.loginScreen),
                                 child: Text(
-                                  "Log In",
+                                  l10n.logIn,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     color: AppColors.secondaryColor,
@@ -281,10 +293,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 )
                               : CustomButton(
                                   height: 52.h,
-                                  color: AppColors.white,
-                                  text: "Continue with Google",
-                                  textColor: AppColors.black,
-                                  borderColor: AppColors.lightGrey,
+                                  color: isDark
+                                      ? AppColors.darkSurface
+                                      : AppColors.white,
+                                  text: l10n.continueGoogle,
+                                  textColor: isDark
+                                      ? AppColors.darkTextPrimary
+                                      : AppColors.black,
+                                  borderColor: isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.lightGrey,
                                   fontSize: 16.sp,
                                   fontWeight: .w400,
                                   prefixIcon: SvgPicture.asset(

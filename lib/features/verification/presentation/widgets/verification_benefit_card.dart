@@ -17,15 +17,21 @@ class VerificationBenefitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.lightGrey, width: 1.w),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+          width: 1.w,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.02),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.02),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -36,10 +42,16 @@ class VerificationBenefitCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(8.r),
             decoration: BoxDecoration(
-              color: AppColors.infoLight,
+              color: isDark
+                  ? AppColors.primaryColor.withValues(alpha: 0.2)
+                  : AppColors.infoLight,
               borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Icon(icon, color: AppColors.primaryColor, size: 20.sp),
+            child: Icon(
+              icon,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+              size: 20.sp,
+            ),
           ),
           horizontalSpace(12),
           Expanded(
@@ -51,7 +63,7 @@ class VerificationBenefitCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.black,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
                 verticalSpace(2),
@@ -59,7 +71,7 @@ class VerificationBenefitCard extends StatelessWidget {
                   description,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: AppColors.darkGrey,
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

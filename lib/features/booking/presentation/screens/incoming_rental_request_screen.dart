@@ -8,6 +8,7 @@ import 'package:rentora/features/booking/presentation/widgets/incoming_request_a
 import 'package:rentora/features/booking/presentation/widgets/incoming_request_earnings_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/incoming_request_item_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/incoming_request_renter_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class IncomingRentalRequestScreen extends StatelessWidget {
   final BookingModel? booking;
@@ -20,6 +21,7 @@ class IncomingRentalRequestScreen extends StatelessWidget {
   }
 
   Widget _buildScreenContent(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final bookingId = booking?.bookingId ?? 'sample_booking_id';
     final title = booking != null
         ? 'Listing #${booking!.listingId}'
@@ -29,12 +31,13 @@ class IncomingRentalRequestScreen extends StatelessWidget {
     final dateRange = (booking?.startDate != null && booking?.endDate != null)
         ? '${booking!.startDate} - ${booking!.endDate}'
         : '15 - 18 October';
-    final durationText = '${booking?.totalDays ?? 3} days';
+    final durationText = '${booking?.totalDays ?? 3} ${l10n.days}';
     final totalAmount = (booking?.totalAmount ?? 1350).toDouble();
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
-      appBar: const CustomAppBar(text: 'Rental Request'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.rentalRequest),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20.r),
@@ -42,16 +45,16 @@ class IncomingRentalRequestScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Incoming Request',
+                l10n.incomingRequest,
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.black,
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                 ),
               ),
               verticalSpace(4),
               Text(
-                'Review the rental request details before accepting or rejecting.',
+                l10n.reviewRentalRequestDesc,
                 style: TextStyle(
                   fontSize: 13.sp,
                   color: AppColors.grey,

@@ -57,6 +57,7 @@ import 'package:rentora/features/setting/presentation/screens/help_center_screen
 import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/presentation/screens/search_filter_screen.dart';
+import 'package:rentora/features/search/presentation/screens/search_results_screen.dart';
 import 'package:rentora/features/search/presentation/screens/search_screen.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
@@ -596,29 +597,34 @@ class AppRouter {
           ),
         );
       case Routes.searchScreen:
+        final cubit = args is SearchCubit ? args : null;
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BlocProvider(
-              create: (context) => getIt<SearchCubit>(),
-              child: const SearchScreen(),
-            ),
+            cubit != null
+                ? BlocProvider.value(value: cubit, child: const SearchScreen())
+                : BlocProvider(
+                    create: (context) => getIt<SearchCubit>(),
+                    child: const SearchScreen(),
+                  ),
           ),
         );
       case Routes.searchFilterScreen:
+        final cubit = args is SearchCubit ? args : getIt<SearchCubit>();
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BlocProvider(
-              create: (context) => getIt<SearchCubit>(),
+            BlocProvider.value(
+              value: cubit,
               child: const SearchFilterScreen(),
             ),
           ),
         );
       case Routes.searchResultsScreen:
+        final cubit = args is SearchCubit ? args : getIt<SearchCubit>();
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BlocProvider(
-              create: (context) => getIt<SearchCubit>(),
-              child: const SearchScreen(),
+            BlocProvider.value(
+              value: cubit,
+              child: const SearchResultsScreen(),
             ),
           ),
         );

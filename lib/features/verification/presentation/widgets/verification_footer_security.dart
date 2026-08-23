@@ -2,25 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class VerificationFooterSecurity extends StatelessWidget {
   final String text;
 
-  const VerificationFooterSecurity({
-    super.key,
-    this.text = "Your data is encrypted and securely protected.",
-  });
+  const VerificationFooterSecurity({super.key, this.text = ""});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.lock_outline_rounded, size: 14.sp, color: AppColors.darkGrey),
+        Icon(
+          Icons.lock_outline_rounded,
+          size: 14.sp,
+          color: AppColors.darkGrey,
+        ),
         horizontalSpace(6),
         Flexible(
           child: Text(
-            text,
+            text.isNotEmpty ? text : l10n.verificationDataSecurity,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11.5.sp,

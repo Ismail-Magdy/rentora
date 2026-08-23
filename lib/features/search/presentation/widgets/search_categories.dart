@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/features/setup_profile/data/models/category_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SearchCategories extends StatelessWidget {
   final List<String> categories;
@@ -16,18 +18,24 @@ class SearchCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Wrap(
       spacing: 10.w,
       runSpacing: 10.h,
       children: [
         _CategoryChip(
-          label: 'All',
+          label: l10n.all,
           isSelected: selectedCategory == null,
           onTap: () => onCategorySelected(null),
         ),
         ...categories.map(
           (category) => _CategoryChip(
-            label: category,
+            label: CategoryModel(
+              id: category,
+              name: category,
+              iconPath: '',
+            ).getLocalizedName(l10n),
             isSelected: category == selectedCategory,
             onTap: () => onCategorySelected(category),
           ),
@@ -50,16 +58,21 @@ class _CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryColor : AppColors.white,
+          color: isSelected
+              ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+              : (isDark ? AppColors.darkSurface : AppColors.white),
           borderRadius: BorderRadius.circular(22.r),
           border: Border.all(
-            color: isSelected ? AppColors.primaryColor : AppColors.lightGrey,
+            color: isSelected
+                ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                : (isDark ? AppColors.darkBorder : AppColors.lightGrey),
           ),
           boxShadow: isSelected
               ? [
@@ -76,7 +89,9 @@ class _CategoryChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 13.sp,
             fontWeight: FontWeight.w600,
-            color: isSelected ? AppColors.white : AppColors.darkGrey,
+            color: isSelected
+                ? AppColors.white
+                : (isDark ? AppColors.darkTextSecondary : AppColors.darkGrey),
           ),
         ),
       ),

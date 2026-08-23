@@ -15,6 +15,7 @@ import 'package:rentora/features/booking/presentation/widgets/booking_action_bar
 import 'package:rentora/features/booking/presentation/widgets/info_notice_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/payment_method_option_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final BookingSummaryArgs args;
@@ -30,6 +31,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final dailyPrice = widget.args.dailyPrice.toDouble();
     final cubit = widget.args.bookingCubit ?? getIt<BookingCubit>();
     final totalDays = cubit.totalDays == 0 ? 2 : cubit.totalDays;
@@ -46,8 +48,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
             context,
             icon: Icons.check_circle_outline,
             color: AppColors.successDark,
-            title: 'Booking Confirmed!',
-            message: 'Your booking request has been sent successfully.',
+            title: l10n.bookingConfirmedTitle,
+            message: l10n.sentBookingRequestOwner,
             onFinish: () {
               context.pushReplacementNamed(
                 Routes.bookingSuccessScreen,
@@ -65,13 +67,14 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
             context,
             icon: Icons.error_outline,
             color: AppColors.error,
-            title: 'Booking Failed',
+            title: l10n.bookingFailed,
             message: state.message,
           );
         }
       },
       child: _buildScaffold(
         context,
+        l10n,
         dailyPrice,
         totalDays,
         securityDeposit,
@@ -84,6 +87,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
 
   Widget _buildScaffold(
     BuildContext context,
+    AppLocalizations l10n,
     double dailyPrice,
     int totalDays,
     double securityDeposit,
@@ -91,9 +95,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     double totalAmount,
     BookingCubit cubit,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
-      appBar: const CustomAppBar(text: 'Payment Method'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.paymentMethod),
       body: Column(
         children: [
           Expanded(
@@ -107,19 +112,18 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 ),
                 verticalSpace(16),
                 Text(
-                  'Choose a payment method',
+                  l10n.choosePaymentMethod,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.black,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
                 verticalSpace(16),
-                const PaymentMethodOptionCard(title: 'Cash', isSelected: true),
+                PaymentMethodOptionCard(title: l10n.cash, isSelected: true),
                 verticalSpace(24),
-                const InfoNoticeCard(
-                  message:
-                      'You will pay the amount after the request is confirmed.',
+                InfoNoticeCard(
+                  message: l10n.payAfterConfirmed,
                 ),
               ],
             ),
@@ -127,9 +131,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         ],
       ),
       bottomNavigationBar: BookingActionBar(
-        label: 'Total',
-        totalText: '${totalAmount.toStringAsFixed(0)} SAR',
-        buttonText: 'Confirm Payment',
+        label: l10n.total,
+        totalText: '${totalAmount.toStringAsFixed(0)} ${l10n.sar}',
+        buttonText: l10n.confirmPayment,
         buttonWidth: 170.w,
         onPressed: () {
           final firebaseAuthService = getIt<FirebaseAuthService>();

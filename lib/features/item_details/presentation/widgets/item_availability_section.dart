@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/item_details/data/models/item_details_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -11,12 +12,13 @@ class ItemAvailabilitySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: .start,
       children: [
         //
         Text(
-          "Availability",
+          l10n.availability,
           style: TextStyle(fontSize: 16.sp, fontWeight: .bold),
         ),
         //
@@ -31,7 +33,9 @@ class ItemAvailabilitySection extends StatelessWidget {
           ),
           child: TableCalendar(
             firstDay: item.availableFrom ?? DateTime.now(),
-            lastDay: item.availableTo ?? DateTime.now().add(const Duration(days: 365)),
+            lastDay:
+                item.availableTo ??
+                DateTime.now().add(const Duration(days: 365)),
             focusedDay: item.availableFrom ?? DateTime.now(),
             rangeSelectionMode: RangeSelectionMode.toggledOn,
             rangeStartDay: item.availableFrom,
@@ -47,7 +51,9 @@ class ItemAvailabilitySection extends StatelessWidget {
               ),
             ),
             calendarStyle: CalendarStyle(
-              rangeHighlightColor: AppColors.primaryColor.withValues(alpha: 0.2),
+              rangeHighlightColor: AppColors.primaryColor.withValues(
+                alpha: 0.2,
+              ),
               rangeStartDecoration: const BoxDecoration(
                 color: AppColors.primaryColor,
                 shape: BoxShape.circle,

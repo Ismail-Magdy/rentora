@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/widgets/face_scan_screen_content.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class VerificationFaceScanScreen extends StatefulWidget {
   const VerificationFaceScanScreen({super.key});
@@ -47,11 +47,12 @@ class _VerificationFaceScanScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final cubit = context.watch<VerificationCubit>();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: const CustomAppBar(text: "Account verification"),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
       body: FaceScanScreenContent(
         selfieFile: cubit.selfieFile,
         onTakeSelfie: _isVerifying ? () {} : _takeSelfie,

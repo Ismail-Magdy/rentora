@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/home/presentation/widgets/product_card.dart';
 
@@ -23,6 +24,7 @@ class HomeProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (!isLoading && products.isEmpty) {
       return SliverToBoxAdapter(
         child: Container(
@@ -35,7 +37,7 @@ class HomeProductsGrid extends StatelessWidget {
               Lottie.asset("assets/lottie/no_products.json", height: 400.h),
               //
               Text(
-                "No products available right now",
+                l10n.noProductsAvailable,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: .w500,

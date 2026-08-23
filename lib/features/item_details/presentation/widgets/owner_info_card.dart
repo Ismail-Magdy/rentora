@@ -11,6 +11,7 @@ import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/features/chat/data/models/chat_screen_args.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/core/routing/routes.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class OwnerInfoCard extends StatelessWidget {
   final ItemDetailsModel item;
@@ -19,11 +20,16 @@ class OwnerInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: .all(12.r),
       decoration: BoxDecoration(
-        color: const Color(0xFFF7F7F9),
+        color: isDark ? AppColors.darkSurface : const Color(0xFFF7F7F9),
         borderRadius: .circular(12.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
       ),
       child: Row(
         children: [
@@ -45,7 +51,11 @@ class OwnerInfoCard extends StatelessWidget {
                   children: [
                     Text(
                       item.ownerName.isNotEmpty ? item.ownerName : 'Unknown Owner',
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      ),
                     ),
                     if (item.ownerVerificationStatus == 'verified') ...[
                       horizontalSpace(4),
@@ -64,7 +74,7 @@ class OwnerInfoCard extends StatelessWidget {
           //
           CustomButton(
             borderRadius: 10,
-            text: "Contact",
+            text: l10n.contact,
             width: 100,
             height: 41,
             onPressed: () async {
@@ -74,9 +84,8 @@ class OwnerInfoCard extends StatelessWidget {
                   context,
                   icon: Icons.lock_outline_rounded,
                   color: AppColors.primaryColor,
-                  title: 'Login Required',
-                  message:
-                      'Please log in first to contact the owner and start chatting.',
+                  title: l10n.loginRequiredTitle,
+                  message: l10n.loginRequiredContact,
                   onFinish: () => context.pushNamed(Routes.loginScreen),
                 );
                 return;
@@ -88,9 +97,8 @@ class OwnerInfoCard extends StatelessWidget {
                   context,
                   icon: Icons.info_outline_rounded,
                   color: AppColors.warning,
-                  title: 'Unavailable',
-                  message:
-                      'Owner information is currently unavailable for this item.',
+                  title: l10n.unavailable,
+                  message: l10n.ownerUnavailable,
                 );
                 return;
               }
@@ -100,9 +108,8 @@ class OwnerInfoCard extends StatelessWidget {
                   context,
                   icon: Icons.info_outline_rounded,
                   color: AppColors.primaryColor,
-                  title: 'Notice',
-                  message:
-                      'You cannot start a chat with yourself for your own listing.',
+                  title: l10n.notice,
+                  message: l10n.cannotChatSelfListing,
                 );
                 return;
               }
@@ -147,8 +154,8 @@ class OwnerInfoCard extends StatelessWidget {
                     context,
                     icon: Icons.error_outline_rounded,
                     color: AppColors.error,
-                    title: 'Error',
-                    message: 'Failed to start conversation. Please try again.',
+                    title: l10n.error,
+                    message: l10n.conversationFailed,
                   );
                 }
               }

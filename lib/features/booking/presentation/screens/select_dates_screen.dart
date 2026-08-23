@@ -6,7 +6,6 @@ import 'package:rentora/core/network/firebase/firebase_auth_service.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
@@ -14,6 +13,7 @@ import 'package:rentora/features/booking/presentation/widgets/booking_action_bar
 import 'package:rentora/features/booking/presentation/widgets/calendar_widget.dart';
 import 'package:rentora/features/booking/presentation/widgets/date_range_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/listing_info_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SelectDatesScreen extends StatefulWidget {
   final String listingId;
@@ -66,15 +66,16 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
-      appBar: const CustomAppBar(text: 'Select Dates'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.selectDates),
       body: Column(
         children: [
           Expanded(
             child: ListView(
-                padding: EdgeInsets.all(16.r),
-                children: [
+              padding: EdgeInsets.all(16.r),
+              children: [
                 ListingInfoCard(
                   title: widget.listingTitle,
                   imageUrl: widget.listingImageUrl,
@@ -99,7 +100,7 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
                     pickupDate: _formatDateLabel(startDate),
                     returnDate: _formatDateLabel(endDate),
                     totalDaysText:
-                        '${endDate!.difference(startDate!).inDays + 1} Days',
+                        '${endDate!.difference(startDate!).inDays + 1} ${l10n.daysCapitalized}',
                   ),
                   verticalSpace(16),
                 ],
@@ -109,12 +110,12 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
         ],
       ),
       bottomNavigationBar: startDate != null && endDate != null
-          ? _buildActionBar(context)
+          ? _buildActionBar(context, l10n)
           : null,
     );
   }
 
-  Widget _buildActionBar(BuildContext context) {
+  Widget _buildActionBar(BuildContext context, AppLocalizations l10n) {
     final totalDays = endDate!.difference(startDate!).inDays + 1;
     final dailyPrice = widget.dailyPrice;
     final totalAmount = dailyPrice * totalDays;
@@ -123,9 +124,9 @@ class _SelectDatesScreenState extends State<SelectDatesScreen> {
         firebaseAuthService.getCurrentUserId() ?? widget.renterId;
 
     return BookingActionBar(
-      label: 'Total ($totalDays days)',
-      totalText: '${totalAmount.toStringAsFixed(0)} SAR',
-      buttonText: 'Confirm Dates',
+      label: '${l10n.total} ($totalDays ${l10n.days})',
+      totalText: '${totalAmount.toStringAsFixed(0)} ${l10n.sar}',
+      buttonText: l10n.confirmDates,
       buttonWidth: 160.w,
       onPressed: () {
         final bookingCubit = context.read<BookingCubit>();

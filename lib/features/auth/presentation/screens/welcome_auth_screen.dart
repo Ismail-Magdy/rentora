@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rentora/core/helpers/extensions.dart';
+import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
@@ -12,23 +13,35 @@ import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
 import 'package:rentora/features/auth/presentation/widgets/auth_divider.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class WelcomeAuthScreen extends StatelessWidget {
   const WelcomeAuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          //
+          final user = state.user;
+          final bool hasFinishedSetup =
+              user.location != null || user.interests.isNotEmpty;
+
+          if (hasFinishedSetup) {
+            SharedPrefHelper.setData('hasFinishedSetup', true);
+          }
+
           showFeedbackDialog(
             context,
             icon: Icons.check_circle_outline,
             color: AppColors.primaryGreen,
-            title: "Success",
-            message: "You have successfully logged in",
-            onFinish: () => context.pushReplacementNamed(Routes.locationScreen),
+            title: l10n.success,
+            message: l10n.loginSuccess,
+            onFinish: () => context.pushNamedAndRemoveUntil(
+              hasFinishedSetup ? Routes.rootScreen : Routes.locationScreen,
+              predicate: (route) => false,
+            ),
           );
         } else if (state is AuthError) {
           //
@@ -36,14 +49,15 @@ class WelcomeAuthScreen extends StatelessWidget {
             context,
             icon: Icons.error_outline_rounded,
             color: AppColors.error,
-            title: "Login Failed",
+            title: l10n.loginFailed,
             message: state.failure.message,
           );
         }
       },
       builder: (context, state) {
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -63,7 +77,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                     //
                     CustomButton(
                       height: 52.h,
-                      text: "Login",
+                      text: l10n.logIn,
                       onPressed: () => context.pushNamed(Routes.loginScreen),
                     ),
                     //
@@ -71,8 +85,8 @@ class WelcomeAuthScreen extends StatelessWidget {
                     //
                     CustomButton(
                       height: 52.h,
-                      color: AppColors.white,
-                      text: "Register",
+                      color: isDark ? AppColors.darkSurface : AppColors.white,
+                      text: l10n.registration,
                       borderColor: AppColors.secondaryColor,
                       textColor: AppColors.secondaryColor,
                       onPressed: () => context.pushNamed(Routes.signupScreen),
@@ -92,10 +106,16 @@ class WelcomeAuthScreen extends StatelessWidget {
                           )
                         : CustomButton(
                             height: 52.h,
-                            color: AppColors.white,
-                            text: "Continue with Google",
-                            textColor: AppColors.black,
-                            borderColor: AppColors.lightGrey,
+                            color: isDark
+                                ? AppColors.darkSurface
+                                : AppColors.white,
+                            text: l10n.continueGoogle,
+                            textColor: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.black,
+                            borderColor: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.lightGrey,
                             fontSize: 16.sp,
                             fontWeight: .w400,
                             prefixIcon: SvgPicture.asset(

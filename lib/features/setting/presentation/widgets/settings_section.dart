@@ -14,6 +14,7 @@ class SettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,17 +25,17 @@ class SettingsSection extends StatelessWidget {
             style: TextStyle(
               fontSize: 13.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             ),
           ),
         ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w),
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: isDark ? AppColors.darkSurface : AppColors.white,
             boxShadow: [
               BoxShadow(
-                color: AppColors.lightGrey,
+                color: isDark ? AppColors.darkShadow : AppColors.lightGrey,
                 blurRadius: 10.r,
                 offset: const Offset(0, 4),
               ),
@@ -47,7 +48,11 @@ class SettingsSection extends StatelessWidget {
                 children[i],
 
                 if (i < children.length - 1)
-                  Divider(height: 1, thickness: 1, color: AppColors.lightGrey),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: isDark ? AppColors.darkDivider : AppColors.lightGrey,
+                  ),
               ],
             ],
           ),

@@ -11,6 +11,7 @@ import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -31,6 +32,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
@@ -38,7 +40,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             context,
             icon: Icons.error_outline_rounded,
             color: AppColors.error,
-            title: "Reset Failed",
+            title: l10n.resetFailed,
             message: state.failure.message,
           );
         } else if (state is PasswordResetSent) {
@@ -46,16 +48,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             context,
             icon: Icons.mark_email_read_outlined,
             color: AppColors.primaryColor,
-            title: "Email Sent",
-            message: "A password reset link has been sent to your email",
+            title: l10n.emailSent,
+            message: l10n.resetLinkSent,
             onFinish: () => context.pop(),
           );
         }
       },
       builder: (context, state) {
+        final isDark = context.isDarkMode;
         return Scaffold(
-          backgroundColor: AppColors.white,
-          appBar: CustomAppBar(text: "Forget Password?"),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: CustomAppBar(text: l10n.forgotPassword),
           body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
@@ -63,14 +66,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 child: Form(
                   key: formKey,
                   child: Column(
-                    crossAxisAlignment: .start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       verticalSpace(40),
                       Text(
-                        "Enter the email address associated with your account and we'll send you a link to reset your password.",
+                        l10n.enterEmailResetDescription,
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: AppColors.grey,
+                          color: isDark
+                              ? AppColors.darkTextSecondary
+                              : AppColors.grey,
                           height: 1.5,
                         ),
                         textAlign: .center,
@@ -79,18 +84,20 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       verticalSpace(48),
 
                       Text(
-                        "Email Address",
+                        l10n.enterEmail,
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: .w600,
-                          color: AppColors.black,
+                          color: isDark
+                              ? AppColors.darkTextPrimary
+                              : AppColors.black,
                         ),
                       ),
                       verticalSpace(8),
 
                       CustomTextFormField(
                         controller: emailController,
-                        hintText: 'Enter your email address',
+                        hintText: l10n.enterEmail,
                         prefixIcon: Icons.mail_outline,
                         fieldType: .email,
                       ),
@@ -105,7 +112,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             )
                           : CustomButton(
                               height: 52.h,
-                              text: 'Send Reset Link',
+                              text: l10n.sendResetLink,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
                               onPressed: () {

@@ -8,6 +8,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/on_boarding/data/on_boarding_screens_data.dart';
 import 'package:rentora/features/on_boarding/presentation/widgets/on_boarding_pages.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class OnBoardingScreens extends StatefulWidget {
   const OnBoardingScreens({super.key});
@@ -18,12 +19,10 @@ class OnBoardingScreens extends StatefulWidget {
 
 class _OnBoardingScreensState extends State<OnBoardingScreens> {
   int _currentPage = 0;
-  //
   final PageController _pageController = PageController();
 
-  //
-  void _nextPage() {
-    if (_currentPage < onbourdingScreenData.length - 1) {
+  void _nextPage(int totalPages) {
+    if (_currentPage < totalPages - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
@@ -43,28 +42,29 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final items = getOnboardingData(l10n);
+    final isDark = context.isDarkMode;
+
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
-            //
             Padding(
               padding: .fromLTRB(25.w, 10.h, 25.w, 80.h),
               child: Row(
                 mainAxisAlignment: .spaceBetween,
                 children: [
-                  //
                   Image.asset(
                     "assets/images/on_boarding/logo.png",
                     fit: .contain,
                     width: 130.w,
                   ),
-                  //
                   GestureDetector(
                     onTap: _finishOnboaring,
                     child: Text(
-                      "Skip",
+                      l10n.skip,
                       style: TextStyle(
                         fontWeight: .bold,
                         fontSize: 14.sp,
@@ -72,56 +72,51 @@ class _OnBoardingScreensState extends State<OnBoardingScreens> {
                       ),
                     ),
                   ),
-                  //
                 ],
               ),
             ),
-            //
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: onbourdingScreenData.length,
+                itemCount: items.length,
                 onPageChanged: (index) {
                   setState(() => _currentPage = index);
                 },
                 itemBuilder: (context, index) =>
-                    buildOnBoardingScreen(onbourdingScreenData[index]),
+                    buildOnBoardingScreen(context, items[index]),
               ),
             ),
-            //
             verticalSpace(80),
-            //
             Row(
               mainAxisAlignment: .center,
-              children: List.generate(onbourdingScreenData.length, (index) {
+              children: List.generate(items.length, (index) {
                 final bool isActive = index == _currentPage;
                 return AnimatedContainer(
-                  duration: Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 250),
                   margin: .symmetric(horizontal: 4.w),
                   width: isActive ? 28.w : 8.w,
                   height: 8.h,
                   decoration: BoxDecoration(
                     color: isActive
-                        ? AppColors.primaryColor
-                        : AppColors.darkGrey,
+                        ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                        : (isDark ? AppColors.darkBorder : AppColors.darkGrey),
                     borderRadius: .circular(10.r),
                   ),
                 );
               }),
             ),
-            //
             verticalSpace(46),
-            //
             Padding(
               padding: .fromLTRB(25.w, 0, 25.w, 20.h),
               child: CustomButton(
                 height: 52.h,
-                text: _currentPage == 3 ? "Get Started" : "Next",
-                onPressed: _nextPage,
+                text: _currentPage == items.length - 1
+                    ? l10n.getStarted
+                    : l10n.next,
+                onPressed: () => _nextPage(items.length),
                 fontSize: 16,
               ),
             ),
-            //
           ],
         ),
       ),

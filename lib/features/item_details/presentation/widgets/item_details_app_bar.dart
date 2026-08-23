@@ -18,19 +18,23 @@ class _ItemDetailsAppBarState extends State<ItemDetailsAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return SliverAppBar(
       expandedHeight: 300.h,
       pinned: true,
-      backgroundColor: AppColors.white,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
       elevation: 0,
       leading: GestureDetector(
         onTap: () => context.pop(),
-        child: const Icon(Icons.arrow_back_ios, color: Colors.black87),
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: isDark ? AppColors.darkTextPrimary : Colors.black87,
+        ),
       ),
       title: Text(
         widget.item.name.isNotEmpty ? widget.item.name : 'Rentora',
         style: TextStyle(
-          color: AppColors.secondaryColor,
+          color: isDark ? AppColors.darkTextPrimary : AppColors.secondaryColor,
           fontWeight: .bold,
           fontSize: 18.sp,
         ),
@@ -42,7 +46,10 @@ class _ItemDetailsAppBarState extends State<ItemDetailsAppBar> {
           padding: .only(right: 20.w, left: 15.w),
           child: GestureDetector(
             onTap: () {},
-            child: const Icon(Icons.share_outlined, color: Colors.black87),
+            child: Icon(
+              Icons.share_outlined,
+              color: isDark ? AppColors.darkTextPrimary : Colors.black87,
+            ),
           ),
         ),
       ],

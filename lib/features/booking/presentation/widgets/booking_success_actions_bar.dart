@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class BookingSuccessActionsBar extends StatelessWidget {
   final VoidCallback onViewDetails;
@@ -16,10 +17,13 @@ class BookingSuccessActionsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       child: SafeArea(
@@ -28,16 +32,17 @@ class BookingSuccessActionsBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomButton(
-              text: 'View Booking Details',
+              text: l10n.viewDetails,
               height: 52.h,
               borderRadius: 12,
               onPressed: onViewDetails,
             ),
             verticalSpace(12),
             CustomButton(
-              text: 'Back to Home',
-              color: AppColors.white,
-              textColor: AppColors.primaryColor,
+              text: l10n.backToHome,
+              color: isDark ? AppColors.darkSurface : AppColors.white,
+              textColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+              borderColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
               height: 52.h,
               borderRadius: 12,
               onPressed: onBackToHome,

@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:rentora/core/themes/app_colors.dart";
+import "package:rentora/l10n/generated/app_localizations.dart";
 
 class ExitConfirmationWrapper extends StatelessWidget {
   final Widget child;
@@ -10,35 +11,40 @@ class ExitConfirmationWrapper extends StatelessWidget {
   const ExitConfirmationWrapper({super.key, required this.child});
 
   Future<bool> _onWillPop(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final shouldExit = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.white,
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: .circular(16.r)),
         //
         title: Text(
-          "Exit App",
+          l10n.exitApp,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: .bold,
-            color: Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : Colors.black87,
           ),
         ),
         //
         content: Text(
-          "Are you sure you want to exit Rentora?",
-          style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
+          l10n.exitConfirmation,
+          style: TextStyle(
+            fontSize: 14.sp,
+            color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade700,
+          ),
         ),
         //
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              "Cancel",
+              l10n.cancel,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Colors.grey.shade600,
+                color: isDark ? AppColors.darkTextMuted : Colors.grey.shade600,
                 fontWeight: .w600,
               ),
             ),
@@ -46,10 +52,10 @@ class ExitConfirmationWrapper extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
-              "Exit",
+              l10n.exit,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                 fontWeight: .bold,
               ),
             ),

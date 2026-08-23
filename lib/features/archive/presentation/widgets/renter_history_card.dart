@@ -7,6 +7,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RenterHistoryCard extends StatelessWidget {
   final BookingModel booking;
@@ -20,46 +21,58 @@ class RenterHistoryCard extends StatelessWidget {
     this.itemTitle,
   });
 
-  Color _getStatusBgColor(String status) {
+  Color _getStatusBgColor(String status, bool isDark) {
     switch (status.toLowerCase()) {
       case 'completed':
       case 'returned':
-        return AppColors.successLight;
+        return isDark
+            ? AppColors.successDark.withValues(alpha: 0.2)
+            : AppColors.successLight;
       case 'approved':
       case 'active':
-        return AppColors.infoLight;
+        return isDark
+            ? AppColors.secondaryColor.withValues(alpha: 0.2)
+            : AppColors.infoLight;
       case 'pending':
-        return AppColors.amberLight;
+        return isDark
+            ? AppColors.amberDark.withValues(alpha: 0.2)
+            : AppColors.amberLight;
       case 'rejected':
       case 'cancelled':
-        return AppColors.errorLight;
+        return isDark
+            ? AppColors.error.withValues(alpha: 0.2)
+            : AppColors.errorLight;
       default:
-        return AppColors.lightGrey.withValues(alpha: 0.3);
+        return isDark
+            ? AppColors.darkContainer
+            : AppColors.lightGrey.withValues(alpha: 0.3);
     }
   }
 
-  Color _getStatusTextColor(String status) {
+  Color _getStatusTextColor(String status, bool isDark) {
     switch (status.toLowerCase()) {
       case 'completed':
       case 'returned':
-        return AppColors.successDark;
+        return isDark ? Colors.greenAccent : AppColors.successDark;
       case 'approved':
       case 'active':
-        return AppColors.primaryColor;
+        return isDark ? AppColors.secondaryColor : AppColors.primaryColor;
       case 'pending':
-        return AppColors.amberDark;
+        return isDark ? AppColors.amber : AppColors.amberDark;
       case 'rejected':
       case 'cancelled':
-        return AppColors.error;
+        return isDark ? Colors.redAccent : AppColors.error;
       default:
-        return AppColors.darkGrey;
+        return isDark ? AppColors.darkTextSecondary : AppColors.darkGrey;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final statusBg = _getStatusBgColor(booking.status);
-    final statusText = _getStatusTextColor(booking.status);
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final statusBg = _getStatusBgColor(booking.status, isDark);
+    final statusText = _getStatusTextColor(booking.status, isDark);
     final displayTitle = itemTitle ?? 'Booking #${booking.orderCode}';
     final displayImage =
         itemImageUrl ??
@@ -68,11 +81,16 @@ class RenterHistoryCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -94,10 +112,10 @@ class RenterHistoryCard extends StatelessWidget {
                   errorBuilder: (context, error, stackTrace) => Container(
                     width: 74.w,
                     height: 74.h,
-                    color: AppColors.lightGrey,
-                    child: const Icon(
+                    color: isDark ? AppColors.darkContainer : AppColors.lightGrey,
+                    child: Icon(
                       Icons.image_not_supported_outlined,
-                      color: AppColors.grey,
+                      color: isDark ? AppColors.darkTextMuted : AppColors.grey,
                     ),
                   ),
                 ),
@@ -118,7 +136,7 @@ class RenterHistoryCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.black,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                             ),
                           ),
                         ),
@@ -144,10 +162,10 @@ class RenterHistoryCard extends StatelessWidget {
                     ),
                     verticalSpace(4),
                     Text(
-                      'Order Code: ${booking.orderCode}',
+                      l10n.orderCode(booking.orderCode),
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: AppColors.darkGrey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -157,14 +175,14 @@ class RenterHistoryCard extends StatelessWidget {
                         Icon(
                           Icons.calendar_today_outlined,
                           size: 13.sp,
-                          color: AppColors.grey,
+                          color: isDark ? AppColors.darkTextMuted : AppColors.grey,
                         ),
                         horizontalSpace(4),
                         Text(
                           '${booking.startDate} - ${booking.endDate}',
                           style: TextStyle(
                             fontSize: 11.5.sp,
-                            color: AppColors.grey,
+                            color: isDark ? AppColors.darkTextMuted : AppColors.grey,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -176,7 +194,10 @@ class RenterHistoryCard extends StatelessWidget {
             ],
           ),
           verticalSpace(12),
-          const Divider(height: 1, color: AppColors.dividerColor),
+          Divider(
+            height: 1,
+            color: isDark ? AppColors.darkDivider : AppColors.dividerColor,
+          ),
           verticalSpace(10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,24 +206,24 @@ class RenterHistoryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Total Amount',
+                    l10n.totalAmount,
                     style: TextStyle(
                       fontSize: 11.sp,
-                      color: AppColors.darkGrey,
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                     ),
                   ),
                   Text(
-                    '${booking.totalAmount} SAR',
+                    '${booking.totalAmount} ${l10n.sar}',
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor,
+                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                     ),
                   ),
                 ],
               ),
               CustomButton(
-                text: 'Order Details',
+                text: l10n.viewDetails,
                 width: 110.w,
                 height: 38.h,
                 fontSize: 12.5.sp,

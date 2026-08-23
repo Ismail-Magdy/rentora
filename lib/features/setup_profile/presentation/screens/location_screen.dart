@@ -9,6 +9,7 @@ import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
 import 'package:rentora/features/setup_profile/presentation/widgets/location_floating_address_card.dart';
 import 'package:rentora/features/setup_profile/presentation/widgets/location_bottom_sheet.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -33,8 +34,9 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocConsumer<LocationCubit, LocationState>(
         listener: (context, state) {
           if (state is LocationError) {
@@ -43,7 +45,7 @@ class _LocationScreenState extends State<LocationScreen> {
               context,
               icon: Icons.error_outline,
               color: AppColors.error,
-              title: "Error",
+              title: l10n.error,
               message: state.error,
             );
             //
@@ -53,8 +55,8 @@ class _LocationScreenState extends State<LocationScreen> {
               context,
               icon: Icons.check_circle_outline,
               color: Colors.green,
-              title: "Success",
-              message: "location has been saved",
+              title: l10n.success,
+              message: l10n.locationSaved,
               onFinish: () =>
                   context.pushReplacementNamed(Routes.interestsScreen),
             );
@@ -127,4 +129,5 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
+
 // 315

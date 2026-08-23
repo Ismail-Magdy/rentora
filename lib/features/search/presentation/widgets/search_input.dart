@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SearchInput extends StatefulWidget {
   final String? initialValue;
@@ -39,15 +40,21 @@ class _SearchInputState extends State<SearchInput> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       height: 54.h,
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: .circular(16.r),
-        border: Border.all(color: AppColors.lightGrey),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.lightGrey,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.04),
             blurRadius: 12.r,
             offset: Offset(0, 4.h),
           ),
@@ -56,39 +63,68 @@ class _SearchInputState extends State<SearchInput> {
       child: Row(
         children: [
           horizontalSpace(14),
-          Icon(
-            Icons.search_rounded,
-            size: 24.sp,
-            color: AppColors.primaryColor,
+          GestureDetector(
+            onTap: () => widget.onSubmitted?.call(_controller.text),
+            child: Icon(
+              Icons.search_rounded,
+              size: 24.sp,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+            ),
           ),
           horizontalSpace(10),
           Expanded(
             child: TextField(
               controller: _controller,
-              onChanged: widget.onChanged,
+              onChanged: (val) {
+                setState(() {});
+                widget.onChanged?.call(val);
+              },
               onSubmitted: widget.onSubmitted,
               textInputAction: TextInputAction.search,
-              style: TextStyle(fontSize: 14.sp, color: AppColors.black),
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+              ),
               decoration: InputDecoration(
-                hintText: 'Search items',
+                hintText: l10n.searchItems,
                 hintStyle: TextStyle(
                   fontSize: 14.sp,
-                  color: AppColors.darkGrey,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
                 ),
                 border: InputBorder.none,
                 isDense: true,
               ),
             ),
           ),
-          Container(width: 1.w, height: 28.h, color: AppColors.lightGrey),
+          if (_controller.text.isNotEmpty)
+            GestureDetector(
+              onTap: () {
+                _controller.clear();
+                setState(() {});
+                widget.onChanged?.call('');
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Icon(
+                  Icons.close_rounded,
+                  size: 18.sp,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.grey,
+                ),
+              ),
+            ),
+          Container(
+            width: 1.w,
+            height: 28.h,
+            color: isDark ? AppColors.darkDivider : AppColors.lightGrey,
+          ),
           IconButton(
             onPressed: widget.onFilterPressed,
             icon: Icon(
               Icons.tune_rounded,
               size: 23.sp,
-              color: AppColors.primaryColor,
+              color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             ),
-            tooltip: 'Filters',
+            tooltip: l10n.filters,
           ),
           horizontalSpace(4),
         ],

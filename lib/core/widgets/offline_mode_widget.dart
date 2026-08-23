@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:lottie/lottie.dart";
 import "package:rentora/core/themes/app_colors.dart";
+import "package:rentora/l10n/generated/app_localizations.dart";
 import "../helpers/spacing.dart";
 
 class OfflineModeWidget extends StatelessWidget {
@@ -9,6 +10,7 @@ class OfflineModeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -29,7 +31,7 @@ class OfflineModeWidget extends StatelessWidget {
                 verticalSpace(30),
                 //
                 Text(
-                  "No Internet Connection",
+                  l10n.noInternetConnection,
                   textAlign: .center,
                   style: TextStyle(
                     fontSize: 22.sp,
@@ -41,7 +43,7 @@ class OfflineModeWidget extends StatelessWidget {
                 verticalSpace(12),
                 //
                 Text(
-                  "Please check your connection and try again",
+                  l10n.checkConnection,
                   textAlign: .center,
                   style: TextStyle(
                     fontSize: 16.sp,

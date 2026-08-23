@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 
 class CustomFeedbackDialog extends StatelessWidget {
   final IconData icon;
@@ -21,16 +22,19 @@ class CustomFeedbackDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
     return Center(
       child: Container(
         margin: .symmetric(horizontal: 24.w),
         padding: .only(top: 24.h, left: 24.w, right: 24.w, bottom: 0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? AppColors.darkSurface : Colors.white,
           borderRadius: .circular(24.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: isDark
+                  ? AppColors.darkShadow
+                  : Colors.black.withValues(alpha: 0.1),
               blurRadius: 20,
               spreadRadius: 5,
             ),
@@ -72,7 +76,9 @@ class CustomFeedbackDialog extends StatelessWidget {
                 textAlign: .center,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: Colors.grey.shade600,
+                  color: isDark
+                      ? AppColors.darkTextSecondary
+                      : Colors.grey.shade600,
                   height: 1.5,
                 ),
               ),
@@ -93,7 +99,9 @@ class CustomFeedbackDialog extends StatelessWidget {
                 builder: (context, value, child) {
                   return LinearProgressIndicator(
                     value: value,
-                    backgroundColor: Colors.grey.shade100,
+                    backgroundColor: isDark
+                        ? AppColors.darkBorder
+                        : Colors.grey.shade100,
                     valueColor: AlwaysStoppedAnimation<Color>(color),
                     minHeight: 5.h,
                   );

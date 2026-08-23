@@ -9,6 +9,7 @@ import 'package:rentora/features/booking/data/model/booking_arg.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_next_steps_card.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_success_actions_bar.dart';
 import 'package:rentora/features/booking/presentation/widgets/booking_success_details_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class BookingSuccessScreen extends StatelessWidget {
   final String orderCode;
@@ -45,6 +46,7 @@ class BookingSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final safeArgs = bookingArgs ?? BookingSummaryArgs();
     final cubit = safeArgs.bookingCubit;
     final dailyPrice = safeArgs.dailyPrice.toDouble();
@@ -55,8 +57,8 @@ class BookingSuccessScreen extends StatelessWidget {
     final dateRange = _formatDateRange(cubit?.startDate, cubit?.endDate);
 
     return Scaffold(
-      backgroundColor: AppColors.lightGrey,
-      appBar: const CustomAppBarWithNoLeading(text: 'Booking Confirmed'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBarWithNoLeading(text: l10n.bookingConfirmedTitle),
       body: Column(
         children: [
           Expanded(
@@ -81,7 +83,7 @@ class BookingSuccessScreen extends StatelessWidget {
                   ),
                   verticalSpace(16),
                   Text(
-                    'Booking Confirmed !',
+                    l10n.bookingConfirmedTitle,
                     style: TextStyle(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
@@ -91,7 +93,7 @@ class BookingSuccessScreen extends StatelessWidget {
                   ),
                   verticalSpace(8),
                   Text(
-                    "We've sent your booking request to the owner.",
+                    l10n.sentBookingRequestOwner,
                     style: TextStyle(fontSize: 14.sp, color: AppColors.grey),
                     textAlign: TextAlign.center,
                   ),
@@ -105,10 +107,10 @@ class BookingSuccessScreen extends StatelessWidget {
                   ),
                   verticalSpace(24),
                   BookingNextStepsCard(
-                    steps: const [
-                      'The owner will review and confirm your request (usually within 2 hours).',
-                      "We'll notify you on the status via email and in-app notification.",
-                      "We'll confirm the payment after the request is confirmed as you can complete the payment.",
+                    steps: [
+                      l10n.stepOwnerReview,
+                      l10n.stepNotificationStatus,
+                      l10n.stepConfirmPayment,
                     ],
                   ),
                   verticalSpace(32),

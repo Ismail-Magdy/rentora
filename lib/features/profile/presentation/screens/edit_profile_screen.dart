@@ -9,6 +9,7 @@ import 'package:rentora/core/widgets/custom_text_field.dart';
 import 'package:rentora/features/auth/data/models/user_model.dart';
 import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
 import 'package:rentora/features/profile/manager/cubit/profile_state.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final UserModel user;
@@ -68,21 +69,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  String get _accountSubtitle {
+  String _getAccountSubtitle(AppLocalizations l10n) {
     switch (widget.user.verificationStatus) {
       case 'verified':
-        return 'Verified Owner';
+        return l10n.verifiedOwner;
       case 'pending':
-        return 'Verification Pending';
+        return l10n.verificationPending;
       case 'rejected':
-        return 'Verification Rejected';
+        return l10n.verificationRejected;
       default:
-        return 'Unverified Owner';
+        return l10n.unverifiedOwner;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is ProfileUpdated) {
@@ -90,8 +93,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             context,
             icon: Icons.check_circle_outline,
             color: Colors.green,
-            title: 'Success!',
-            message: 'Your profile has been updated successfully.',
+            title: l10n.success,
+            message: l10n.profileUpdated,
             onFinish: () {
               if (Navigator.of(context).canPop()) {
                 Navigator.pop(context);
@@ -103,27 +106,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             context,
             icon: Icons.error_outline,
             color: Colors.red,
-            title: 'Oops!',
+            title: l10n.oops,
             message: state.message,
           );
         }
       },
       builder: (context, state) {
         final isUpdating = state is ProfileUpdating;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF1F3F4),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
             title: Text(
-              'Edit Profile',
+              l10n.editProfile,
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.primaryColor,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
               ),
             ),
             centerTitle: true,
-            backgroundColor: const Color(0xFFF1F3F4),
+            backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
             elevation: 0,
             actions: [
               isUpdating
@@ -134,18 +138,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: 18.w,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: AppColors.primaryColor,
+                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                         ),
                       ),
                     )
                   : TextButton(
                       onPressed: _save,
                       child: Text(
-                        'Save',
+                        l10n.saveChanges,
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.primaryColor,
+                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                         ),
                       ),
                     ),
@@ -206,7 +210,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         GestureDetector(
                           onTap: _pickAvatar,
                           child: Text(
-                            'Change Profile Picture',
+                            l10n.changeProfilePicture,
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w600,
@@ -216,7 +220,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         SizedBox(height: 2.h),
                         Text(
-                          'JPG, PNG, GIF. Max 5 MB.',
+                          l10n.imageFormatLimit,
                           style: TextStyle(
                             fontSize: 10.sp,
                             color: Colors.grey.shade500,
@@ -227,19 +231,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 20.h),
                   _sectionCard(
-                    title: 'Personal Information',
+                    context,
+                    title: l10n.personalInformation,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _label('Full Name'),
+                        _label(l10n.fullName),
                         SizedBox(height: 8.h),
                         CustomTextFormField(
                           controller: nameController,
-                          hintText: 'Your name',
+                          hintText: l10n.yourName,
                           prefixIcon: Icons.person_outline,
                         ),
                         SizedBox(height: 14.h),
-                        _label('Email Address'),
+                        _label(l10n.emailAddress),
                         SizedBox(height: 8.h),
                         CustomTextFormField(
                           controller: emailController,
@@ -248,14 +253,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         SizedBox(height: 4.h),
                         Text(
-                          'Email cannot be changed',
+                          l10n.emailCannotBeChanged,
                           style: TextStyle(
                             fontSize: 10.sp,
                             color: Colors.grey.shade500,
                           ),
                         ),
                         SizedBox(height: 14.h),
-                        _label('Phone Number'),
+                        _label(l10n.phoneNumber),
                         SizedBox(height: 8.h),
                         CustomTextFormField(
                           controller: phoneController,
@@ -268,13 +273,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 16.h),
                   _sectionCard(
-                    title: 'Bio',
+                    context,
+                    title: l10n.bio,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomTextFormField(
                           controller: bioController,
-                          hintText: 'Write something about yourself...',
+                          hintText: l10n.writeBio,
                           fieldType: .normal,
                           maxLines: 5,
                           maxLength: 300,
@@ -284,7 +290,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Align(
                           alignment: AlignmentDirectional.centerEnd,
                           child: Text(
-                            '${bioController.text.length}/300 Characters',
+                            '${bioController.text.length}/300 ${l10n.characters}',
                             style: TextStyle(
                               fontSize: 10.sp,
                               color: Colors.grey.shade500,
@@ -321,14 +327,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Account Type',
+                                l10n.accountType,
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                               Text(
-                                _accountSubtitle,
+                                _getAccountSubtitle(l10n),
                                 style: TextStyle(
                                   fontSize: 11.sp,
                                   color: AppColors.primaryColor,
@@ -354,19 +360,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _sectionCard({required String title, required Widget child}) {
+  Widget _sectionCard(
+    BuildContext context, {
+    required String title,
+    required Widget child,
+  }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkSurface : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+            ),
           ),
           SizedBox(height: 14.h),
           child,

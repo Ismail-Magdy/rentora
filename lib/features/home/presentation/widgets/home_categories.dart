@@ -5,6 +5,8 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/features/setup_profile/data/models/category_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class HomeCategories extends StatelessWidget {
   final List<String> categories;
@@ -31,17 +33,23 @@ class HomeCategories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (categories.isEmpty) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
-      crossAxisAlignment: .start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         verticalSpace(10),
         //
         Padding(
-          padding: .symmetric(horizontal: 18.w),
+          padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: Text(
-            "Categories",
-            style: TextStyle(fontSize: 18.sp, fontWeight: .bold),
+            l10n.categories,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+            ),
           ),
         ),
         //
@@ -50,14 +58,19 @@ class HomeCategories extends StatelessWidget {
         SizedBox(
           height: 95.h,
           child: ListView.separated(
-            physics: BouncingScrollPhysics(),
-            padding: .symmetric(horizontal: 18.w),
-            scrollDirection: .horizontal,
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 18.w),
+            scrollDirection: Axis.horizontal,
             itemCount: categories.length,
             separatorBuilder: (context, index) => horizontalSpace(20),
             itemBuilder: (context, index) {
               final category = categories[index];
               final iconPath = _getCategoryIcon(category);
+              final categoryModel = CategoryModel(
+                id: category,
+                name: category,
+                iconPath: iconPath,
+              );
 
               return GestureDetector(
                 onTap: () => context.pushNamed(
@@ -65,17 +78,19 @@ class HomeCategories extends StatelessWidget {
                   arguments: category,
                 ),
                 child: Column(
-                  mainAxisAlignment: .center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //
                     Container(
                       width: 60.w,
                       height: 60.w,
                       decoration: BoxDecoration(
-                        color: AppColors.lightGrey,
-                        shape: .circle,
-                        border: .all(
-                          color: AppColors.grey.withValues(alpha: 0.2),
+                        color: isDark ? AppColors.darkSurface : AppColors.lightGrey,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isDark
+                              ? AppColors.darkBorder
+                              : AppColors.grey.withValues(alpha: 0.2),
                         ),
                       ),
                       child: Center(
@@ -83,9 +98,9 @@ class HomeCategories extends StatelessWidget {
                           iconPath,
                           width: 22.w,
                           height: 22.h,
-                          colorFilter: const .mode(
+                          colorFilter: const ColorFilter.mode(
                             AppColors.secondaryColor,
-                            .srcIn,
+                            BlendMode.srcIn,
                           ),
                         ),
                       ),
@@ -94,11 +109,13 @@ class HomeCategories extends StatelessWidget {
                     verticalSpace(8),
                     //
                     Text(
-                      category.capitalizeFirst(),
+                      categoryModel.getLocalizedName(l10n),
                       style: TextStyle(
                         fontSize: 11.sp,
-                        fontWeight: .w500,
-                        color: AppColors.black.withValues(alpha: 0.7),
+                        fontWeight: FontWeight.w500,
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.black.withValues(alpha: 0.7),
                       ),
                     ),
                     //

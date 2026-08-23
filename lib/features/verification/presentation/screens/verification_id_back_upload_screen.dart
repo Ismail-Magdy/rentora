@@ -8,6 +8,7 @@ import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/presentation/widgets/id_upload_screen_content.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class VerificationIdBackUploadScreen extends StatefulWidget {
   const VerificationIdBackUploadScreen({super.key});
@@ -37,6 +38,7 @@ class _VerificationIdBackUploadScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocConsumer<VerificationCubit, VerificationState>(
       listener: (context, state) {
         if (state is VerificationError) {
@@ -44,7 +46,7 @@ class _VerificationIdBackUploadScreenState
             context,
             icon: Icons.error_outline,
             color: AppColors.error,
-            title: "Error",
+            title: l10n.error,
             message: state.message,
           );
         } else if (state is VerificationSuccess) {
@@ -61,17 +63,16 @@ class _VerificationIdBackUploadScreenState
         final isLoading = state is VerificationLoading || _isPicking;
 
         return Scaffold(
-          backgroundColor: AppColors.white,
-          appBar: const CustomAppBar(text: "Account Verification"),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
           body: IdUploadScreenContent(
-            title: "Upload ID Back",
-            subtitle:
-                "Please take a clear and readable photo of your ID back side. Make sure there are no reflections and all corners are visible within the frame.",
-            frameLabel: "Place back ID here",
-            primaryText: hasBackImage ? "Submit Documents" : "Take a Photo",
+            title: l10n.uploadIdBack,
+            subtitle: l10n.uploadIdBackSubtitle,
+            frameLabel: l10n.placeBackIdHere,
+            primaryText: hasBackImage ? l10n.submitDocuments : l10n.takePhoto,
             secondaryText: hasBackImage
-                ? "Retake from Gallery"
-                : "Upload from Gallery",
+                ? l10n.retakeFromGallery
+                : l10n.uploadPhoto,
             imageFile: cubit.idBackFile,
             onFrameTap: isLoading
                 ? null

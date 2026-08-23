@@ -15,6 +15,7 @@ import 'package:rentora/features/add_item/presentation/components/add_item_progr
 import 'package:rentora/features/add_item/presentation/widgets/add_photo_card.dart';
 import 'package:rentora/features/add_item/presentation/widgets/additional_photo_card.dart';
 import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class AddPhotosScreen extends StatefulWidget {
   const AddPhotosScreen({super.key});
@@ -31,18 +32,23 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddItemCubit, AddItemState>(
       builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
         final images = state.images;
         final existingImageUrls = state.existingImageUrls;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
                 // Header
-                CustomAppBar(text: "Add New Listing"),
+                CustomAppBar(text: l10n.addNewListing),
                 // Progress
-                AddItemProgressBar(title: "Photos", stepNumber: "Step 5 of 7"),
+                AddItemProgressBar(
+                  title: l10n.photos,
+                  stepNumber: l10n.stepOf("5", "7"),
+                ),
                 // Content
                 Expanded(
                   child: SingleChildScrollView(
@@ -51,18 +57,18 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Add photos of your item',
+                          l10n.addPhotosTitle,
                           style: TextStyle(
                             fontSize: 27.sp,
                             height: 1.2.h,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
 
                         verticalSpace(8),
                         Text(
-                          'Good photos help renters understand your item and increase your chances of getting booked.',
+                          l10n.addPhotosDesc,
                           style: TextStyle(
                             fontSize: 14.sp,
                             height: 1.45.h,
@@ -72,7 +78,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
 
                         verticalSpace(22),
                         // // Main photo
-                        const SectionTitle(title: 'Main photo', required: true),
+                        SectionTitle(title: l10n.mainPhoto, required: true),
                         verticalSpace(10),
                         if (state.mainPhoto != null)
                           Container(
@@ -81,7 +87,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(
-                                color: AppColors.primaryColor.withOpacity(0.2),
+                                color: AppColors.primaryColor.withValues(alpha: 0.2),
                                 width: 2,
                               ),
                               image: DecorationImage(
@@ -95,7 +101,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SectionTitle(title: 'Additional photos'),
+                            SectionTitle(title: l10n.additionalPhotos),
                             Text(
                               '${images.length}/$maxImages',
                               style: TextStyle(
@@ -109,7 +115,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
 
                         verticalSpace(5),
                         Text(
-                          'Add more photos from different angles.',
+                          l10n.addMorePhotosAngles,
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: AppColors.grey,
@@ -123,7 +129,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         Container(
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor.withOpacity(.06),
+                            color: AppColors.primaryColor.withValues(alpha: .06),
                             borderRadius: BorderRadius.circular(17),
                           ),
                           child: Row(
@@ -138,7 +144,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                               horizontalSpace(10),
                               Expanded(
                                 child: Text(
-                                  'Tip: Use clear photos in good lighting and show the item from different angles.',
+                                  l10n.photoTip,
                                   style: TextStyle(
                                     color: AppColors.primaryColor,
                                     fontSize: 12.sp,
@@ -152,7 +158,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         // Show existing remote images if in edit mode
                         if (existingImageUrls.isNotEmpty) ...[
                           verticalSpace(20),
-                          const SectionTitle(title: 'Existing photos'),
+                          SectionTitle(title: l10n.existingPhotos),
                           verticalSpace(10),
                           SizedBox(
                             height: 100,
@@ -187,7 +193,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
                   child: CustomButton(
-                    text: "Continue",
+                    text: l10n.continueButton,
                     onPressed: () => _onContinue(context),
                   ),
                 ),
@@ -274,4 +280,4 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
   }
 }
-// 
+//

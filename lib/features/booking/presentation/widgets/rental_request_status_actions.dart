@@ -5,17 +5,21 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RentalRequestStatusActions extends StatelessWidget {
   const RentalRequestStatusActions({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         CustomButton(
-          text: 'Back to My Listings',
+          text: l10n.myListings,
           height: 52.h,
           fontSize: 16.sp,
           onPressed: () =>
@@ -23,9 +27,10 @@ class RentalRequestStatusActions extends StatelessWidget {
         ),
         verticalSpace(12),
         CustomButton(
-          text: 'Go to Home',
-          color: AppColors.white,
-          textColor: AppColors.primaryColor,
+          text: l10n.backToHome,
+          color: isDark ? AppColors.darkSurface : AppColors.white,
+          textColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+          borderColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
           height: 50.h,
           fontSize: 15.sp,
           borderRadius: 14,

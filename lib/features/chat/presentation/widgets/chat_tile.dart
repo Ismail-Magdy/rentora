@@ -69,15 +69,21 @@ class ChatTile extends StatelessWidget {
     final displayName = _getOtherParticipantName(otherId);
     final avatarUrl = _getOtherParticipantAvatar(otherId);
     final formattedTime = _formatTimestamp(chat.lastMessageTime?.toDate());
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.03),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.03),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -94,9 +100,10 @@ class ChatTile extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 26.r,
-                  backgroundColor: AppColors.primaryColor.withValues(
-                    alpha: 0.1,
-                  ),
+                  backgroundColor: (isDark
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor)
+                      .withValues(alpha: 0.15),
                   backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
                       ? NetworkImage(avatarUrl)
                       : null,
@@ -106,7 +113,9 @@ class ChatTile extends StatelessWidget {
                               ? displayName[0].toUpperCase()
                               : '?',
                           style: TextStyle(
-                            color: AppColors.primaryColor,
+                            color: isDark
+                                ? AppColors.secondaryColor
+                                : AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 18.sp,
                           ),
@@ -129,7 +138,7 @@ class ChatTile extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.black,
+                                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                               ),
                             ),
                           ),
@@ -138,7 +147,7 @@ class ChatTile extends StatelessWidget {
                               formattedTime,
                               style: TextStyle(
                                 fontSize: 11.sp,
-                                color: AppColors.darkGrey,
+                                color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -157,8 +166,8 @@ class ChatTile extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 color: chat.lastMessage.isEmpty
-                                    ? AppColors.primaryColor
-                                    : AppColors.grey,
+                                    ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                                    : (isDark ? AppColors.darkTextSecondary : AppColors.grey),
                                 fontWeight: chat.lastMessage.isEmpty
                                     ? FontWeight.w600
                                     : FontWeight.normal,
@@ -174,7 +183,7 @@ class ChatTile extends StatelessWidget {
                 Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 14.sp,
-                  color: AppColors.grey.withValues(alpha: 0.5),
+                  color: isDark ? AppColors.darkTextMuted : AppColors.grey.withValues(alpha: 0.5),
                 ),
               ],
             ),

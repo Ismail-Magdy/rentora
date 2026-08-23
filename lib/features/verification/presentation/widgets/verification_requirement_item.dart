@@ -17,16 +17,21 @@ class VerificationRequirementItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.all(8.r),
           decoration: BoxDecoration(
-            color: AppColors.lightGrey,
+            color: isDark ? AppColors.darkContainer : AppColors.lightGrey,
             borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(icon, color: AppColors.darkGrey, size: 18.sp),
+          child: Icon(
+            icon,
+            color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+            size: 18.sp,
+          ),
         ),
         horizontalSpace(12),
         Expanded(
@@ -38,7 +43,7 @@ class VerificationRequirementItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.black,
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                 ),
               ),
               verticalSpace(2),
@@ -46,7 +51,7 @@ class VerificationRequirementItem extends StatelessWidget {
                 description,
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: AppColors.darkGrey,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                   fontWeight: FontWeight.w400,
                 ),
               ),

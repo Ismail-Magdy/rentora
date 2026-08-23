@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class PriceDetailsCard extends StatelessWidget {
   final double dailyPrice;
@@ -19,6 +20,7 @@ class PriceDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final rentalTotal = dailyPrice * totalDays;
     final grandTotal = rentalTotal + serviceFee + securityDeposit;
 
@@ -40,7 +42,7 @@ class PriceDetailsCard extends StatelessWidget {
               ),
               horizontalSpace(8),
               Text(
-                "Price Details",
+                l10n.priceDetails,
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontSize: 17.sp,
@@ -51,13 +53,17 @@ class PriceDetailsCard extends StatelessWidget {
           ),
           verticalSpace(16),
           _priceRow(
-            title: "Rental Cost (SAR ${dailyPrice.toInt()} × $totalDays days)",
-            value: "$rentalTotal SAR",
+            title:
+                '${l10n.rentalCost} (${dailyPrice.toInt()} ${l10n.sar} × $totalDays ${l10n.days})',
+            value: "$rentalTotal ${l10n.sar}",
           ),
           verticalSpace(12),
-          _priceRow(title: "Service Fee", value: "$serviceFee SAR"),
+          _priceRow(title: l10n.serviceFee, value: "$serviceFee ${l10n.sar}"),
           verticalSpace(12),
-          _priceRow(title: "Security Deposit", value: "$securityDeposit SAR"),
+          _priceRow(
+            title: l10n.securityDepositLabel,
+            value: "$securityDeposit ${l10n.sar}",
+          ),
           verticalSpace(14),
           Divider(height: 1.h, color: AppColors.dividerColor),
           verticalSpace(14),
@@ -65,7 +71,7 @@ class PriceDetailsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Total",
+                l10n.total,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.sp,
@@ -73,7 +79,7 @@ class PriceDetailsCard extends StatelessWidget {
                 ),
               ),
               Text(
-                "$grandTotal SAR",
+                "$grandTotal ${l10n.sar}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.sp,

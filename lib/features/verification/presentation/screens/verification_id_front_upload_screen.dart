@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/verification/manager/verification_cubit.dart';
 import 'package:rentora/features/verification/data/model/verification_route_args.dart';
 import 'package:rentora/features/verification/presentation/widgets/id_upload_screen_content.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class VerificationIdFrontUploadScreen extends StatefulWidget {
   const VerificationIdFrontUploadScreen({super.key});
@@ -47,18 +47,18 @@ class _VerificationIdFrontUploadScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final cubit = context.watch<VerificationCubit>();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: const CustomAppBar(text: "Account Verification"),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
       body: IdUploadScreenContent(
-        title: "Upload ID Front",
-        subtitle:
-            "Please take a clear and readable photo of your ID front side. Make sure there are no reflections and all corners are visible within the frame.",
-        frameLabel: "Place front ID here",
-        primaryText: _isPicking ? "Opening Camera" : "Take a Photo",
-        secondaryText: "Upload from Gallery",
+        title: l10n.uploadIdFront,
+        subtitle: l10n.uploadIdFrontSubtitle,
+        frameLabel: l10n.placeFrontIdHere,
+        primaryText: _isPicking ? l10n.openingCamera : l10n.takePhoto,
+        secondaryText: l10n.uploadPhoto,
         imageFile: cubit.idFrontFile,
         onFrameTap: _isPicking
             ? null

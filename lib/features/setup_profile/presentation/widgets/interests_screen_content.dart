@@ -8,6 +8,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/setup_profile/data/models/category_model.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class InterestsScreenContent extends StatelessWidget {
   const InterestsScreenContent({
@@ -20,6 +21,8 @@ class InterestsScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         //
@@ -44,40 +47,44 @@ class InterestsScreenContent extends StatelessWidget {
                             predicate: (route) => false,
                           ),
                           child: Text(
-                            "Skip",
+                            l10n.skip,
                             style: TextStyle(
                               fontSize: 16.sp,
-                              color: AppColors.grey,
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                             ),
                           ),
                         ),
                         //
                         Text(
-                          "Rentora",
+                          l10n.rentora,
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: .bold,
-                            color: AppColors.primaryColor,
+                            color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                           ),
                         ),
                         //
-                      ],
+                        ],
                     ),
                     //
                     verticalSpace(32),
                     //
                     Text(
-                      "What are your interests?",
-                      style: TextStyle(fontSize: 25.sp, fontWeight: .bold),
+                      l10n.interestsQuestion,
+                      style: TextStyle(
+                        fontSize: 25.sp,
+                        fontWeight: .bold,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      ),
                     ),
                     //
                     verticalSpace(12),
                     //
                     Text(
-                      "Choose the categories you're interested in so we can personalize your experience and show you the most relevant items.",
+                      l10n.interestsDescription,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        color: AppColors.darkGrey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                         height: 1.5,
                       ),
                     ),
@@ -108,12 +115,12 @@ class InterestsScreenContent extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? AppColors.primaryColor.withValues(alpha: 0.1)
-                            : const Color(0xFFF7F7F9),
+                            ? AppColors.primaryColor.withValues(alpha: 0.15)
+                            : (isDark ? AppColors.darkContainer : const Color(0xFFF7F7F9)),
                         borderRadius: .circular(20.r),
                         border: .all(
                           color: isSelected
-                              ? AppColors.primaryColor
+                              ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
                               : Colors.transparent,
                           width: 2,
                         ),
@@ -128,7 +135,7 @@ class InterestsScreenContent extends StatelessWidget {
                             height: 35.h,
                             colorFilter: .mode(
                               isSelected
-                                  ? AppColors.primaryColor
+                                  ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
                                   : AppColors.secondaryColor,
                               .srcIn,
                             ),
@@ -137,13 +144,13 @@ class InterestsScreenContent extends StatelessWidget {
                           verticalSpace(10),
                           //
                           Text(
-                            category.name,
+                            category.getLocalizedName(l10n),
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: isSelected ? .bold : .w500,
                               color: isSelected
-                                  ? AppColors.primaryColor
-                                  : Colors.black87,
+                                  ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                                  : (isDark ? AppColors.darkTextPrimary : Colors.black87),
                             ),
                           ),
                           //
@@ -161,7 +168,7 @@ class InterestsScreenContent extends StatelessWidget {
         ),
 
         CustomButton(
-          text: "Continue",
+          text: l10n.continueButton,
           isLoading: state is InterestsSaving,
           onPressed: () => cubit.saveInterests(),
         ),

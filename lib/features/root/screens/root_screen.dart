@@ -10,6 +10,7 @@ import 'package:rentora/features/archive/presentation/screens/archive_screen.dar
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_list_screen.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -29,14 +30,16 @@ class _RootScreenState extends State<RootScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: IndexedStack(index: _currentIndex, children: _screens),
-      bottomNavigationBar: _buildCustomBottomNavigationBar(),
+      bottomNavigationBar: _buildCustomBottomNavigationBar(l10n),
     );
   }
 
-  Widget _buildCustomBottomNavigationBar() {
+  Widget _buildCustomBottomNavigationBar(AppLocalizations l10n) {
+    final isDark = context.isDarkMode;
     return SizedBox(
       height: 105.h,
       child: Stack(
@@ -46,11 +49,13 @@ class _RootScreenState extends State<RootScreen> {
           Container(
             height: 85.h,
             decoration: BoxDecoration(
-              color: AppColors.lightGrey,
+              color: isDark ? AppColors.darkSurface : AppColors.lightGrey,
               borderRadius: .vertical(top: .circular(24.r)),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.black.withValues(alpha: 0.05),
+                  color: isDark
+                      ? AppColors.darkShadow
+                      : AppColors.black.withValues(alpha: 0.05),
                   blurRadius: 19.r,
                   offset: const Offset(0, -5),
                 ),
@@ -62,8 +67,12 @@ class _RootScreenState extends State<RootScreen> {
                 mainAxisAlignment: .spaceBetween,
                 children: [
                   // Left Tabs
-                  _buildNavItem(index: 0, iconName: "home", label: "Home"),
-                  _buildNavItem(index: 1, iconName: "chat", label: "Chat"),
+                  _buildNavItem(index: 0, iconName: "home", label: l10n.home),
+                  _buildNavItem(
+                    index: 1,
+                    iconName: "chat",
+                    label: l10n.chatTab,
+                  ),
                   //
                   SizedBox(
                     width: 50.w,
@@ -72,11 +81,13 @@ class _RootScreenState extends State<RootScreen> {
                       children: [
                         //
                         Text(
-                          "Add",
+                          l10n.add,
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: .w500,
-                            color: AppColors.darkGrey,
+                            color: isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.darkGrey,
                           ),
                         ),
                         //
@@ -90,12 +101,12 @@ class _RootScreenState extends State<RootScreen> {
                   _buildNavItem(
                     index: 2,
                     iconName: "archive",
-                    label: "Archive",
+                    label: l10n.archive,
                   ),
                   _buildNavItem(
                     index: 3,
                     iconName: 'settings',
-                    label: 'Settings',
+                    label: l10n.settings,
                   ),
                 ],
               ),
@@ -133,7 +144,14 @@ class _RootScreenState extends State<RootScreen> {
     required String iconName,
     required String label,
   }) {
+    final isDark = context.isDarkMode;
     final isSelected = _currentIndex == index;
+    final selectedColor = isDark
+        ? AppColors.secondaryColor
+        : AppColors.primaryColor;
+    final unselectedColor = isDark
+        ? AppColors.darkTextMuted
+        : AppColors.grey;
 
     return GestureDetector(
       onTap: () => setState(() {
@@ -152,7 +170,7 @@ class _RootScreenState extends State<RootScreen> {
               padding: .all(8.r),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? AppColors.primaryColor.withValues(alpha: 0.3)
+                    ? selectedColor.withValues(alpha: 0.25)
                     : Colors.transparent,
                 shape: .circle,
               ),
@@ -161,7 +179,7 @@ class _RootScreenState extends State<RootScreen> {
                 width: 22.w,
                 height: 22.h,
                 colorFilter: ColorFilter.mode(
-                  isSelected ? AppColors.primaryColor : AppColors.grey,
+                  isSelected ? selectedColor : unselectedColor,
                   .srcIn,
                 ),
               ),
@@ -174,7 +192,7 @@ class _RootScreenState extends State<RootScreen> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: isSelected ? .bold : .w500,
-                color: isSelected ? AppColors.primaryColor : AppColors.grey,
+                color: isSelected ? selectedColor : unselectedColor,
               ),
             ),
           ],
@@ -185,4 +203,5 @@ class _RootScreenState extends State<RootScreen> {
 
   //
 }
+
 // 189

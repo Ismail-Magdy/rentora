@@ -1,10 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/shared_prefrences_helper.dart';
 import 'package:rentora/core/routing/routes.dart';
-import 'package:rentora/core/themes/app_colors.dart';
-
 import 'package:rentora/features/splash/widgets/splash_screen_content.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -103,21 +102,31 @@ class _SplashScreenState extends State<SplashScreen>
         if (mounted) {
           context.pushReplacementNamed(Routes.welcomeAuthScreen);
         }
-
-        return;
-      }
-
-      if (!currentUser.emailVerified) {
-        await FirebaseAuth.instance.signOut();
-        if (mounted) {
-          context.pushReplacementNamed(Routes.welcomeAuthScreen);
-        }
         return;
       }
 
       bool hasFinishedSetup = await SharedPrefHelper.getBool(
         'hasFinishedSetup',
       );
+
+      if (!hasFinishedSetup) {
+        try {
+          final userDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .get();
+          if (userDoc.exists && userDoc.data() != null) {
+            final data = userDoc.data()!;
+            if (data['location'] != null ||
+                (data['interests'] is List &&
+                    (data['interests'] as List).isNotEmpty)) {
+              hasFinishedSetup = true;
+              await SharedPrefHelper.setData('hasFinishedSetup', true);
+            }
+          }
+        } catch (_) {}
+      }
+
       if (!hasFinishedSetup) {
         if (mounted) {
           context.pushReplacementNamed(Routes.locationScreen);
@@ -140,7 +149,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {

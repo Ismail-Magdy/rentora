@@ -8,6 +8,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/manager/booking_cubit.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class IncomingRequestActionButtons extends StatelessWidget {
   final String bookingId;
@@ -77,6 +78,9 @@ class IncomingRequestActionButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocConsumer<BookingCubit, BookingState>(
       listener: (context, state) {
         if (state is BookingStatusUpdated) {
@@ -89,7 +93,7 @@ class IncomingRequestActionButtons extends StatelessWidget {
             context,
             icon: Icons.error_outline,
             color: AppColors.error,
-            title: 'Action Failed',
+            title: l10n.actionFailed,
             message: state.message,
           );
         }
@@ -107,33 +111,32 @@ class IncomingRequestActionButtons extends StatelessWidget {
           children: [
             Expanded(
               child: CustomButton(
-                text: 'Reject',
-                color: AppColors.white,
+                text: l10n.rejectRequest,
+                color: isDark ? AppColors.darkSurface : AppColors.white,
                 textColor: AppColors.error,
+                borderColor: isDark ? AppColors.darkBorder : null,
                 height: 48.h,
                 fontSize: 15.sp,
                 borderRadius: 14,
                 onPressed: () => _handleDecision(
                   context,
                   isAccepting: false,
-                  title: 'Reject Request',
-                  message:
-                      'Are you sure you want to reject this rental request?',
+                  title: l10n.rejectRequest,
+                  message: l10n.rejectRequest,
                 ),
               ),
             ),
             horizontalSpace(12),
             Expanded(
               child: CustomButton(
-                text: 'Accept Request',
+                text: l10n.acceptRequest,
                 height: 48.h,
                 fontSize: 15.sp,
                 onPressed: () => _handleDecision(
                   context,
                   isAccepting: true,
-                  title: 'Accept Request',
-                  message:
-                      'Are you sure you want to accept this rental request?',
+                  title: l10n.acceptRequest,
+                  message: l10n.acceptRequest,
                 ),
               ),
             ),

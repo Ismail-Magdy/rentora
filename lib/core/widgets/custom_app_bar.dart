@@ -13,22 +13,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
     return AppBar(
-      backgroundColor: AppColors.white,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
       scrolledUnderElevation: 0,
       elevation: 0,
       leading: GestureDetector(
         onTap: () => context.pop(),
-        child: const Icon(
+        child: Icon(
           Icons.arrow_back_ios_new,
-          color: AppColors.primaryColor,
+          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
         ),
       ),
       title: Text(
         text,
         style: TextStyle(
-          color: AppColors.primaryColor,
-          fontWeight: .bold,
+          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
+          fontWeight: FontWeight.bold,
           fontSize: 18.sp,
         ),
       ),

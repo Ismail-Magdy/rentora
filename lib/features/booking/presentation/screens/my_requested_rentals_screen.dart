@@ -10,12 +10,14 @@ import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/features/booking/data/model/booking_model.dart';
 import 'package:rentora/features/booking/presentation/widgets/custom_empty_state.dart';
 import 'package:rentora/features/booking/presentation/widgets/my_requested_rental_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class MyRequestedRentalsScreen extends StatelessWidget {
   const MyRequestedRentalsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
     final Query<Map<String, dynamic>> query = currentUserId != null
@@ -25,8 +27,8 @@ class MyRequestedRentalsScreen extends StatelessWidget {
         : FirebaseFirestore.instance.collection('bookings');
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
-      appBar: const CustomAppBar(text: 'My Requested Rentals'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.myRentals),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: query.snapshots(),
@@ -49,10 +51,10 @@ class MyRequestedRentalsScreen extends StatelessWidget {
             final docs = snapshot.data?.docs ?? [];
 
             if (docs.isEmpty) {
-              return const CustomEmptyState(
+              return CustomEmptyState(
                 icon: Icons.shopping_bag_outlined,
-                title: 'No Rental Requests',
-                message: 'You haven\'t made any rental requests yet.',
+                title: l10n.noRentalHistory,
+                message: l10n.noRentalsYet,
               );
             }
 
@@ -71,7 +73,7 @@ class MyRequestedRentalsScreen extends StatelessWidget {
                   title: 'Order #${booking.orderCode}',
                   dates: '${booking.startDate} - ${booking.endDate}',
                   status: _capitalize(booking.status),
-                  amount: '${booking.totalAmount} SAR',
+                  amount: '${booking.totalAmount} ${l10n.sar}',
                   imageUrl:
                       'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=600',
                   onTap: () {

@@ -11,9 +11,9 @@ class NotificationCard extends StatelessWidget {
   final NotificationModel notification;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.notification,
-  }) : super(key: key);
+  });
 
   String _timeAgo(DateTime d) {
     Duration diff = DateTime.now().difference(d);
@@ -33,6 +33,7 @@ class NotificationCard extends StatelessWidget {
     final timeString = notification.createdAt != null
         ? _timeAgo(notification.createdAt!.toDate())
         : '';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () {
@@ -51,18 +52,24 @@ class NotificationCard extends StatelessWidget {
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
           color: notification.isRead
-              ? AppColors.white
-              : AppColors.primaryColor.withValues(alpha: 0.05),
+              ? (isDark ? AppColors.darkSurface : AppColors.white)
+              : (isDark
+                  ? AppColors.secondaryColor.withValues(alpha: 0.12)
+                  : AppColors.primaryColor.withValues(alpha: 0.05)),
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
             color: notification.isRead
-                ? Colors.grey.shade200
-                : AppColors.primaryColor.withValues(alpha: 0.3),
+                ? (isDark ? AppColors.darkBorder : Colors.grey.shade200)
+                : (isDark
+                    ? AppColors.secondaryColor.withValues(alpha: 0.4)
+                    : AppColors.primaryColor.withValues(alpha: 0.3)),
           ),
           boxShadow: [
             if (!notification.isRead)
               BoxShadow(
-                color: AppColors.primaryColor.withValues(alpha: 0.05),
+                color: isDark
+                    ? AppColors.darkShadow
+                    : AppColors.primaryColor.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -75,8 +82,8 @@ class NotificationCard extends StatelessWidget {
               padding: EdgeInsets.all(10.r),
               decoration: BoxDecoration(
                 color: isChat
-                    ? Colors.blue.shade50
-                    : Colors.green.shade50,
+                    ? (isDark ? Colors.blue.withValues(alpha: 0.2) : Colors.blue.shade50)
+                    : (isDark ? Colors.green.withValues(alpha: 0.2) : Colors.green.shade50),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -101,7 +108,7 @@ class NotificationCard extends StatelessWidget {
                             fontWeight: notification.isRead
                                 ? FontWeight.w500
                                 : FontWeight.bold,
-                            color: AppColors.black,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                           ),
                         ),
                       ),
@@ -109,7 +116,7 @@ class NotificationCard extends StatelessWidget {
                         timeString,
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: AppColors.grey,
+                          color: isDark ? AppColors.darkTextMuted : AppColors.grey,
                         ),
                       ),
                     ],
@@ -119,7 +126,7 @@ class NotificationCard extends StatelessWidget {
                     notification.body,
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: AppColors.grey,
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                       fontWeight: notification.isRead
                           ? FontWeight.normal
                           : FontWeight.w500,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class CustomAppBarWithNoLeading extends StatelessWidget
@@ -12,17 +13,18 @@ class CustomAppBarWithNoLeading extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
       scrolledUnderElevation: 0,
       elevation: 0,
-      leading: SizedBox.shrink(),
+      leading: const SizedBox.shrink(),
       leadingWidth: 0,
       title: Text(
         text,
         style: TextStyle(
-          color: AppColors.primaryColor,
-          fontWeight: .bold,
+          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
+          fontWeight: FontWeight.bold,
           fontSize: 18.sp,
         ),
       ),

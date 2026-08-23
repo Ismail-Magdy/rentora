@@ -17,14 +17,20 @@ class ListingInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : Colors.transparent,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.04),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -42,8 +48,11 @@ class ListingInfoCard extends StatelessWidget {
               errorBuilder: (context, error, stackTrace) => Container(
                 width: 82.w,
                 height: 82.h,
-                color: AppColors.lightGrey,
-                child: const Icon(Icons.camera_alt, color: AppColors.grey),
+                color: isDark ? AppColors.darkContainer : AppColors.lightGrey,
+                child: Icon(
+                  Icons.camera_alt,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                ),
               ),
             ),
           ),
@@ -64,7 +73,7 @@ class ListingInfoCard extends StatelessWidget {
                   child: Text(
                     'Available',
                     style: TextStyle(
-                      color: AppColors.primaryColor,
+                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -76,7 +85,7 @@ class ListingInfoCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.black,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -90,7 +99,7 @@ class ListingInfoCard extends StatelessWidget {
                       '(reviews 24)',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: AppColors.grey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -99,7 +108,7 @@ class ListingInfoCard extends StatelessWidget {
                       '4.9',
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: AppColors.primaryColor,
+                        color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -111,7 +120,7 @@ class ListingInfoCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+                    color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                   ),
                 ),
               ],

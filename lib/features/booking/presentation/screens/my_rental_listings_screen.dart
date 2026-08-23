@@ -7,15 +7,16 @@ import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
-import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/booking/presentation/widgets/custom_empty_state.dart';
 import 'package:rentora/features/booking/presentation/widgets/my_rental_listing_card.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class MyRentalListingsScreen extends StatelessWidget {
   const MyRentalListingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
     final Query<Map<String, dynamic>> query = currentUserId != null
@@ -25,22 +26,16 @@ class MyRentalListingsScreen extends StatelessWidget {
         : FirebaseFirestore.instance.collection('listings');
 
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
-      appBar: const CustomAppBar(text: 'My Listings'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.myListings),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          showFeedbackDialog(
-            context,
-            icon: Icons.add_circle_outline,
-            color: AppColors.primaryColor,
-            title: 'Add Listing',
-            message: 'Add Listing feature opening...',
-          );
+          context.pushNamed(Routes.initialPhotoScreen);
         },
         backgroundColor: AppColors.primaryColor,
         icon: const Icon(Icons.add, color: AppColors.white),
         label: Text(
-          'Add Listing',
+          l10n.addListing,
           style: TextStyle(
             color: AppColors.white,
             fontWeight: FontWeight.bold,
@@ -70,10 +65,10 @@ class MyRentalListingsScreen extends StatelessWidget {
             final docs = snapshot.data?.docs ?? [];
 
             if (docs.isEmpty) {
-              return const CustomEmptyState(
+              return CustomEmptyState(
                 icon: Icons.inventory_2_outlined,
-                title: 'No Listings Available',
-                message: 'You haven\'t added any items for rent yet.',
+                title: l10n.noListings,
+                message: l10n.noItemsForRent,
               );
             }
 
@@ -85,7 +80,7 @@ class MyRentalListingsScreen extends StatelessWidget {
                 final data = docs[index].data();
                 final title = data['title'] ?? 'Listing Item';
                 final category = data['category'] ?? 'General';
-                final price = '${data['dailyPrice'] ?? 0} SAR/day';
+                final price = '${data['dailyPrice'] ?? 0} ${l10n.sar}/${l10n.day}';
                 final status = data['status'] ?? 'Available';
                 final imageUrl =
                     (data['images'] is List &&

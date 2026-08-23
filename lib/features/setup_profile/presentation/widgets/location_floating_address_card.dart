@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class LocationFloatingAddressCard extends StatelessWidget {
   const LocationFloatingAddressCard({
@@ -16,6 +17,8 @@ class LocationFloatingAddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Positioned(
       top: 60.h,
       left: 20.w,
@@ -23,11 +26,13 @@ class LocationFloatingAddressCard extends StatelessWidget {
       child: Container(
         padding: .all(16.w),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: isDark ? AppColors.darkSurface : AppColors.white,
           borderRadius: .circular(12),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withValues(alpha: 0.1),
+              color: isDark
+                  ? AppColors.darkShadow
+                  : AppColors.black.withValues(alpha: 0.1),
               blurRadius: 10.r,
               spreadRadius: 1,
             ),
@@ -46,8 +51,12 @@ class LocationFloatingAddressCard extends StatelessWidget {
                 children: [
                   //
                   Text(
-                    "Choose Delivery Point",
-                    style: TextStyle(fontWeight: .bold, fontSize: 14.sp),
+                    l10n.chooseDeliveryPoint,
+                    style: TextStyle(
+                      fontWeight: .bold,
+                      fontSize: 14.sp,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                    ),
                   ),
                   //
                   verticalSpace(4),
@@ -62,9 +71,11 @@ class LocationFloatingAddressCard extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          cubitSelectedAddress ?? "Move map to select location",
+                          cubitSelectedAddress ?? l10n.moveMapSelectLocation,
                           style: TextStyle(
-                            color: AppColors.darkGrey,
+                            color: isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.darkGrey,
                             fontSize: 12.sp,
                           ),
                           maxLines: 1,

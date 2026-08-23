@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class OwnerEarningsSummaryCard extends StatelessWidget {
   final double totalEarnings;
@@ -17,6 +18,7 @@ class OwnerEarningsSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       padding: EdgeInsets.all(20.r),
@@ -42,7 +44,7 @@ class OwnerEarningsSummaryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Rental Earnings',
+                l10n.totalRentalEarnings,
                 style: TextStyle(
                   fontSize: 13.sp,
                   color: AppColors.white.withValues(alpha: 0.85),
@@ -65,7 +67,7 @@ class OwnerEarningsSummaryCard extends StatelessWidget {
                     ),
                     horizontalSpace(4),
                     Text(
-                      'Income',
+                      l10n.income,
                       style: TextStyle(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.bold,
@@ -79,7 +81,7 @@ class OwnerEarningsSummaryCard extends StatelessWidget {
           ),
           verticalSpace(8),
           Text(
-            '${totalEarnings.toStringAsFixed(0)} SAR',
+            '${totalEarnings.toStringAsFixed(0)} ${l10n.sar}',
             style: TextStyle(
               fontSize: 26.sp,
               fontWeight: FontWeight.bold,
@@ -97,7 +99,7 @@ class OwnerEarningsSummaryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildStatItem(
-                  label: 'Total Bookings',
+                  label: l10n.totalBookings,
                   value: totalRentals.toString(),
                   icon: Icons.assignment_outlined,
                 ),
@@ -107,7 +109,7 @@ class OwnerEarningsSummaryCard extends StatelessWidget {
                   color: AppColors.white.withValues(alpha: 0.25),
                 ),
                 _buildStatItem(
-                  label: 'Active Rentals',
+                  label: l10n.activeRentals,
                   value: activeRentals.toString(),
                   icon: Icons.timelapse_rounded,
                 ),

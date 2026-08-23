@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class ChatInputBar extends StatefulWidget {
@@ -62,9 +63,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
   }
 
   void _showImagePickerSheet() {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.white,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -75,11 +78,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Send Image',
+                l10n.sendImage,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                 ),
               ),
               verticalSpace(16),
@@ -96,10 +99,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ),
                 ),
                 title: Text(
-                  'Camera',
+                  l10n.camera,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
                 onTap: () {
@@ -120,10 +124,11 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ),
                 ),
                 title: Text(
-                  'Gallery',
+                  l10n.gallery,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                   ),
                 ),
                 onTap: () {
@@ -160,15 +165,19 @@ class _ChatInputBarState extends State<ChatInputBar> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final canSend = (_hasText || _selectedImage != null) && !widget.isSending;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
+            color: isDark
+                ? AppColors.darkShadow
+                : AppColors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -3),
           ),
@@ -238,7 +247,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                     ),
                     child: Icon(
                       Icons.camera_alt_outlined,
-                      color: AppColors.primaryColor,
+                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
                       size: 22.sp,
                     ),
                   ),
@@ -246,28 +255,34 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 Expanded(
                   child: Container(
                     constraints: BoxConstraints(maxHeight: 120.h),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 4.h,
+                    ),
                     decoration: BoxDecoration(
-                      color: AppColors.scaffoldBackground,
+                      color: isDark ? AppColors.darkContainer : AppColors.scaffoldBackground,
                       borderRadius: BorderRadius.circular(24.r),
-                      border:
-                          Border.all(color: AppColors.dividerColor, width: 1.w),
+                      border: Border.all(
+                        color: isDark ? AppColors.darkBorder : AppColors.dividerColor,
+                        width: 1.w,
+                      ),
                     ),
                     child: TextField(
                       controller: _controller,
                       maxLines: null,
                       textInputAction: TextInputAction.newline,
                       keyboardType: TextInputType.multiline,
-                      style:
-                          TextStyle(fontSize: 14.sp, color: AppColors.black),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      ),
                       decoration: InputDecoration(
                         hintText: _selectedImage != null
-                            ? 'Add a caption...'
-                            : 'Type your message...',
+                            ? l10n.addCaption
+                            : l10n.typeMessage,
                         hintStyle: TextStyle(
                           fontSize: 14.sp,
-                          color: AppColors.darkGrey,
+                          color: isDark ? AppColors.darkTextMuted : AppColors.darkGrey,
                         ),
                         border: InputBorder.none,
                         isDense: true,
@@ -286,7 +301,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                     decoration: BoxDecoration(
                       color: canSend
                           ? AppColors.primaryColor
-                          : AppColors.lightGrey,
+                          : (isDark ? AppColors.darkBorder : AppColors.lightGrey),
                       shape: BoxShape.circle,
                       boxShadow: canSend
                           ? [
@@ -328,4 +343,3 @@ class _ChatInputBarState extends State<ChatInputBar> {
     );
   }
 }
-

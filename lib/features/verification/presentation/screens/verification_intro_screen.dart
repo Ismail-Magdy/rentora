@@ -13,23 +13,26 @@ import 'package:rentora/features/verification/presentation/widgets/verification_
 import 'package:rentora/features/verification/presentation/widgets/verification_benefit_card.dart';
 import 'package:rentora/features/verification/presentation/widgets/verification_footer_security.dart';
 import 'package:rentora/features/verification/presentation/widgets/verification_requirement_item.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class VerificationIntroScreen extends StatelessWidget {
   const VerificationIntroScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = context.isDarkMode;
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: const CustomAppBar(text: "Account verification"),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(text: l10n.verificationAppBarTitle),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: .symmetric(horizontal: 20.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                 child: Column(
-                  crossAxisAlignment: .center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     verticalSpace(10),
                     //
@@ -37,72 +40,77 @@ class VerificationIntroScreen extends StatelessWidget {
                     //
                     verticalSpace(20),
                     Text(
-                      "Build Trust in the Community",
+                      l10n.verificationBuildTrust,
                       style: TextStyle(
                         fontSize: 20.sp,
-                        fontWeight: .bold,
-                        color: AppColors.black,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                       ),
                     ),
                     verticalSpace(8),
                     Text(
-                      "Verifying your account with a few simple steps gives you a Verified Badge, speeds up request approvals, and gives you access to a higher rental limit",
+                      l10n.verificationSubtitle,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13.sp,
-                        color: AppColors.darkGrey,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
                         height: 1.45,
-                        fontWeight: .w400,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     verticalSpace(20),
                     //
-                    const VerificationBenefitCard(
+                    VerificationBenefitCard(
                       icon: Icons.bolt_outlined,
-                      title: "Faster Approvals",
+                      title: l10n.verificationFasterApprovals,
                       description:
-                          "Owners prefer dealing with verified accounts",
+                          l10n.verificationFasterApprovalsDesc,
                     ),
                     //
                     verticalSpace(12),
                     //
-                    const VerificationBenefitCard(
+                    VerificationBenefitCard(
                       icon: Icons.trending_up_outlined,
-                      title: "Higher Rental Limit",
+                      title: l10n.verificationHigherRentalLimit,
                       description:
-                          "Rent higher value equipment without restrictions",
+                          l10n.verificationHigherRentalLimitDesc,
                     ),
                     //
                     verticalSpace(20),
                     Container(
-                      width: .infinity,
-                      padding: .all(16.r),
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16.r),
                       decoration: BoxDecoration(
-                        color: AppColors.lightGrey.withValues(alpha: 0.6),
-                        borderRadius: .circular(16.r),
+                        color: isDark
+                            ? AppColors.darkSurface
+                            : AppColors.lightGrey.withValues(alpha: 0.6),
+                        borderRadius: BorderRadius.circular(16.r),
+                        border: Border.all(
+                          color: isDark ? AppColors.darkBorder : Colors.transparent,
+                        ),
                       ),
                       child: Column(
-                        crossAxisAlignment: .start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Verification Requirements:",
+                            l10n.verificationRequirementsLabel,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              fontWeight: .bold,
-                              color: AppColors.black,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.black,
                             ),
                           ),
                           verticalSpace(14),
-                          const VerificationRequirementItem(
+                          VerificationRequirementItem(
                             icon: Icons.badge_outlined,
-                            title: "Valid National ID or Residency Permit",
-                            description: "A clear photo of both sides",
+                            title: l10n.verificationValidId,
+                            description: l10n.verificationClearBothSides,
                           ),
                           verticalSpace(12),
-                          const VerificationRequirementItem(
+                          VerificationRequirementItem(
                             icon: Icons.face_retouching_natural_rounded,
-                            title: "Quick Face Scan (Selfie)",
-                            description: "To verify that it matches your ID",
+                            title: l10n.verificationQuickFaceScan,
+                            description: l10n.verificationMatchesId,
                           ),
                         ],
                       ),
@@ -114,12 +122,12 @@ class VerificationIntroScreen extends StatelessWidget {
             ),
 
             Padding(
-              padding: .only(left: 20.w, right: 20.w, bottom: 10.h),
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 10.h),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomButton(
-                    text: "Start Verification Now",
+                    text: l10n.startVerificationNow,
                     suffixIcon: Icon(
                       Icons.arrow_forward_rounded,
                       color: AppColors.white,

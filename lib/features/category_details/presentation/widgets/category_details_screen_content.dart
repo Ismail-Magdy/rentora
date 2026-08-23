@@ -7,6 +7,8 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';
 import 'package:rentora/features/home/presentation/widgets/product_card.dart';
+import 'package:rentora/features/setup_profile/data/models/category_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class CategoryDetailsScreenContent extends StatelessWidget {
   const CategoryDetailsScreenContent({
@@ -21,27 +23,35 @@ class CategoryDetailsScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final localizedCategoryTitle = CategoryModel(
+      id: categoryName,
+      name: categoryName,
+      iconPath: '',
+    ).getLocalizedName(l10n);
+
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           //
           SliverAppBar(
             pinned: true,
-            backgroundColor: AppColors.white,
+            backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
             elevation: 0,
             leading: GestureDetector(
               onTap: () => context.pop(),
-              child: const Icon(
+              child: Icon(
                 Icons.arrow_back_ios_new,
-                color: AppColors.black,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
               ),
             ),
             title: Text(
-              categoryName.capitalizeFirst(),
+              localizedCategoryTitle,
               style: TextStyle(
-                color: AppColors.primaryColor,
-                fontWeight: .bold,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
+                fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
               ),
             ),
@@ -54,9 +64,9 @@ class CategoryDetailsScreenContent extends StatelessWidget {
             SliverToBoxAdapter(
               child: Container(
                 height: 600.h,
-                alignment: .center,
+                alignment: Alignment.center,
                 child: Column(
-                  mainAxisSize: .min,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     //
                     Lottie.asset(
@@ -65,9 +75,9 @@ class CategoryDetailsScreenContent extends StatelessWidget {
                     ),
                     //
                     Text(
-                      "No Products Found",
+                      l10n.noProductsFound,
                       style: TextStyle(
-                        fontWeight: .bold,
+                        fontWeight: FontWeight.bold,
                         fontSize: 18.sp,
                         color: AppColors.primaryColor,
                       ),
@@ -76,7 +86,7 @@ class CategoryDetailsScreenContent extends StatelessWidget {
                     verticalSpace(8),
                     //
                     Text(
-                      "Be the first to add an item here",
+                      l10n.firstItemPrompt,
                       style: TextStyle(
                         fontSize: 14.sp,
                         color: AppColors.darkGrey,
@@ -90,7 +100,7 @@ class CategoryDetailsScreenContent extends StatelessWidget {
 
           if (displayList.isNotEmpty)
             SliverPadding(
-              padding: .symmetric(horizontal: 16.w, vertical: 16.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

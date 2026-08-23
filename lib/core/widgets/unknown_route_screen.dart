@@ -5,12 +5,14 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class UnknownRouteScreen extends StatelessWidget {
   const UnknownRouteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Center(
         child: Padding(
@@ -26,7 +28,7 @@ class UnknownRouteScreen extends StatelessWidget {
               ),
               //
               Text(
-                "Looks like you're off the map",
+                l10n.looksOffMap,
                 textAlign: .center,
                 style: TextStyle(
                   fontSize: 20.sp,
@@ -38,7 +40,7 @@ class UnknownRouteScreen extends StatelessWidget {
               verticalSpace(12),
               //
               Text(
-                "The page you are looking for does not exist or has been moved",
+                l10n.pageNotFound,
                 textAlign: .center,
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -48,7 +50,7 @@ class UnknownRouteScreen extends StatelessWidget {
               //
               verticalSpace(40),
               //
-              CustomButton(text: "Go Back", onPressed: () => context.pop()),
+              CustomButton(text: l10n.goBack, onPressed: () => context.pop()),
             ],
           ),
         ),

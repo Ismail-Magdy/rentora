@@ -17,6 +17,7 @@ class VerificationScreenHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: textAlign == TextAlign.center
           ? CrossAxisAlignment.center
@@ -26,7 +27,7 @@ class VerificationScreenHeader extends StatelessWidget {
           title,
           textAlign: textAlign,
           style: TextStyle(
-            color: AppColors.black,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             height: 1.2,
@@ -37,7 +38,7 @@ class VerificationScreenHeader extends StatelessWidget {
           subtitle,
           textAlign: textAlign,
           style: TextStyle(
-            color: AppColors.darkGrey,
+            color: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
             fontSize: 13.sp,
             height: 1.4,
             fontWeight: FontWeight.w400,
