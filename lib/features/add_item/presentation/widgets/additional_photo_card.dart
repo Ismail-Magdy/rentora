@@ -11,6 +11,7 @@ class AdditionalPhotoCard extends StatelessWidget {
   final VoidCallback onEdit;
 
   const AdditionalPhotoCard({
+    super.key,
     required this.image,
     required this.onRemove,
     required this.onEdit,

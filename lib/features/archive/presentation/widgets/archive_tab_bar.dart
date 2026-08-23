@@ -47,17 +47,18 @@ class ArchiveTabBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(22.r),
           boxShadow: [
             BoxShadow(
-              color: (isDark
-                      ? AppColors.secondaryColor
-                      : AppColors.primaryColor)
-                  .withValues(alpha: 0.25),
+              color:
+                  (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                      .withValues(alpha: 0.25),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
           ],
         ),
         labelColor: AppColors.white,
-        unselectedLabelColor: isDark ? AppColors.darkTextSecondary : AppColors.darkGrey,
+        unselectedLabelColor: isDark
+            ? AppColors.darkTextSecondary
+            : AppColors.darkGrey,
         labelStyle: TextStyle(fontSize: 13.5.sp, fontWeight: FontWeight.bold),
         unselectedLabelStyle: TextStyle(
           fontSize: 13.5.sp,

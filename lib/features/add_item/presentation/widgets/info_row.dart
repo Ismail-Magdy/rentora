@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class InfoRow extends StatelessWidget {
-    const InfoRow({
+  const InfoRow({
+    super.key,
     required this.label,
     required this.value,
     this.valueBold = false,
@@ -15,20 +15,15 @@ class InfoRow extends StatelessWidget {
   final String value;
   final bool valueBold;
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Expanded(
           child: Text(
             label,
-            style:  TextStyle(
-              fontSize: 13.sp,
-              color: AppColors.grey,
-            ),
+            style: TextStyle(fontSize: 13.sp, color: AppColors.grey),
           ),
         ),
 
@@ -38,12 +33,10 @@ class InfoRow extends StatelessWidget {
           flex: 2,
           child: Text(
             value,
-            textAlign: TextAlign.right,
+            textAlign: .right,
             style: TextStyle(
               fontSize: 14.sp,
-              fontWeight: valueBold
-                  ? FontWeight.w800
-                  : FontWeight.w600,
+              fontWeight: valueBold ? .w800 : .w600,
               color: AppColors.black,
             ),
           ),
@@ -52,4 +45,3 @@ class InfoRow extends StatelessWidget {
     );
   }
 }
-

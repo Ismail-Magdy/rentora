@@ -77,7 +77,11 @@ class AddItemModel {
         isAvailable: map['isAvailable'] ?? true,
         rating: (map['rating'] ?? 0.0).toDouble(),
         keyFeatures: List<String>.from(map['keyFeatures'] ?? []),
-        availableFrom: map['availableFrom'] != null ? DateTime.parse(map['availableFrom']) : null,
-        availableTo: map['availableTo'] != null ? DateTime.parse(map['availableTo']) : null,
+        availableFrom: map['availableFrom'] != null
+            ? DateTime.parse(map['availableFrom'])
+            : null,
+        availableTo: map['availableTo'] != null
+            ? DateTime.parse(map['availableTo'])
+            : null,
       );
 }

@@ -116,7 +116,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == .dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -124,29 +124,28 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
           children: [
             // Header (unchanged)
             CustomAppBar(text: l10n.addNewListing),
-
             AddItemProgressBar(
               title: l10n.itemDetailsLabel,
               stepNumber: l10n.stepOf("4", "7"),
             ),
-
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 20.h),
+                padding: .fromLTRB(20.w, 24.h, 20.w, 20.h),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     Text(
                       l10n.tellAboutItem,
                       style: TextStyle(
                         fontSize: 27.sp,
                         height: 1.2,
-                        fontWeight: FontWeight.w800,
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                        fontWeight: .w800,
+                        color: isDark
+                            ? AppColors.darkTextPrimary
+                            : AppColors.black,
                       ),
                     ),
-
                     verticalSpace(8),
                     Text(
                       l10n.itemDetailsInstruction,
@@ -156,7 +155,6 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                         color: AppColors.grey,
                       ),
                     ),
-
                     verticalSpace(22),
                     SectionTitle(title: l10n.itemName, required: true),
                     verticalSpace(8),
@@ -178,7 +176,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: .start,
                             children: [
                               SectionTitle(
                                 title: l10n.dailyPrice,
@@ -221,9 +219,11 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            padding: .symmetric(horizontal: 16.w),
                             decoration: BoxDecoration(
-                              color: isDark ? AppColors.darkSurface : AppColors.white,
+                              color: isDark
+                                  ? AppColors.darkSurface
+                                  : AppColors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isDark
@@ -233,7 +233,9 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
-                                dropdownColor: isDark ? AppColors.darkSurface : AppColors.white,
+                                dropdownColor: isDark
+                                    ? AppColors.darkSurface
+                                    : AppColors.white,
                                 value: selectedCondition,
                                 isExpanded: true,
                                 hint: Text(
@@ -249,7 +251,9 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                                     child: Text(
                                       condition,
                                       style: TextStyle(
-                                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                                        color: isDark
+                                            ? AppColors.darkTextPrimary
+                                            : AppColors.black,
                                       ),
                                     ),
                                   );
@@ -296,9 +300,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                                   color: isSelected
                                       ? AppColors.white
                                       : AppColors.black,
-                                  fontWeight: isSelected
-                                      ? FontWeight.w600
-                                      : FontWeight.w500,
+                                  fontWeight: isSelected ? .w600 : .w500,
                                 ),
                               ),
                               selected: isSelected,
@@ -315,7 +317,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                                 vertical: 8.h,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: .circular(20),
                                 side: BorderSide(
                                   color: isSelected
                                       ? AppColors.primaryColor
@@ -327,42 +329,13 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                         );
                       },
                     ),
-                    verticalSpace(22),
-                    Container(
-                      padding: EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withValues(alpha: 0.06),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.info_outline,
-                            color: AppColors.primaryColor,
-                            size: 20,
-                          ),
-                          horizontalSpace(10),
-                          Expanded(
-                            child: Text(
-                              l10n.securityDepositInfo,
-                              style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontSize: 12.sp,
-                                height: 1.4.h,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
             // Bottom buttons
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+              padding: .fromLTRB(20.w, 8.h, 20.w, 20.h),
               child: CustomButton(text: l10n.next, onPressed: onNext),
             ),
           ],
@@ -371,5 +344,3 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     );
   }
 }
-
-// 403

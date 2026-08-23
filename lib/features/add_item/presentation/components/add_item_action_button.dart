@@ -19,15 +19,15 @@ class AddItemActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == .dark;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+        padding: .symmetric(horizontal: 20.w, vertical: 16.h),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
+          borderRadius: .circular(20),
+          border: .all(
             color: isDark
                 ? AppColors.darkBorder
                 : AppColors.grey.withValues(alpha: 0.2),
@@ -48,29 +48,32 @@ class AddItemActionButton extends StatelessWidget {
               width: 50.w,
               height: 50.w,
               decoration: BoxDecoration(
-                color: (isDark
-                        ? AppColors.secondaryColor
-                        : AppColors.primaryColor)
-                    .withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(15),
+                color:
+                    (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                        .withValues(alpha: 0.15),
+                borderRadius: .circular(15),
               ),
               child: Icon(
                 icon,
-                color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                color: isDark
+                    ? AppColors.secondaryColor
+                    : AppColors.primaryColor,
                 size: 26.sp,
               ),
             ),
             horizontalSpace(16),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
                       fontSize: 17.sp,
-                      fontWeight: FontWeight.w700,
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      fontWeight: .w700,
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.black,
                     ),
                   ),
                   verticalSpace(4),
@@ -78,7 +81,9 @@ class AddItemActionButton extends StatelessWidget {
                     subtitle,
                     style: TextStyle(
                       fontSize: 13.sp,
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.grey,
                     ),
                   ),
                 ],

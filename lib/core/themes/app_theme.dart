@@ -11,7 +11,7 @@ class AppTheme {
       brightness: Brightness.light,
       fontFamily: 'Poppins',
       primaryColor: AppColors.primaryColor,
-      scaffoldBackgroundColor: AppColors.scaffoldBackground,
+      scaffoldBackgroundColor: AppColors.white,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primaryColor,
         onPrimary: AppColors.white,

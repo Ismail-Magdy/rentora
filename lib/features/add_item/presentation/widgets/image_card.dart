@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
@@ -7,10 +6,7 @@ class ImageCard extends StatelessWidget {
   final String imagePath;
   final VoidCallback onRemove;
 
-  const ImageCard({
-    required this.imagePath,
-    required this.onRemove,
-  });
+  const ImageCard({super.key, required this.imagePath, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +20,7 @@ class ImageCard extends StatelessWidget {
             height: 120.h,
             fit: BoxFit.cover,
 
-            errorBuilder: (_, __, ___) {
+            errorBuilder: (_, _, _) {
               return Container(
                 width: 130.w,
                 height: 120.h,

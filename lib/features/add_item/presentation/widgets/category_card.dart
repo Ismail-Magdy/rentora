@@ -33,7 +33,7 @@ class CategoryCard extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isSelected ? .08 : .035),
+              color: Colors.black.withValues(alpha: isSelected ? .08 : .035),
               blurRadius: isSelected ? 12 : 8,
               offset: const Offset(0, 4),
             ),
@@ -73,7 +73,7 @@ class CategoryCard extends StatelessWidget {
                     height: 68,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: categoryColor.withOpacity(.12),
+                      color: categoryColor.withValues(alpha: 0.12),
                     ),
                     child: Icon(category.icon, size: 34, color: categoryColor),
                   ),

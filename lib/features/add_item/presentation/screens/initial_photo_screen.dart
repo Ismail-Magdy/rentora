@@ -38,7 +38,7 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == .dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -53,9 +53,9 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+                padding: .fromLTRB(20.w, 30.h, 20.w, 20.h),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: .center,
                   children: [
                     // Illustration/Placeholder
                     Container(
@@ -63,7 +63,7 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
                       height: 200.w,
                       decoration: BoxDecoration(
                         color: AppColors.primaryColor.withValues(alpha: 0.05),
-                        shape: BoxShape.circle,
+                        shape: .circle,
                       ),
                       child: Icon(
                         Icons.camera_alt_outlined,
@@ -74,39 +74,42 @@ class _InitialPhotoScreenState extends State<InitialPhotoScreen> {
                     verticalSpace(30),
                     Text(
                       l10n.startWithPhoto,
-                      textAlign: TextAlign.center,
+                      textAlign: .center,
                       style: TextStyle(
                         fontSize: 27.sp,
                         height: 1.2.h,
-                        fontWeight: FontWeight.w800,
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                        fontWeight: .w800,
+                        color: isDark
+                            ? AppColors.darkTextPrimary
+                            : AppColors.black,
                       ),
                     ),
                     verticalSpace(12),
                     Text(
                       l10n.photoInstruction,
-                      textAlign: TextAlign.center,
+                      textAlign: .center,
                       style: TextStyle(
                         fontSize: 15.sp,
                         height: 1.45.h,
-                        color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.grey,
                       ),
                     ),
                     verticalSpace(40),
-
                     // Action Buttons
                     AddItemActionButton(
                       icon: Icons.camera_alt_rounded,
                       title: l10n.takePhoto,
                       subtitle: l10n.useCamera,
-                      onTap: () => _pickImage(ImageSource.camera),
+                      onTap: () => _pickImage(.camera),
                     ),
                     verticalSpace(16),
                     AddItemActionButton(
                       icon: Icons.photo_library_rounded,
                       title: l10n.chooseGallery,
                       subtitle: l10n.uploadPhoto,
-                      onTap: () => _pickImage(ImageSource.gallery),
+                      onTap: () => _pickImage(.gallery),
                     ),
                   ],
                 ),

@@ -35,7 +35,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
         final l10n = AppLocalizations.of(context)!;
         final images = state.images;
         final existingImageUrls = state.existingImageUrls;
-        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final isDark = Theme.of(context).brightness == .dark;
 
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -52,17 +52,19 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                 // Content
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 25, 20, 20),
+                    padding: .fromLTRB(20.w, 25.h, 20.w, 20.h),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: .start,
                       children: [
                         Text(
                           l10n.addPhotosTitle,
                           style: TextStyle(
                             fontSize: 27.sp,
                             height: 1.2.h,
-                            fontWeight: FontWeight.w800,
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                            fontWeight: .w800,
+                            color: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.black,
                           ),
                         ),
 
@@ -83,23 +85,25 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         if (state.mainPhoto != null)
                           Container(
                             height: 200.h,
-                            width: double.infinity,
+                            width: .infinity,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              border: Border.all(
-                                color: AppColors.primaryColor.withValues(alpha: 0.2),
+                              borderRadius: .circular(24),
+                              border: .all(
+                                color: AppColors.primaryColor.withValues(
+                                  alpha: 0.2,
+                                ),
                                 width: 2,
                               ),
                               image: DecorationImage(
                                 image: FileImage(File(state.mainPhoto!.path)),
-                                fit: BoxFit.cover,
+                                fit: .cover,
                               ),
                             ),
                           ),
                         verticalSpace(25),
                         // Additional photos
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: .spaceBetween,
                           children: [
                             SectionTitle(title: l10n.additionalPhotos),
                             Text(
@@ -129,11 +133,13 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                         Container(
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor.withValues(alpha: .06),
+                            color: AppColors.primaryColor.withValues(
+                              alpha: .06,
+                            ),
                             borderRadius: BorderRadius.circular(17),
                           ),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: .start,
                             children: [
                               Icon(
                                 Icons.tips_and_updates_outlined,
@@ -163,7 +169,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                           SizedBox(
                             height: 100,
                             child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
+                              scrollDirection: .horizontal,
                               itemCount: existingImageUrls.length,
                               separatorBuilder: (_, __) =>
                                   const SizedBox(width: 10),
@@ -175,7 +181,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                                     width: 100.w,
                                     height: 100.h,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => Container(
+                                    errorBuilder: (_, _, _) => Container(
                                       color: Colors.grey[300],
                                       child: const Icon(Icons.broken_image),
                                     ),
@@ -191,7 +197,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                 ),
                 // Continue button
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  padding: .fromLTRB(20.w, 8.h, 20.w, 20.h),
                   child: CustomButton(
                     text: l10n.continueButton,
                     onPressed: () => _onContinue(context),
@@ -225,8 +231,8 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
           context,
           icon: Icons.photo_library_outlined,
           color: AppColors.warning,
-          title: 'Maximum Photos Reached.',
-          message: 'The maximum number of photos has been reached.',
+          title: 'Maximum Photos Reached',
+          message: 'The maximum number of photos has been reached',
         );
       }
     }
@@ -280,4 +286,3 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
     );
   }
 }
-//

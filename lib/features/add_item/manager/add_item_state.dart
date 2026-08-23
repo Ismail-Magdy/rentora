@@ -153,7 +153,9 @@ class AddItemState extends Equatable {
         keyFeatures.length >= 3 &&
         availableFrom != null &&
         availableTo != null &&
-        (mainPhoto != null || images.isNotEmpty || existingImageUrls.isNotEmpty);
+        (mainPhoto != null ||
+            images.isNotEmpty ||
+            existingImageUrls.isNotEmpty);
   }
 
   String? getValidationError() {
@@ -167,7 +169,9 @@ class AddItemState extends Equatable {
     if (dailyPrice <= 0) return 'Daily price must be greater than 0';
     if (securityDeposit < 0) return 'Security deposit cannot be negative';
     if (keyFeatures.length < 3) return 'Please select at least 3 key features';
-    if (availableFrom == null || availableTo == null) return 'Please select availability dates';
+    if (availableFrom == null || availableTo == null) {
+      return 'Please select availability dates';
+    }
 
     return null;
   }

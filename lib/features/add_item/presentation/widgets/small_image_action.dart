@@ -4,6 +4,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 
 class SmallImageAction extends StatelessWidget {
   const SmallImageAction({
+    super.key,
     required this.icon,
     required this.onTap,
     this.isDelete = false,
@@ -20,10 +21,7 @@ class SmallImageAction extends StatelessWidget {
       child: Container(
         width: 34.w,
         height: 34.h,
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          shape: BoxShape.circle,
-        ),
+        decoration: const BoxDecoration(color: AppColors.white, shape: .circle),
         child: Icon(
           icon,
           size: 17.sp,

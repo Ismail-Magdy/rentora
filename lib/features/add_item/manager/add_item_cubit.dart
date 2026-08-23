@@ -35,8 +35,7 @@ class AddItemCubit extends Cubit<AddItemState> {
   void updateSecurityDeposit(double deposit) =>
       emit(state.copyWith(securityDeposit: deposit));
 
-  void updateRating(double rating) =>
-      emit(state.copyWith(rating: rating));
+  void updateRating(double rating) => emit(state.copyWith(rating: rating));
 
   void updateLocation(String location, GeoPoint geoPoint) =>
       emit(state.copyWith(location: location, locationGeoPoint: geoPoint));

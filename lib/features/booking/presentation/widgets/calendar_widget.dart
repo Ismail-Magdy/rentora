@@ -20,7 +20,7 @@ class CalendarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.r),
+      padding: .all(16.r),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16.r),
@@ -36,7 +36,7 @@ class CalendarWidget extends StatelessWidget {
         firstDay: DateTime.now(),
         lastDay: DateTime.now().add(const Duration(days: 365)),
         focusedDay: focusedDay,
-        rangeSelectionMode: RangeSelectionMode.toggledOn,
+        rangeSelectionMode: .toggledOn,
         selectedDayPredicate: (day) => isSameDay(selectedStartDate, day),
         rangeStartDay: selectedStartDate,
         rangeEndDay: selectedEndDate,
@@ -50,7 +50,7 @@ class CalendarWidget extends StatelessWidget {
           titleCentered: true,
           titleTextStyle: TextStyle(
             fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
+            fontWeight: .bold,
             color: AppColors.black,
           ),
         ),
@@ -58,19 +58,19 @@ class CalendarWidget extends StatelessWidget {
           rangeHighlightColor: AppColors.primaryColor.withValues(alpha: 0.2),
           rangeStartDecoration: const BoxDecoration(
             color: AppColors.primaryColor,
-            shape: BoxShape.circle,
+            shape: .circle,
           ),
           rangeEndDecoration: const BoxDecoration(
             color: AppColors.primaryColor,
-            shape: BoxShape.circle,
+            shape: .circle,
           ),
           todayDecoration: BoxDecoration(
             color: AppColors.primaryColor.withValues(alpha: 0.5),
-            shape: BoxShape.circle,
+            shape: .circle,
           ),
           selectedDecoration: const BoxDecoration(
             color: AppColors.primaryColor,
-            shape: BoxShape.circle,
+            shape: .circle,
           ),
         ),
       ),

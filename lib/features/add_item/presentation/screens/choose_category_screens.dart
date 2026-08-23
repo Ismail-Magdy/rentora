@@ -80,24 +80,26 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
             // Content
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
+                padding: .fromLTRB(20.w, 28.h, 20.w, 20.h),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: .center,
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: .start,
                             children: [
                               Text(
                                 l10n.selectCategoryMatch,
                                 style: TextStyle(
                                   fontSize: 27.sp,
                                   height: 1.2,
-                                  fontWeight: FontWeight.w800,
-                                  color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                                  fontWeight: .w800,
+                                  color: isDark
+                                      ? AppColors.darkTextPrimary
+                                      : AppColors.black,
                                 ),
                               ),
                               verticalSpace(10),
@@ -106,7 +108,9 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                 style: TextStyle(
                                   fontSize: 15.sp,
                                   height: 1.4,
-                                  color: isDark ? AppColors.darkTextSecondary : AppColors.grey,
+                                  color: isDark
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.grey,
                                 ),
                               ),
                             ],
@@ -138,51 +142,69 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? (isDark
-                                      ? AppColors.secondaryColor.withValues(alpha: 0.2)
-                                      : AppColors.primaryColor.withValues(alpha: 0.1))
-                                  : (isDark ? AppColors.darkSurface : const Color(0xFFF7F7F9)),
-                              borderRadius: BorderRadius.circular(20.r),
+                                        ? AppColors.secondaryColor.withValues(
+                                            alpha: 0.2,
+                                          )
+                                        : AppColors.primaryColor.withValues(
+                                            alpha: 0.1,
+                                          ))
+                                  : (isDark
+                                        ? AppColors.darkSurface
+                                        : const Color(0xFFF7F7F9)),
+                              borderRadius: .circular(20.r),
                               border: Border.all(
                                 color: isSelected
-                                    ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
-                                    : (isDark ? AppColors.darkBorder : Colors.transparent),
+                                    ? (isDark
+                                          ? AppColors.secondaryColor
+                                          : AppColors.primaryColor)
+                                    : (isDark
+                                          ? AppColors.darkBorder
+                                          : Colors.transparent),
                                 width: 2,
                               ),
                             ),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: .center,
                               children: [
                                 category.id == 'other'
                                     ? Icon(
                                         Icons.more_horiz,
                                         size: 35.sp,
                                         color: isSelected
-                                            ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                                            ? (isDark
+                                                  ? AppColors.secondaryColor
+                                                  : AppColors.primaryColor)
                                             : AppColors.secondaryColor,
                                       )
                                     : SvgPicture.asset(
                                         category.iconPath,
                                         width: 35.sp,
                                         height: 35.sp,
-                                        colorFilter: ColorFilter.mode(
+                                        colorFilter: .mode(
                                           isSelected
-                                              ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                                              ? (isDark
+                                                    ? AppColors.secondaryColor
+                                                    : AppColors.primaryColor)
                                               : AppColors.secondaryColor,
-                                          BlendMode.srcIn,
+                                          .srcIn,
                                         ),
                                       ),
                                 verticalSpace(10),
                                 Text(
                                   category.getLocalizedName(l10n),
-                                  textAlign: TextAlign.center,
+                                  textAlign: .center,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: isSelected
                                         ? FontWeight.bold
                                         : FontWeight.w500,
                                     color: isSelected
-                                        ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
-                                        : (isDark ? AppColors.darkTextPrimary : Colors.black87),
+                                        ? (isDark
+                                              ? AppColors.secondaryColor
+                                              : AppColors.primaryColor)
+                                        : (isDark
+                                              ? AppColors.darkTextPrimary
+                                              : Colors.black87),
                                   ),
                                 ),
                               ],
@@ -191,44 +213,13 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                         );
                       },
                     ),
-                    verticalSpace(20),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 13,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.success.withValues(alpha: 0.07),
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.verified_outlined,
-                            color: AppColors.success,
-                            size: 20,
-                          ),
-                          horizontalSpace(8),
-                          Text(
-                            l10n.onlyOneCategory,
-                            style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
             // Next button
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+              padding: .fromLTRB(20.w, 8.h, 20.w, 20.h),
               child: CustomButton(text: l10n.next, onPressed: onNext),
             ),
           ],
@@ -237,3 +228,4 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
     );
   }
 }
+// 240

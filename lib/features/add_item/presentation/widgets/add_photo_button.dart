@@ -1,16 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class AddPhotoButton extends StatelessWidget {
-   const AddPhotoButton({
-    this.onTap,
-  });
+  const AddPhotoButton({super.key, this.onTap});
   final VoidCallback? onTap;
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +16,14 @@ class AddPhotoButton extends StatelessWidget {
         height: 105.h,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius:
-              BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.primaryColor
-                .withOpacity(.35),
+            color: AppColors.primaryColor.withValues(alpha: 0.35),
             width: 1.5,
           ),
         ),
-        child:  Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
+        child: Column(
+          mainAxisAlignment: .center,
           children: [
             Icon(
               Icons.add_photo_alternate_outlined,
@@ -39,7 +31,7 @@ class AddPhotoButton extends StatelessWidget {
               size: 27,
             ),
             verticalSpace(6),
-            
+
             Text(
               'Add',
               style: TextStyle(

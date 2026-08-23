@@ -1,17 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class AddPhotoCard extends StatelessWidget {
-
-    const AddPhotoCard({
-    required this.onTap,
-  });
+  const AddPhotoCard({super.key, required this.onTap});
   final VoidCallback onTap;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +15,12 @@ class AddPhotoCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(
-            color: const Color(0xFFCBD6D8),
-            width: 1.5.w,
-          ),
+          border: Border.all(color: const Color(0xFFCBD6D8), width: 1.5.w),
         ),
         child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Icon(
+            Icon(
               Icons.add_a_photo_outlined,
               color: AppColors.primaryColor,
               size: 30,

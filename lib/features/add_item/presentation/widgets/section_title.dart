@@ -15,17 +15,14 @@ class SectionTitle extends StatelessWidget {
           title,
           style: TextStyle(
             fontSize: 15.sp,
-            fontWeight: FontWeight.w700,
+            fontWeight: .w700,
             color: AppColors.black,
           ),
         ),
         if (required)
           const Text(
             ' *',
-            style: TextStyle(
-              color: AppColors.warning,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: AppColors.warning, fontWeight: .bold),
           ),
       ],
     );

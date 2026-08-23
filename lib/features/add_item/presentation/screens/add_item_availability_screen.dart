@@ -79,7 +79,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == .dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
@@ -92,15 +92,17 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
             ),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(20, 25, 20, 20),
+                padding: .fromLTRB(20.w, 25.h, 20.w, 20.h),
                 children: [
                   Text(
                     l10n.whenAvailable,
                     style: TextStyle(
                       fontSize: 27.sp,
                       height: 1.2.h,
-                      fontWeight: FontWeight.w800,
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      fontWeight: .w800,
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.black,
                     ),
                   ),
                   verticalSpace(8),
@@ -138,7 +140,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+              padding: .fromLTRB(20.w, 8.h, 20.w, 20.h),
               child: CustomButton(
                 text: l10n.continueButton,
                 onPressed: _onNext,
