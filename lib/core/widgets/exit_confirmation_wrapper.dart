@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:rentora/core/themes/app_colors.dart";
+import "package:rentora/l10n/generated/app_localizations.dart";
 
 class ExitConfirmationWrapper extends StatelessWidget {
   final Widget child;
@@ -10,6 +11,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
   const ExitConfirmationWrapper({super.key, required this.child});
 
   Future<bool> _onWillPop(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
     final shouldExit = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -18,7 +20,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: .circular(16.r)),
         //
         title: Text(
-          "Exit App",
+          l10n.exitApp,
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: .bold,
@@ -27,7 +29,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
         ),
         //
         content: Text(
-          "Are you sure you want to exit Rentora?",
+          l10n.exitConfirmation,
           style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade700),
         ),
         //
@@ -35,7 +37,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              "Cancel",
+              l10n.cancel,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: Colors.grey.shade600,
@@ -46,7 +48,7 @@ class ExitConfirmationWrapper extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             child: Text(
-              "Exit",
+              l10n.exit,
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.primaryColor,

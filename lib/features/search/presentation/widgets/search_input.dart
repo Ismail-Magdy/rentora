@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SearchInput extends StatefulWidget {
   final String? initialValue;
@@ -39,6 +40,7 @@ class _SearchInputState extends State<SearchInput> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       height: 54.h,
       decoration: BoxDecoration(
@@ -70,7 +72,7 @@ class _SearchInputState extends State<SearchInput> {
               textInputAction: TextInputAction.search,
               style: TextStyle(fontSize: 14.sp, color: AppColors.black),
               decoration: InputDecoration(
-                hintText: 'Search items',
+                hintText: l10n.searchItems,
                 hintStyle: TextStyle(
                   fontSize: 14.sp,
                   color: AppColors.darkGrey,
@@ -88,7 +90,7 @@ class _SearchInputState extends State<SearchInput> {
               size: 23.sp,
               color: AppColors.primaryColor,
             ),
-            tooltip: 'Filters',
+            tooltip: l10n.filters,
           ),
           horizontalSpace(4),
         ],

@@ -8,6 +8,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/features/setup_profile/data/models/category_model.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class InterestsScreenContent extends StatelessWidget {
   const InterestsScreenContent({
@@ -20,6 +21,7 @@ class InterestsScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         //
@@ -44,7 +46,7 @@ class InterestsScreenContent extends StatelessWidget {
                             predicate: (route) => false,
                           ),
                           child: Text(
-                            "Skip",
+                            l10n.skip,
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: AppColors.grey,
@@ -53,7 +55,7 @@ class InterestsScreenContent extends StatelessWidget {
                         ),
                         //
                         Text(
-                          "Rentora",
+                          l10n.rentora,
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: .bold,
@@ -67,14 +69,14 @@ class InterestsScreenContent extends StatelessWidget {
                     verticalSpace(32),
                     //
                     Text(
-                      "What are your interests?",
+                      l10n.interestsQuestion,
                       style: TextStyle(fontSize: 25.sp, fontWeight: .bold),
                     ),
                     //
                     verticalSpace(12),
                     //
                     Text(
-                      "Choose the categories you're interested in so we can personalize your experience and show you the most relevant items.",
+                      l10n.interestsDescription,
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: AppColors.darkGrey,
@@ -137,7 +139,7 @@ class InterestsScreenContent extends StatelessWidget {
                           verticalSpace(10),
                           //
                           Text(
-                            category.name,
+                            category.getLocalizedName(l10n),
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: isSelected ? .bold : .w500,
@@ -161,7 +163,7 @@ class InterestsScreenContent extends StatelessWidget {
         ),
 
         CustomButton(
-          text: "Continue",
+          text: l10n.continueButton,
           isLoading: state is InterestsSaving,
           onPressed: () => cubit.saveInterests(),
         ),

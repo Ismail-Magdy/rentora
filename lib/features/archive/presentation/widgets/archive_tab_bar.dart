@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ArchiveTabBar extends StatelessWidget {
   final TabController tabController;
@@ -14,6 +15,8 @@ class ArchiveTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final localizedTabs = [l10n.myRentals, l10n.myListings];
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       padding: EdgeInsets.all(4.r),
@@ -50,7 +53,7 @@ class ArchiveTabBar extends StatelessWidget {
           fontSize: 13.5.sp,
           fontWeight: FontWeight.w500,
         ),
-        tabs: tabs.map((tabTitle) => Tab(text: tabTitle)).toList(),
+        tabs: localizedTabs.map((tabTitle) => Tab(text: tabTitle)).toList(),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 Future<void> showLogoutDialog(
   BuildContext context, {
@@ -7,24 +8,29 @@ Future<void> showLogoutDialog(
 }) {
   return showDialog(
     context: context,
-    builder: (dialogContext) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      title: const Text('Log Out'),
-      content: const Text('Are you sure you want to log out?'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(dialogContext),
-          child: const Text('Cancel'),
+    builder: (dialogContext) {
+      final l10n = AppLocalizations.of(dialogContext)!;
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
         ),
-        FilledButton(
-          style: FilledButton.styleFrom(backgroundColor: Colors.red),
-          onPressed: () {
-            Navigator.pop(dialogContext);
-            onConfirm();
-          },
-          child: const Text('Log Out'),
-        ),
-      ],
-    ),
+        title: Text(l10n.logout),
+        content: Text(l10n.logoutConfirmation),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              onConfirm();
+            },
+            child: Text(l10n.logout),
+          ),
+        ],
+      );
+    },
   );
 }

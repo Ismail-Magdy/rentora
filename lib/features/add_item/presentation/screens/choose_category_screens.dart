@@ -11,6 +11,7 @@ import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rentora/features/setup_profile/data/models/category_model.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ChooseCategoryScreen extends StatefulWidget {
   const ChooseCategoryScreen({super.key});
@@ -36,13 +37,14 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
   }
 
   void onNext() {
+    final l10n = AppLocalizations.of(context)!;
     if (selectedIndex == null) {
       showFeedbackDialog(
         context,
         icon: Icons.category_outlined,
         color: AppColors.warning,
-        title: 'Category Required',
-        message: 'Please select a category first',
+        title: l10n.categoryRequired,
+        message: l10n.selectCategoryFirst,
       );
 
       return;
@@ -61,15 +63,20 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(text: "Choose a category"),
+            CustomAppBar(text: l10n.chooseCategory),
             // Progress Bar (Step 3)
-            AddItemProgressBar(title: "Category", stepNumber: "Step 3 of 7"),
-            // Content (unchanged)
+            AddItemProgressBar(
+              title: l10n.category,
+              stepNumber: l10n.stepOf("3", "7"),
+            ),
+            // Content
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 20),
@@ -83,20 +90,20 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Select the category that\nbest matches your item',
+                              Text(
+                                l10n.selectCategoryMatch,
                                 style: TextStyle(
-                                  fontSize: 27,
+                                  fontSize: 27.sp,
                                   height: 1.2,
                                   fontWeight: FontWeight.w800,
                                   color: AppColors.black,
                                 ),
                               ),
                               verticalSpace(10),
-                              const Text(
-                                'This helps us show your item to the right people.',
+                              Text(
+                                l10n.categoryHelpMatch,
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 15.sp,
                                   height: 1.4,
                                   color: AppColors.grey,
                                 ),
@@ -165,7 +172,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                                       ),
                                 verticalSpace(10),
                                 Text(
-                                  category.name,
+                                  category.getLocalizedName(l10n),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 14.sp,
@@ -203,12 +210,12 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
                             size: 20,
                           ),
                           horizontalSpace(8),
-                          const Text(
-                            'You can only choose one category.',
+                          Text(
+                            l10n.onlyOneCategory,
                             style: TextStyle(
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ],
@@ -221,7 +228,7 @@ class _ChooseCategoryScreenState extends State<ChooseCategoryScreen> {
             // Next button
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              child: CustomButton(text: "Next", onPressed: onNext),
+              child: CustomButton(text: l10n.next, onPressed: onNext),
             ),
           ],
         ),

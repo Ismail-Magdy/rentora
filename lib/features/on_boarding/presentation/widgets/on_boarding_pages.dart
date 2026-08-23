@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/features/on_boarding/data/on_boarding_screens_data.dart';
 
-Widget buildOnBoardingScreen(Map<String, String> data) {
+Widget buildOnBoardingScreen(OnboardingItem data) {
   return Padding(
     padding: .symmetric(horizontal: 25.w),
     child: Column(
       children: [
         //
         Text(
-          data["title"]!,
+          data.title,
           textAlign: .center,
           style: TextStyle(
             color: AppColors.primaryColor,
@@ -22,7 +23,7 @@ Widget buildOnBoardingScreen(Map<String, String> data) {
         verticalSpace(22),
         //
         Text(
-          data["description"]!,
+          data.description,
           textAlign: .center,
           style: TextStyle(
             color: AppColors.darkGrey,
@@ -36,7 +37,7 @@ Widget buildOnBoardingScreen(Map<String, String> data) {
         Expanded(
           child: Center(
             child: Image.asset(
-              data["image"]!,
+              data.image,
               width: 327.w,
               height: 263.h,
               fit: .contain,

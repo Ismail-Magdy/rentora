@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/features/chat/manager/chat_state.dart';
 import 'package:rentora/features/chat/presentation/widgets/chat_app_bar.dart';
@@ -65,6 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
     final titleText = widget.receiverName ?? widget.itemTitle ?? 'Conversation';
 
@@ -76,9 +78,9 @@ class _ChatScreenState extends State<ChatScreen> {
           receiverAvatar: widget.receiverAvatar,
           itemTitle: widget.itemTitle,
         ),
-        body: const ChatEmptyState(
-          title: 'Invalid Chat',
-          message: 'The requested conversation could not be loaded.',
+        body: ChatEmptyState(
+          title: l10n.invalidChat,
+          message: l10n.invalidChatMessage,
           icon: Icons.error_outline_rounded,
         ),
       );
@@ -126,9 +128,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 if (state is ChatMessagesLoaded) {
                   if (state.messages.isEmpty) {
-                    return const ChatEmptyState(
-                      title: 'No messages yet',
-                      message: 'Say hello to start the conversation!',
+                    return ChatEmptyState(
+                      title: l10n.noMessages,
+                      message: l10n.startConversation,
                       icon: Icons.chat_bubble_outline_rounded,
                     );
                   }

@@ -5,12 +5,14 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class HomeTopBar extends StatelessWidget {
   const HomeTopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: .symmetric(horizontal: 16.w, vertical: 16.h),
       child: Row(
@@ -48,7 +50,7 @@ class HomeTopBar extends StatelessWidget {
 
                     Expanded(
                       child: Text(
-                        'Search for anything',
+                        '${l10n.searchAnything}',
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: AppColors.grey,

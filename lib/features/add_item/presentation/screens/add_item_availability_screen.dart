@@ -7,6 +7,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 import 'package:rentora/features/booking/presentation/widgets/calendar_widget.dart';
@@ -56,13 +57,14 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
   }
 
   void _onNext() {
+    final l10n = AppLocalizations.of(context)!;
     if (startDate == null || endDate == null) {
       showFeedbackDialog(
         context,
         icon: Icons.calendar_today_outlined,
         color: AppColors.warning,
-        title: 'Select Dates',
-        message: 'Please select an availability range.',
+        title: l10n.selectDates,
+        message: l10n.availabilityRangeRequired,
       );
       return;
     }
@@ -76,14 +78,15 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Column(
           children: [
-            const CustomAppBar(text: "Add New Listing"),
-            const AddItemProgressBar(
-              title: "Availability",
+            CustomAppBar(text: l10n.addNewListing),
+            AddItemProgressBar(
+              title: l10n.availability,
               stepNumber: "Step 6 of 7",
             ),
             Expanded(
@@ -91,7 +94,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
                 padding: const EdgeInsets.fromLTRB(20, 25, 20, 20),
                 children: [
                   Text(
-                    'When is your item available?',
+                    l10n.whenAvailable,
                     style: TextStyle(
                       fontSize: 27.sp,
                       height: 1.2.h,
@@ -101,7 +104,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
                   ),
                   verticalSpace(8),
                   Text(
-                    'Select the dates when renters can book your item.',
+                    l10n.availabilityInstruction,
                     style: TextStyle(
                       fontSize: 14.sp,
                       height: 1.45.h,
@@ -126,7 +129,7 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
                       pickupDate: _formatDateLabel(startDate),
                       returnDate: _formatDateLabel(endDate),
                       totalDaysText:
-                          '${endDate!.difference(startDate!).inDays + 1} Days',
+                          '${endDate!.difference(startDate!).inDays + 1} ${l10n.daysCapitalized}',
                     ),
                     verticalSpace(16),
                   ],
@@ -135,7 +138,10 @@ class _AddItemAvailabilityScreenState extends State<AddItemAvailabilityScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              child: CustomButton(text: "Continue", onPressed: _onNext),
+              child: CustomButton(
+                text: l10n.continueButton,
+                onPressed: _onNext,
+              ),
             ),
           ],
         ),

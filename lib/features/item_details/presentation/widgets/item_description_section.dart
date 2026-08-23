@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ItemDescriptionSection extends StatelessWidget {
   final String description;
@@ -10,12 +11,13 @@ class ItemDescriptionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: .start,
       children: [
         //
         Text(
-          "Description",
+          l10n.description,
           style: TextStyle(fontSize: 16.sp, fontWeight: .bold),
         ),
         //

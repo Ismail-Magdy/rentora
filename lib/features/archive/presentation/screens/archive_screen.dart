@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
 import 'package:rentora/features/archive/presentation/widgets/archive_tab_bar.dart';
 import 'package:rentora/features/archive/presentation/widgets/owner_history_tab.dart';
@@ -33,31 +34,31 @@ class _ArchiveScreenState extends State<ArchiveScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
     if (currentUserId == null || currentUserId.isEmpty) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.scaffoldBackground,
-        appBar: CustomAppBarWithNoLeading(text: 'Archive & Rentals'),
+        appBar: CustomAppBarWithNoLeading(text: l10n.archiveTitle),
         body: CustomEmptyState(
           icon: Icons.lock_outline_rounded,
-          title: 'Login Required',
-          message:
-              'Please log in to view your past rentals and listing history.',
+          title: l10n.loginRequired,
+          message: l10n.pastHistoryLoginMessage,
         ),
       );
     }
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      appBar: const CustomAppBarWithNoLeading(text: 'Archive & Rentals'),
+      appBar: CustomAppBarWithNoLeading(text: l10n.archiveTitle),
       body: SafeArea(
         child: Column(
           children: [
             verticalSpace(8),
             ArchiveTabBar(
               tabController: _tabController,
-              tabs: const ['My Rentals', 'My Listings'],
+              tabs: [l10n.myRentals, l10n.myListings],
             ),
             verticalSpace(6),
             Expanded(
@@ -75,4 +76,3 @@ class _ArchiveScreenState extends State<ArchiveScreen>
     );
   }
 }
-

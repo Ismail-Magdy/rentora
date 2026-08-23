@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class PendingStatusCard extends StatelessWidget {
   final VoidCallback onBackToHome;
@@ -11,6 +12,8 @@ class PendingStatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
@@ -72,7 +75,7 @@ class PendingStatusCard extends StatelessWidget {
                 ),
                 horizontalSpace(8),
                 Text(
-                  "Under Review",
+                  l10n.underReview,
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
@@ -86,11 +89,11 @@ class PendingStatusCard extends StatelessWidget {
 
           // Title
           Text(
-            "Documents Received",
-            textAlign: .center,
+            l10n.documentsReceived,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20.sp,
-              fontWeight: .bold,
+              fontWeight: FontWeight.bold,
               color: AppColors.black,
             ),
           ),
@@ -98,20 +101,20 @@ class PendingStatusCard extends StatelessWidget {
 
           // Subtitle message
           Text(
-            "We're reviewing your information. This usually takes less than 24 hours. We'll notify you once your identity has been verified",
+            l10n.documentsReviewingMessage,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 13.sp,
               color: AppColors.darkGrey,
               height: 1.5,
-              fontWeight: .w400,
+              fontWeight: FontWeight.w400,
             ),
           ),
           verticalSpace(24),
 
           // Back to Home Button WITH Icon
           CustomButton(
-            text: "Back to Home",
+            text: l10n.backToHome,
             icon: Icons.home_rounded,
             onPressed: onBackToHome,
             color: AppColors.primaryColor,

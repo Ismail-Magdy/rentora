@@ -6,6 +6,7 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_button.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class LocationBottomSheet extends StatelessWidget {
   const LocationBottomSheet({
@@ -22,6 +23,7 @@ class LocationBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Align(
       alignment: .bottomCenter,
       child: Container(
@@ -36,14 +38,14 @@ class LocationBottomSheet extends StatelessWidget {
           children: [
             //
             Text(
-              "Choose Your Location",
+              l10n.chooseLocationTitle,
               style: TextStyle(fontSize: 20.sp, fontWeight: .bold),
             ),
             //
             verticalSpace(8),
             //
             Text(
-              "This helps us find items near you",
+              l10n.chooseLocationSubtitle,
               style: TextStyle(color: AppColors.darkGrey, fontSize: 14.sp),
             ),
             //
@@ -52,7 +54,7 @@ class LocationBottomSheet extends StatelessWidget {
             /// Search Field using our Custom Component
             CustomTextFormField(
               controller: searchController,
-              hintText: "Search for a location",
+              hintText: l10n.searchLocationHint,
               prefixIcon: Icons.search,
               textInputAction: .search,
               onFieldSubmitted: (value) {
@@ -71,7 +73,7 @@ class LocationBottomSheet extends StatelessWidget {
                 //
                 Padding(
                   padding: .symmetric(horizontal: 8.h),
-                  child: Text("Or", style: TextStyle(color: AppColors.grey)),
+                  child: Text(l10n.or, style: TextStyle(color: AppColors.grey)),
                 ),
                 //
                 const Expanded(child: Divider()),
@@ -106,7 +108,7 @@ class LocationBottomSheet extends StatelessWidget {
                     children: [
                       //
                       Text(
-                        "Use Current Location",
+                        l10n.useCurrentLocation,
                         style: TextStyle(
                           fontWeight: .bold,
                           color: AppColors.primaryColor,
@@ -114,7 +116,7 @@ class LocationBottomSheet extends StatelessWidget {
                       ),
                       //
                       Text(
-                        "Allow access once",
+                        l10n.allowAccessOnce,
                         style: TextStyle(
                           color: AppColors.grey,
                           fontSize: 12.sp,
@@ -131,7 +133,7 @@ class LocationBottomSheet extends StatelessWidget {
             //
             // Confirm Button
             CustomButton(
-              text: "Confirm Location",
+              text: l10n.confirmLocation,
               isLoading: state is LocationSaving,
               onPressed: onPressedSaveLocation,
             ),

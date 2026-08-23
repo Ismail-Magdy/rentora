@@ -12,12 +12,14 @@ import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/auth/manager/auth_cubit.dart';
 import 'package:rentora/features/auth/manager/auth_state.dart';
 import 'package:rentora/features/auth/presentation/widgets/auth_divider.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class WelcomeAuthScreen extends StatelessWidget {
   const WelcomeAuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
@@ -26,8 +28,8 @@ class WelcomeAuthScreen extends StatelessWidget {
             context,
             icon: Icons.check_circle_outline,
             color: AppColors.primaryGreen,
-            title: "Success",
-            message: "You have successfully logged in",
+            title: l10n.success,
+            message: l10n.loginSuccess,
             onFinish: () => context.pushReplacementNamed(Routes.locationScreen),
           );
         } else if (state is AuthError) {
@@ -36,7 +38,7 @@ class WelcomeAuthScreen extends StatelessWidget {
             context,
             icon: Icons.error_outline_rounded,
             color: AppColors.error,
-            title: "Login Failed",
+            title: l10n.loginFailed,
             message: state.failure.message,
           );
         }
@@ -63,7 +65,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                     //
                     CustomButton(
                       height: 52.h,
-                      text: "Login",
+                      text: l10n.logIn,
                       onPressed: () => context.pushNamed(Routes.loginScreen),
                     ),
                     //
@@ -72,7 +74,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                     CustomButton(
                       height: 52.h,
                       color: AppColors.white,
-                      text: "Register",
+                      text: l10n.registration,
                       borderColor: AppColors.secondaryColor,
                       textColor: AppColors.secondaryColor,
                       onPressed: () => context.pushNamed(Routes.signupScreen),
@@ -93,7 +95,7 @@ class WelcomeAuthScreen extends StatelessWidget {
                         : CustomButton(
                             height: 52.h,
                             color: AppColors.white,
-                            text: "Continue with Google",
+                            text: l10n.continueGoogle,
                             textColor: AppColors.black,
                             borderColor: AppColors.lightGrey,
                             fontSize: 16.sp,

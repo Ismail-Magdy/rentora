@@ -13,6 +13,7 @@ import 'package:rentora/features/add_item/manager/add_item_state.dart';
 import 'package:rentora/features/add_item/presentation/components/add_item_progress_bar.dart';
 import 'package:rentora/features/add_item/presentation/widgets/price_field.dart';
 import 'package:rentora/features/add_item/presentation/widgets/section_title.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class AddItemDetailsScreen extends StatefulWidget {
   const AddItemDetailsScreen({super.key});
@@ -56,9 +57,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     depositController.text = state.securityDeposit > 0
         ? state.securityDeposit.toString()
         : '';
-    ratingController.text = state.rating > 0
-        ? state.rating.toString()
-        : '';
+    ratingController.text = state.rating > 0 ? state.rating.toString() : '';
     selectedCondition = state.condition.isNotEmpty ? state.condition : null;
   }
 
@@ -73,6 +72,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   }
 
   void onNext() {
+    final l10n = AppLocalizations.of(context)!;
     final title = nameController.text.trim();
     final description = descriptionController.text.trim();
     final price = double.tryParse(priceController.text) ?? 0;
@@ -92,9 +92,8 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
         context,
         icon: Icons.warning_amber_rounded,
         color: AppColors.warning,
-        title: 'Incomplete Information',
-        message:
-            'Please complete all required fields. Rating must be between 0.0 and 5.0, and at least 3 features must be selected.',
+        title: l10n.incompleteInformation,
+        message: l10n.completeRequiredFields,
       );
       return;
     }
@@ -116,16 +115,17 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
   //
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Column(
           children: [
             // Header (unchanged)
-            CustomAppBar(text: "Add New Listing"),
+            CustomAppBar(text: l10n.addNewListing),
 
             AddItemProgressBar(
-              title: "Item details",
+              title: l10n.itemDetailsLabel,
               stepNumber: "Step 4 of 7",
             ),
 
@@ -137,7 +137,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Tell us about your item',
+                      l10n.tellAboutItem,
                       style: TextStyle(
                         fontSize: 27.sp,
                         height: 1.2,
@@ -148,7 +148,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
 
                     verticalSpace(8),
                     Text(
-                      'Add some details to help renters understand what you are offering.',
+                      l10n.itemDetailsInstruction,
                       style: TextStyle(
                         fontSize: 14.sp,
                         height: 1.45.h,
@@ -157,20 +157,19 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                     ),
 
                     verticalSpace(22),
-                    const SectionTitle(title: 'Item name', required: true),
+                    SectionTitle(title: l10n.itemName, required: true),
                     verticalSpace(8),
                     CustomTextFormField(
                       controller: nameController,
-                      hintText: 'e.g. Canon EOS R50 Camera',
+                      hintText: l10n.itemNameExample,
                       icon: Icons.title_outlined,
                     ),
                     verticalSpace(18),
-                    const SectionTitle(title: 'Description', required: true),
+                    SectionTitle(title: l10n.description, required: true),
                     verticalSpace(8),
                     CustomTextFormField(
                       controller: descriptionController,
-                      hintText:
-                          'Describe the item, its features and condition...',
+                      hintText: l10n.descriptionHint,
                       maxLines: 4,
                     ),
                     verticalSpace(18),
@@ -180,8 +179,8 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SectionTitle(
-                                title: 'Daily price',
+                              SectionTitle(
+                                title: l10n.dailyPrice,
                                 required: true,
                               ),
                               verticalSpace(8),
@@ -197,8 +196,8 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SectionTitle(
-                                title: 'Security deposit',
+                              SectionTitle(
+                                title: l10n.securityDeposit,
                                 required: true,
                               ),
                               verticalSpace(8),
@@ -212,7 +211,10 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                       ],
                     ),
                     verticalSpace(18),
-                    const SectionTitle(title: 'Item condition & Rating', required: true),
+                    SectionTitle(
+                      title: l10n.itemConditionRating,
+                      required: true,
+                    ),
                     verticalSpace(8),
                     Row(
                       children: [
@@ -230,11 +232,13 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                               child: DropdownButton<String>(
                                 value: selectedCondition,
                                 isExpanded: true,
-                                hint: const Text(
-                                  'Condition',
-                                  style: TextStyle(color: AppColors.grey),
+                                hint: Text(
+                                  l10n.condition,
+                                  style: const TextStyle(color: AppColors.grey),
                                 ),
-                                icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                ),
                                 items: conditions.map((condition) {
                                   return DropdownMenuItem<String>(
                                     value: condition,
@@ -254,18 +258,17 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                         Expanded(
                           child: CustomTextFormField(
                             controller: ratingController,
-                            hintText: 'Rating (0-5)',
+                            hintText: l10n.ratingRange,
                             icon: Icons.star_border,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     verticalSpace(22),
-                    const SectionTitle(
-                      title: 'Key Features (Select at least 3)',
-                      required: true,
-                    ),
+                    SectionTitle(title: l10n.keyFeaturesSelect, required: true),
                     verticalSpace(12),
                     BlocBuilder<AddItemCubit, AddItemState>(
                       builder: (context, state) {
@@ -333,7 +336,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
                           horizontalSpace(10),
                           Expanded(
                             child: Text(
-                              'The security deposit is held as protection against damage or loss and may be returned after the rental.',
+                              l10n.securityDepositInfo,
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 12.sp,
@@ -351,7 +354,7 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
             // Bottom buttons
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-              child: CustomButton(text: "Next", onPressed: onNext),
+              child: CustomButton(text: l10n.next, onPressed: onNext),
             ),
           ],
         ),
@@ -359,4 +362,5 @@ class _AddItemDetailsScreenState extends State<AddItemDetailsScreen> {
     );
   }
 }
+
 // 403

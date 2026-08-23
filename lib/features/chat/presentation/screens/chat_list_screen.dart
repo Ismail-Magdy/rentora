@@ -6,6 +6,7 @@ import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar_without_leading.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/chat/data/models/chat_model.dart';
 import 'package:rentora/features/chat/data/models/chat_screen_args.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
@@ -65,16 +66,16 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     if (currentUserId.isEmpty) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.scaffoldBackground,
-        appBar: CustomAppBarWithNoLeading(text: 'Chats'),
+        appBar: CustomAppBarWithNoLeading(text: l10n.chats),
         body: ChatEmptyState(
-          title: 'Login to View Chats',
-          message:
-              'Please log in to your account to view your conversations and messages.',
+          title: l10n.loginToViewChats,
+          message: l10n.loginConversations,
           icon: Icons.lock_outline_rounded,
         ),
       );
@@ -82,7 +83,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      appBar: const CustomAppBarWithNoLeading(text: 'Chats'),
+      appBar: CustomAppBarWithNoLeading(text: l10n.chats),
       body: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
           if (state is ChatLoading) {
@@ -106,10 +107,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
 
           if (state is ChatListLoaded) {
             if (state.chats.isEmpty) {
-              return const ChatEmptyState(
-                title: 'No chats yet',
-                message:
-                    'When you contact an owner or receive an inquiry, your conversations will appear here.',
+              return ChatEmptyState(
+                title: l10n.noChats,
+                message: l10n.emptyChats,
                 icon: Icons.chat_bubble_outline_rounded,
               );
             }

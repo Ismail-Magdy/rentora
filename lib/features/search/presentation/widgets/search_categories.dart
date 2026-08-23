@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/features/setup_profile/data/models/category_model.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class SearchCategories extends StatelessWidget {
   final List<String> categories;
@@ -16,18 +18,24 @@ class SearchCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Wrap(
       spacing: 10.w,
       runSpacing: 10.h,
       children: [
         _CategoryChip(
-          label: 'All',
+          label: l10n.all,
           isSelected: selectedCategory == null,
           onTap: () => onCategorySelected(null),
         ),
         ...categories.map(
           (category) => _CategoryChip(
-            label: category,
+            label: CategoryModel(
+              id: category,
+              name: category,
+              iconPath: '',
+            ).getLocalizedName(l10n),
             isSelected: category == selectedCategory,
             onTap: () => onCategorySelected(category),
           ),

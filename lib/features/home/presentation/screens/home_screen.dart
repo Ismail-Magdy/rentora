@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/widgets/error_screen.dart';
 import 'package:rentora/features/home/manager/home_cubit.dart';
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.white,
       // Map Button
@@ -68,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           colorFilter: ColorFilter.mode(AppColors.white, .srcIn),
         ),
         label: Text(
-          "View Map",
+          l10n.viewMap,
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: .bold,

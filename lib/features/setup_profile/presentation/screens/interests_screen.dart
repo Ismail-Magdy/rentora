@@ -8,12 +8,14 @@ import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/setup_profile/manager/interests/interests_cubit.dart';
 import 'package:rentora/features/setup_profile/presentation/widgets/interests_screen_content.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class InterestsScreen extends StatelessWidget {
   const InterestsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -27,7 +29,7 @@ class InterestsScreen extends StatelessWidget {
                   context,
                   icon: Icons.error_outline,
                   color: AppColors.error,
-                  title: "Error",
+                  title: l10n.error,
                   message: state.error,
                 );
                 //
@@ -39,8 +41,8 @@ class InterestsScreen extends StatelessWidget {
                     context,
                     icon: Icons.check_circle_outline,
                     color: Colors.green,
-                    title: "Success",
-                    message: "Your interests have been saved",
+                    title: l10n.success,
+                    message: l10n.interestsSaved,
                     onFinish: () => context.pushNamedAndRemoveUntil(
                       Routes.rootScreen,
                       predicate: (route) => false,
@@ -61,4 +63,3 @@ class InterestsScreen extends StatelessWidget {
     );
   }
 }
-// 237

@@ -9,6 +9,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/error_screen.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
 import 'package:rentora/features/view_map/manager/view_map_state.dart';
 import 'package:rentora/features/view_map/presentation/widgets/animated_item_marker.dart';
@@ -85,10 +86,11 @@ class _ViewMapScreenState extends State<ViewMapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: CustomAppBar(
-        text: "Map View",
+        text: l10n.viewMap,
         actions: [
           GestureDetector(
             onTap: () {

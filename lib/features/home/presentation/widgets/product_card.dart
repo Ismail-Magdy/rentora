@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
@@ -24,6 +25,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -65,7 +67,7 @@ class ProductCard extends StatelessWidget {
                               : Icons.favorite_border,
                           color: AppColors.primaryColor,
                           title: state.isAdded
-                              ? 'Added to Favorites'
+                              ? l10n.addedToFavorites
                               : 'Removed from Favorites',
                           message: state.message,
                         );
@@ -160,7 +162,7 @@ class ProductCard extends StatelessWidget {
                         horizontalSpace(4),
                         //
                         Text(
-                          'EGP/day',
+                          l10n.perDay,
                           style: TextStyle(
                             fontSize: 10.sp,
                             color: AppColors.grey,
@@ -177,7 +179,7 @@ class ProductCard extends StatelessWidget {
                           Flexible(
                             child: Builder(
                               builder: (context) {
-                                String distanceText = 'Distance unknown';
+                                String distanceText = l10n.distanceUnknown;
                                 if (userLat != null &&
                                     userLng != null &&
                                     product.latitude != null &&

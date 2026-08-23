@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/helpers/spacing.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class ChatInputBar extends StatefulWidget {
@@ -62,6 +63,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
   }
 
   void _showImagePickerSheet() {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.white,
@@ -75,7 +77,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Send Image',
+                l10n.sendImage,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -96,7 +98,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ),
                 ),
                 title: Text(
-                  'Camera',
+                  l10n.camera,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -120,7 +122,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                   ),
                 ),
                 title: Text(
-                  'Gallery',
+                  l10n.gallery,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -160,6 +162,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final canSend = (_hasText || _selectedImage != null) && !widget.isSending;
 
     return Container(
@@ -246,25 +249,28 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 Expanded(
                   child: Container(
                     constraints: BoxConstraints(maxHeight: 120.h),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 4.h,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.scaffoldBackground,
                       borderRadius: BorderRadius.circular(24.r),
-                      border:
-                          Border.all(color: AppColors.dividerColor, width: 1.w),
+                      border: Border.all(
+                        color: AppColors.dividerColor,
+                        width: 1.w,
+                      ),
                     ),
                     child: TextField(
                       controller: _controller,
                       maxLines: null,
                       textInputAction: TextInputAction.newline,
                       keyboardType: TextInputType.multiline,
-                      style:
-                          TextStyle(fontSize: 14.sp, color: AppColors.black),
+                      style: TextStyle(fontSize: 14.sp, color: AppColors.black),
                       decoration: InputDecoration(
                         hintText: _selectedImage != null
-                            ? 'Add a caption...'
-                            : 'Type your message...',
+                            ? l10n.addCaption
+                            : l10n.typeMessage,
                         hintStyle: TextStyle(
                           fontSize: 14.sp,
                           color: AppColors.darkGrey,
@@ -328,4 +334,3 @@ class _ChatInputBarState extends State<ChatInputBar> {
     );
   }
 }
-

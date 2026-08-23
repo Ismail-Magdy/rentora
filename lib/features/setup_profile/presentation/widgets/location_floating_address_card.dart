@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/features/setup_profile/manager/location/location_cubit.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class LocationFloatingAddressCard extends StatelessWidget {
   const LocationFloatingAddressCard({
@@ -16,6 +17,7 @@ class LocationFloatingAddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Positioned(
       top: 60.h,
       left: 20.w,
@@ -46,7 +48,7 @@ class LocationFloatingAddressCard extends StatelessWidget {
                 children: [
                   //
                   Text(
-                    "Choose Delivery Point",
+                    l10n.chooseDeliveryPoint,
                     style: TextStyle(fontWeight: .bold, fontSize: 14.sp),
                   ),
                   //
@@ -62,7 +64,7 @@ class LocationFloatingAddressCard extends StatelessWidget {
                           ),
                         )
                       : Text(
-                          cubitSelectedAddress ?? "Move map to select location",
+                          cubitSelectedAddress ?? l10n.moveMapSelectLocation,
                           style: TextStyle(
                             color: AppColors.darkGrey,
                             fontSize: 12.sp,

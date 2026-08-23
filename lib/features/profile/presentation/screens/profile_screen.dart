@@ -7,12 +7,15 @@ import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
 import 'package:rentora/features/profile/manager/cubit/profile_state.dart';
 import 'package:rentora/features/profile/presentation/screens/edit_profile_screen.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is ProfileError) {
@@ -20,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
             context,
             icon: Icons.error_outline,
             color: Colors.red,
-            title: 'Error',
+            title: l10n.error,
             message: state.message,
           );
         } else if (state is ProfileUpdated) {
@@ -28,15 +31,15 @@ class ProfileScreen extends StatelessWidget {
             context,
             icon: Icons.check_circle,
             color: Colors.green,
-            title: 'Success',
-            message: 'Profile updated successfully',
+            title: l10n.success,
+            message: l10n.profileUpdated,
           );
         } else if (state is ProfileUpdateError) {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline,
             color: Colors.red,
-            title: 'Error',
+            title: l10n.error,
             message: state.message,
           );
         }
@@ -48,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: const Color(0xFFF1F3F4),
             appBar: AppBar(
-              title: const Text('My Profile'),
+              title: Text(l10n.myProfile),
               centerTitle: true,
               backgroundColor: const Color(0xFFF1F3F4),
               elevation: 0,
@@ -63,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                         FilledButton(
                           onPressed: () =>
                               context.read<ProfileCubit>().loadProfile(),
-                          child: const Text('Retry'),
+                          child: Text(l10n.retry),
                         ),
                       ],
                     ),
@@ -77,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: const Color(0xFFF1F3F4),
           appBar: AppBar(
-            title: const Text('My Profile'),
+            title: Text(l10n.myProfile),
             centerTitle: true,
             backgroundColor: const Color(0xFFF1F3F4),
             elevation: 0,
@@ -120,7 +123,7 @@ class ProfileScreen extends StatelessWidget {
                             backgroundColor: AppColors.primaryColor.withValues(
                               alpha: 0.15,
                             ),
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            child: const CircularProgressIndicator(strokeWidth: 2),
                           ),
                           errorWidget: (context, url, error) => CircleAvatar(
                             radius: 44.r,
@@ -162,20 +165,20 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  _verificationChip(user.verificationStatus),
+                  _verificationChip(user.verificationStatus, l10n),
                 ],
               ),
               SizedBox(height: 24.h),
               _infoCard(
                 icon: Icons.phone_android,
-                title: 'Phone Number',
+                title: l10n.phoneNumber,
                 value: user.phoneNumber,
               ),
               SizedBox(height: 12.h),
               _infoCard(
                 icon: Icons.info_outline,
-                title: 'Bio',
-                value: user.bio.isEmpty ? 'No bio added yet.' : user.bio,
+                title: l10n.bio,
+                value: user.bio.isEmpty ? l10n.noBio : user.bio,
               ),
               SizedBox(height: 12.h),
               Container(
@@ -196,7 +199,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         SizedBox(width: 8.w),
                         Text(
-                          'Interests',
+                          l10n.interests,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
@@ -207,7 +210,7 @@ class ProfileScreen extends StatelessWidget {
                     SizedBox(height: 12.h),
                     if (user.interests.isEmpty)
                       Text(
-                        'No interests selected yet.',
+                        l10n.noInterestsSelected,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.grey.shade600,
@@ -247,20 +250,25 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _verificationChip(String status) {
+  Widget _verificationChip(String status, AppLocalizations l10n) {
     Color color;
+    String text;
     switch (status) {
       case 'verified':
         color = Colors.green;
+        text = l10n.verified;
         break;
       case 'pending':
         color = Colors.orange;
+        text = l10n.underReview;
         break;
       case 'rejected':
         color = Colors.red;
+        text = l10n.verificationRejected;
         break;
       default:
         color = Colors.grey;
+        text = l10n.unverified;
     }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -270,7 +278,7 @@ class ProfileScreen extends StatelessWidget {
         border: Border.all(color: color),
       ),
       child: Text(
-        status.toUpperCase(),
+        text.toUpperCase(),
         style: TextStyle(
           fontSize: 10.sp,
           color: color,

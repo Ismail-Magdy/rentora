@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/helpers/app_regex.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 enum FieldType {
   firstName,
@@ -102,58 +103,60 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   /// Default validation logic based on field type.
   String? _defaultValidator(String? value) {
+    final l10n = AppLocalizations.of(context);
     final trimmedValue = value?.trim() ?? "";
 
     switch (widget.fieldType) {
       case .firstName:
         if (trimmedValue.isEmpty) {
-          return "Please enter your first name";
+          return l10n?.enterFirstName ?? "Please enter your first name";
         }
         break;
 
       case .lastName:
         if (trimmedValue.isEmpty) {
-          return "Please enter your last name";
+          return l10n?.enterLastName ?? "Please enter your last name";
         }
         break;
 
       case .phoneNumber:
         if (trimmedValue.isEmpty ||
             !AppRegex.isPhoneNumberValid(trimmedValue)) {
-          return "Please enter a valid phone number";
+          return l10n?.enterValidPhone ?? "Please enter a valid phone number";
         }
         break;
 
       case .userName:
         if (trimmedValue.isEmpty) {
-          return "Please enter a username";
+          return l10n?.enterUsername ?? "Please enter a username";
         }
         break;
 
       case .email:
         if (trimmedValue.isEmpty || !AppRegex.isEmailValid(trimmedValue)) {
-          return "Please enter a valid email address";
+          return l10n?.enterValidEmail ?? "Please enter a valid email address";
         }
         break;
 
       case .newPassword:
         if (trimmedValue.isEmpty) {
-          return "Please enter a password";
+          return l10n?.enterPasswordValidation ?? "Please enter a password";
         }
         if (!AppRegex.isPasswordValid(trimmedValue)) {
-          return "Must contain at least 8 characters, a symbol, and numbers";
+          return l10n?.passwordRequirements ??
+              "Must contain at least 8 characters, a symbol, and numbers";
         }
         break;
 
       case .loginPassword:
         if (trimmedValue.isEmpty) {
-          return "Please enter your password";
+          return l10n?.enterPassword ?? "Please enter your password";
         }
         break;
 
       case .number:
         if (trimmedValue.isEmpty) {
-          return "Please enter a value";
+          return l10n?.enterValue ?? "Please enter a value";
         }
         break;
 

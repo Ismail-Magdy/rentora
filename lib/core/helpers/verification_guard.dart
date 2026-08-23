@@ -6,6 +6,7 @@ import 'package:rentora/core/network/firebase/users_firestore_service.dart';
 import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class VerificationGuard {
   VerificationGuard._();
@@ -28,6 +29,7 @@ class VerificationGuard {
     final status = data?['verificationStatus'] as String?;
 
     if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context);
 
     if (status == 'verified') {
       onVerified();
@@ -36,8 +38,8 @@ class VerificationGuard {
         context,
         icon: Icons.hourglass_top_rounded,
         color: AppColors.amberDark,
-        title: 'Verification Under Review',
-        message:
+        title: l10n?.verificationUnderReview ?? 'Verification Under Review',
+        message: l10n?.verificationUnderReviewMessage ??
             'Your account verification is currently under review. This usually takes less than 24 hours.',
       );
     } else {

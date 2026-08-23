@@ -10,6 +10,7 @@ import 'package:rentora/features/archive/presentation/screens/archive_screen.dar
 import 'package:rentora/features/home/presentation/screens/home_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_list_screen.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -29,14 +30,15 @@ class _RootScreenState extends State<RootScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.white,
       body: IndexedStack(index: _currentIndex, children: _screens),
-      bottomNavigationBar: _buildCustomBottomNavigationBar(),
+      bottomNavigationBar: _buildCustomBottomNavigationBar(l10n),
     );
   }
 
-  Widget _buildCustomBottomNavigationBar() {
+  Widget _buildCustomBottomNavigationBar(AppLocalizations l10n) {
     return SizedBox(
       height: 105.h,
       child: Stack(
@@ -62,8 +64,12 @@ class _RootScreenState extends State<RootScreen> {
                 mainAxisAlignment: .spaceBetween,
                 children: [
                   // Left Tabs
-                  _buildNavItem(index: 0, iconName: "home", label: "Home"),
-                  _buildNavItem(index: 1, iconName: "chat", label: "Chat"),
+                  _buildNavItem(index: 0, iconName: "home", label: l10n.home),
+                  _buildNavItem(
+                    index: 1,
+                    iconName: "chat",
+                    label: l10n.chatTab,
+                  ),
                   //
                   SizedBox(
                     width: 50.w,
@@ -72,7 +78,7 @@ class _RootScreenState extends State<RootScreen> {
                       children: [
                         //
                         Text(
-                          "Add",
+                          l10n.add,
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: .w500,
@@ -90,12 +96,12 @@ class _RootScreenState extends State<RootScreen> {
                   _buildNavItem(
                     index: 2,
                     iconName: "archive",
-                    label: "Archive",
+                    label: l10n.archive,
                   ),
                   _buildNavItem(
                     index: 3,
                     iconName: 'settings',
-                    label: 'Settings',
+                    label: l10n.settings,
                   ),
                 ],
               ),
@@ -185,4 +191,5 @@ class _RootScreenState extends State<RootScreen> {
 
   //
 }
+
 // 189
