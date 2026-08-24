@@ -171,7 +171,7 @@ class _AddPhotosScreenState extends State<AddPhotosScreen> {
                             child: ListView.separated(
                               scrollDirection: .horizontal,
                               itemCount: existingImageUrls.length,
-                              separatorBuilder: (_, __) =>
+                              separatorBuilder: (_, _) =>
                                   const SizedBox(width: 10),
                               itemBuilder: (ctx, index) {
                                 return ClipRRect(

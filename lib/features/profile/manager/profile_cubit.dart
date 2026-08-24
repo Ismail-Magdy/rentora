@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentora/core/errors/exceptions.dart';
 import 'package:rentora/features/auth/data/models/user_model.dart';
 import 'package:rentora/features/profile/data/repo/profile_repo.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_state.dart';
+import 'package:rentora/features/profile/manager/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo _repo;

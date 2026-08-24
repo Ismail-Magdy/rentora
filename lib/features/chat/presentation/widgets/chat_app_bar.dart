@@ -40,10 +40,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           CircleAvatar(
             radius: 19.r,
-            backgroundColor: (isDark
-                    ? AppColors.secondaryColor
-                    : AppColors.primaryColor)
-                .withValues(alpha: 0.15),
+            backgroundColor:
+                (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                    .withValues(alpha: 0.15),
             backgroundImage: hasAvatar ? NetworkImage(receiverAvatar!) : null,
             child: !hasAvatar
                 ? Text(
@@ -53,7 +52,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                      color: isDark
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor,
                     ),
                   )
                 : null,
@@ -79,11 +80,13 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   Text(
                     itemTitle!,
                     maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    overflow: .ellipsis,
                     style: TextStyle(
                       fontSize: 11.sp,
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                      fontWeight: .w500,
+                      color: isDark
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor,
                     ),
                   ),
                 ],

@@ -47,10 +47,9 @@ import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/item_details/presentation/screens/item_details_screen.dart';
 import 'package:rentora/features/chat/data/models/chat_screen_args.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
-import 'package:rentora/features/chat/manager/chat_state.dart';
 import 'package:rentora/features/chat/presentation/screens/chat_screen.dart';
 import 'package:rentora/features/on_boarding/presentation/screens/on_boarding_screens.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
+import 'package:rentora/features/profile/manager/profile_cubit.dart';
 import 'package:rentora/features/profile/presentation/screens/profile_screen.dart';
 import 'package:rentora/features/root/screens/root_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/help_center_screen.dart';
@@ -249,13 +248,13 @@ class AppRouter {
           ),
         );
 
-      ///!setting screen
+      /// setting screen
       case Routes.settingsScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(const SettingsScreen()),
         );
 
-      case '/helpCenterScreen':
+      case Routes.helpCenterScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(const HelpCenterScreen()),
         );
@@ -299,26 +298,11 @@ class AppRouter {
           builder: (_) => _withNetwork(
             BlocProvider(
               create: (_) => getIt<ChatCubit>(),
-              child: BlocListener<ChatCubit, ChatState>(
-                listenWhen: (previous, current) =>
-                    current is ChatImageUploadSuccess || current is ChatError,
-                listener: (context, state) {
-                  if (state is ChatImageUploadSuccess) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Image sent successfully')),
-                    );
-                  } else if (state is ChatError) {
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text(state.message)));
-                  }
-                },
-                child: ChatScreen(
-                  chatId: chatId,
-                  receiverName: receiverName,
-                  receiverAvatar: receiverAvatar,
-                  itemTitle: itemTitle,
-                ),
+              child: ChatScreen(
+                chatId: chatId,
+                receiverName: receiverName,
+                receiverAvatar: receiverAvatar,
+                itemTitle: itemTitle,
               ),
             ),
           ),
@@ -596,6 +580,7 @@ class AppRouter {
             _withVerificationCubit(const VerificationPendingScreen(), args),
           ),
         );
+
       case Routes.searchScreen:
         final cubit = args is SearchCubit ? args : null;
         return MaterialPageRoute(
@@ -608,16 +593,15 @@ class AppRouter {
                   ),
           ),
         );
+
       case Routes.searchFilterScreen:
         final cubit = args is SearchCubit ? args : getIt<SearchCubit>();
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
-            BlocProvider.value(
-              value: cubit,
-              child: const SearchFilterScreen(),
-            ),
+            BlocProvider.value(value: cubit, child: const SearchFilterScreen()),
           ),
         );
+
       case Routes.searchResultsScreen:
         final cubit = args is SearchCubit ? args : getIt<SearchCubit>();
         return MaterialPageRoute(
@@ -630,7 +614,7 @@ class AppRouter {
         );
 
       ///profile screen
-      case '/profileScreen':
+      case Routes.profileScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(
             BlocProvider(

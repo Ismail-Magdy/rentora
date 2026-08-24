@@ -1,14 +1,17 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rentora/core/helpers/extensions.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/core/widgets/custom_text_field.dart';
 import 'package:rentora/features/auth/data/models/user_model.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_state.dart';
+import 'package:rentora/features/profile/manager/profile_cubit.dart';
+import 'package:rentora/features/profile/manager/profile_state.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -92,12 +95,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           showFeedbackDialog(
             context,
             icon: Icons.check_circle_outline,
-            color: Colors.green,
+            color: AppColors.primaryColor,
             title: l10n.success,
             message: l10n.profileUpdated,
             onFinish: () {
               if (Navigator.of(context).canPop()) {
-                Navigator.pop(context);
+                context.pop();
               }
             },
           );
@@ -105,7 +108,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline,
-            color: Colors.red,
+            color: AppColors.error,
             title: l10n.oops,
             message: state.message,
           );
@@ -113,32 +116,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       },
       builder: (context, state) {
         final isUpdating = state is ProfileUpdating;
-        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final isDark = Theme.of(context).brightness == .dark;
 
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
-            title: Text(
-              l10n.editProfile,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
-              ),
-            ),
-            centerTitle: true,
-            backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
-            elevation: 0,
+          appBar: CustomAppBar(
+            text: l10n.editProfile,
             actions: [
               isUpdating
                   ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding: .symmetric(horizontal: 20.w),
                       child: SizedBox(
                         width: 18.w,
                         height: 18.w,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                        child: CupertinoActivityIndicator(
+                          color: isDark
+                              ? AppColors.secondaryColor
+                              : AppColors.primaryColor,
                         ),
                       ),
                     )
@@ -148,15 +142,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         l10n.saveChanges,
                         style: TextStyle(
                           fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                          fontWeight: .w600,
+                          color: isDark
+                              ? AppColors.secondaryColor
+                              : AppColors.primaryColor,
                         ),
                       ),
                     ),
             ],
           ),
+
+          //
           body: SingleChildScrollView(
-            padding: EdgeInsets.all(16.w),
+            padding: .all(16.w),
             child: Form(
               key: formKey,
               child: Column(

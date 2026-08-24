@@ -3,8 +3,6 @@ class AppConstants {
   static const String hasSeenOnboarding = "hasSeenOnboarding";
   static const String isLoggedIn = "isLoggedIn";
   static const String userId = "userId";
-  // static const String isDarkMode = "isDarkMode"; Will Add if We have Time
-  // static const String appLanguage = "appLanguage"; Will Add if We have Time
 
   // Firebase Collections
   static const String usersCollection = "users";

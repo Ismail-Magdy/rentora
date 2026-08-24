@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/themes/app_colors.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 
 Future<void> showLogoutDialog(
@@ -22,7 +23,7 @@ Future<void> showLogoutDialog(
             child: Text(l10n.cancel),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.error),
             onPressed: () {
               Navigator.pop(dialogContext);
               onConfirm();

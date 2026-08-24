@@ -24,6 +24,7 @@ void main() async {
 
   final settingsController = SettingsController();
   await settingsController.load();
+
   runApp(
     Rentora(appRouter: AppRouter(), settingsController: settingsController),
   );
