@@ -65,12 +65,6 @@ class AboutUsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: isDark ? AppColors.darkCard : AppColors.lightGrey,
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      'assets/images/app_logo.png',
-                    ), // Assume logo is here, fallback if not
-                    fit: BoxFit.cover,
-                  ),
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primaryColor.withValues(alpha: 0.2),
