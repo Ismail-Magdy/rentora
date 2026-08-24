@@ -262,9 +262,7 @@ class AppRouter {
         );
 
       case Routes.aboutUsScreen:
-        return MaterialPageRoute(
-          builder: (_) => _withNetwork(const AboutUsScreen()),
-        );
+        return MaterialPageRoute(builder: (_) => const AboutUsScreen());
 
       /// Root
       case Routes.rootScreen:
