@@ -78,6 +78,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/on_boarding/
+    - assets/images/profiles/
     - assets/svgs/logo/
     - assets/svgs/categories/
     - assets/svgs/root/

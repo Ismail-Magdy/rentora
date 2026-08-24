@@ -62,6 +62,8 @@ class HomeRepoImpl implements HomeRepo {
   @override
   Future<Either<Failure, List<ProductModel>>> getProducts({
     String? category,
+    bool excludeCurrentUser = false,
+    bool onlyCurrentUser = false,
   }) async {
     try {
       Query<Map<String, dynamic>> query = _firestore.collection('products');
@@ -70,13 +72,31 @@ class HomeRepoImpl implements HomeRepo {
         query = query.where('category', isEqualTo: category);
       }
 
+      final String currentUid = _firebaseAuth.currentUser?.uid ?? '';
+
+      // For Archive (My Listings): use a direct Firestore equality filter.
+      // The field in Firestore is 'userId' (written by AddItemModel.toMap()).
+      if (onlyCurrentUser && currentUid.isNotEmpty) {
+        query = query.where('userId', isEqualTo: currentUid);
+      }
+
+      // NOTE: We intentionally do NOT use isNotEqualTo for excludeCurrentUser.
+      // Firestore's isNotEqualTo silently excludes documents where the field
+      // is missing/null, and may require a composite index when combined with
+      // other filters. Instead we fetch all and filter locally below.
+
       final QuerySnapshot<Map<String, dynamic>> snapshot = await query
-          .limit(20)
+          .limit(50)
           .get();
 
-      final List<ProductModel> products = snapshot.docs.map((doc) {
+      List<ProductModel> products = snapshot.docs.map((doc) {
         return ProductModel.fromJson(doc.data(), doc.id);
       }).toList();
+
+      // For Home (Feed): filter out the current user's products locally.
+      if (excludeCurrentUser && currentUid.isNotEmpty) {
+        products = products.where((p) => p.ownerId != currentUid).toList();
+      }
 
       return Right(products);
     } on FirebaseException catch (e) {
@@ -107,9 +127,13 @@ class HomeRepoImpl implements HomeRepo {
       }
       return const Right(null);
     } on FirebaseException catch (e) {
-      return Left(ServerFailure(e.message ?? 'Firebase Error: Failed to fetch location.'));
+      return Left(
+        ServerFailure(e.message ?? 'Firebase Error: Failed to fetch location.'),
+      );
     } catch (e) {
-      return Left(ServerFailure('An unexpected error occurred while fetching location.'));
+      return Left(
+        ServerFailure('An unexpected error occurred while fetching location.'),
+      );
     }
   }
 }

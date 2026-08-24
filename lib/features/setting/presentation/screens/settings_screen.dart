@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/di/dependency_injection.dart';
@@ -59,9 +61,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SettingsTile(
                 icon: Icons.verified_user_outlined,
                 title: localizations.accountVerification,
-                onTap: () =>
-                    // TODO : CHECK
-                    context.pushNamed(Routes.verificationPendingScreen),
+                onTap: () async {
+                  final userId = FirebaseAuth.instance.currentUser?.uid;
+                  if (userId != null) {
+                    final userDoc = await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .get();
+                    if (userDoc.exists) {
+                      final verificationStatus =
+                          userDoc.data()?['verificationStatus'] ?? 'unverified';
+                      if (verificationStatus == 'verified' ||
+                          userDoc.data()?['isVerified'] == true) {
+                        if (context.mounted) {
+                          context.pushNamed(Routes.verifiedSuccessScreen);
+                        }
+                      } else {
+                        if (context.mounted) {
+                          context.pushNamed(Routes.verificationIntroScreen);
+                        }
+                      }
+                    }
+                  }
+                },
               ),
             ],
           ),
@@ -132,7 +154,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Icons.info_outline,
                 title: localizations.aboutRentora,
                 onTap: () {
-                  // TODO
+                  context.pushNamed(Routes.aboutUsScreen);
                 },
               ),
             ],

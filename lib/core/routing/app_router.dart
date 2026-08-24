@@ -54,6 +54,7 @@ import 'package:rentora/features/profile/presentation/screens/profile_screen.dar
 import 'package:rentora/features/root/screens/root_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/help_center_screen.dart';
 import 'package:rentora/features/setting/presentation/screens/settings_screen.dart';
+import 'package:rentora/features/setting/presentation/screens/about_us_screen.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
 import 'package:rentora/features/search/presentation/screens/search_filter_screen.dart';
 import 'package:rentora/features/search/presentation/screens/search_results_screen.dart';
@@ -70,6 +71,7 @@ import 'package:rentora/features/verification/presentation/screens/verification_
 import 'package:rentora/features/verification/presentation/screens/verification_id_front_upload_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_intro_screen.dart';
 import 'package:rentora/features/verification/presentation/screens/verification_pending_screen.dart';
+import 'package:rentora/features/verification/presentation/screens/verified_success_screen.dart';
 import 'package:rentora/features/view_map/manager/view_map_cubit.dart';
 import 'package:rentora/features/view_map/presentation/screens/view_map_screen.dart';
 
@@ -257,6 +259,11 @@ class AppRouter {
       case Routes.helpCenterScreen:
         return MaterialPageRoute(
           builder: (_) => _withNetwork(const HelpCenterScreen()),
+        );
+
+      case Routes.aboutUsScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const AboutUsScreen()),
         );
 
       /// Root
@@ -579,6 +586,11 @@ class AppRouter {
           builder: (_) => _withNetwork(
             _withVerificationCubit(const VerificationPendingScreen(), args),
           ),
+        );
+
+      case Routes.verifiedSuccessScreen:
+        return MaterialPageRoute(
+          builder: (_) => _withNetwork(const VerifiedSuccessScreen()),
         );
 
       case Routes.searchScreen:
