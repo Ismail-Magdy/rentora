@@ -39,8 +39,9 @@ class VerificationGuard {
         icon: Icons.hourglass_top_rounded,
         color: AppColors.amberDark,
         title: l10n?.verificationUnderReview ?? 'Verification Under Review',
-        message: l10n?.verificationUnderReviewMessage ??
-            'Your account verification is currently under review. This usually takes less than 24 hours.',
+        message:
+            l10n?.verificationUnderReviewMessage ??
+            'Your account verification is currently under review. This usually takes less than 24 hours',
       );
     } else {
       context.pushNamed(Routes.verificationIntroScreen);

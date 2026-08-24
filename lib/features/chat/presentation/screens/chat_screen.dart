@@ -1,16 +1,17 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/l10n/generated/app_localizations.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/features/chat/manager/chat_cubit.dart';
 import 'package:rentora/features/chat/manager/chat_state.dart';
 import 'package:rentora/features/chat/presentation/widgets/chat_app_bar.dart';
 import 'package:rentora/features/chat/presentation/widgets/chat_empty_state.dart';
 import 'package:rentora/features/chat/presentation/widgets/chat_input_bar.dart';
 import 'package:rentora/features/chat/presentation/widgets/message_bubble.dart';
+import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -86,87 +87,108 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: ChatAppBar(
-        receiverName: titleText,
-        receiverAvatar: widget.receiverAvatar,
-        itemTitle: widget.itemTitle,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<ChatCubit, ChatState>(
-              // Uploading an image and its completion are transient states.
-              // Keep the currently rendered message list while they are active.
-              buildWhen: (previous, current) =>
-                  current is ChatMessagesLoaded || current is ChatLoading,
-              builder: (context, state) {
-                if (state is ChatLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                    ),
-                  );
-                }
-
-                if (state is ChatError) {
-                  return Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(24.r),
-                      child: Text(
-                        state.message,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: AppColors.error,
-                          fontSize: 14.sp,
-                        ),
+    return BlocListener<ChatCubit, ChatState>(
+      listenWhen: (previous, current) =>
+          current is ChatImageUploadSuccess || current is ChatError,
+      listener: (context, state) {
+        if (state is ChatImageUploadSuccess) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.check_circle_outline,
+            color: AppColors.primaryColor,
+            title: 'Success',
+            message: 'Image sent successfully',
+          );
+        } else if (state is ChatError) {
+          showFeedbackDialog(
+            context,
+            icon: Icons.error_outline,
+            color: Colors.red,
+            title: 'Error',
+            message: state.message,
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: ChatAppBar(
+          receiverName: titleText,
+          receiverAvatar: widget.receiverAvatar,
+          itemTitle: widget.itemTitle,
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<ChatCubit, ChatState>(
+                buildWhen: (previous, current) =>
+                    current is ChatMessagesLoaded || current is ChatLoading,
+                builder: (context, state) {
+                  if (state is ChatLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
                       ),
-                    ),
-                  );
-                }
-
-                if (state is ChatMessagesLoaded) {
-                  if (state.messages.isEmpty) {
-                    return ChatEmptyState(
-                      title: l10n.noMessages,
-                      message: l10n.startConversation,
-                      icon: Icons.chat_bubble_outline_rounded,
                     );
                   }
 
-                  return ListView.builder(
-                    reverse: true,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 16.h,
-                    ),
-                    itemCount: state.messages.length,
-                    itemBuilder: (context, index) {
-                      final message =
-                          state.messages[state.messages.length - 1 - index];
-                      final isMine = message.senderId == currentUserId;
+                  if (state is ChatError) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(24.r),
+                        child: Text(
+                          state.message,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.error,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
 
-                      return MessageBubble(message: message, isMine: isMine);
-                    },
-                  );
-                }
+                  if (state is ChatMessagesLoaded) {
+                    if (state.messages.isEmpty) {
+                      return ChatEmptyState(
+                        title: l10n.noMessages,
+                        message: l10n.startConversation,
+                        icon: Icons.chat_bubble_outline_rounded,
+                      );
+                    }
 
-                return const SizedBox.shrink();
+                    return ListView.builder(
+                      reverse: true,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 16.h,
+                      ),
+                      itemCount: state.messages.length,
+                      itemBuilder: (context, index) {
+                        final message =
+                            state.messages[state.messages.length - 1 - index];
+                        final isMine = message.senderId == currentUserId;
+
+                        return MessageBubble(message: message, isMine: isMine);
+                      },
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+              ),
+            ),
+            BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                final isUploading = state is ChatImageUploading;
+                return ChatInputBar(
+                  onSendMessage: _onSendMessage,
+                  onSendImage: _onSendImage,
+                  isSending: isUploading,
+                );
               },
             ),
-          ),
-          BlocBuilder<ChatCubit, ChatState>(
-            builder: (context, state) {
-              final isUploading = state is ChatImageUploading;
-              return ChatInputBar(
-                onSendMessage: _onSendMessage,
-                onSendImage: _onSendImage,
-                isSending: isUploading,
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

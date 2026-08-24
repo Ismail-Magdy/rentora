@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
 
 class SettingsSection extends StatelessWidget {
@@ -14,23 +15,23 @@ class SettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == .dark;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+          padding: .symmetric(horizontal: 20.w, vertical: 8.h),
           child: Text(
             title,
             style: TextStyle(
               fontSize: 13.sp,
-              fontWeight: FontWeight.w600,
+              fontWeight: .w600,
               color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
             ),
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          margin: .symmetric(horizontal: 16.w),
           decoration: BoxDecoration(
             color: isDark ? AppColors.darkSurface : AppColors.white,
             boxShadow: [
@@ -40,7 +41,7 @@ class SettingsSection extends StatelessWidget {
                 offset: const Offset(0, 4),
               ),
             ],
-            borderRadius: BorderRadius.circular(16.r),
+            borderRadius: .circular(16.r),
           ),
           child: Column(
             children: [
@@ -57,7 +58,7 @@ class SettingsSection extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 16.h),
+        verticalSpace(16),
       ],
     );
   }
