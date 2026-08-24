@@ -181,7 +181,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: 20.r,
+                        radius: 30.r,
                         backgroundColor:
                             (isDark
                                     ? AppColors.secondaryColor
@@ -192,12 +192,12 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                           color: isDark
                               ? AppColors.secondaryColor
                               : AppColors.primaryColor,
-                          size: 20.w,
+                          size: 27.w,
                         ),
                       ),
-                      SizedBox(height: 8.h),
+                      verticalSpace(8),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        padding: .symmetric(horizontal: 8.w),
                         child: Text(
                           _getLocalizedCategory(category.title, l10n),
                           textAlign: .center,

@@ -59,8 +59,10 @@ class Routes {
   static const String verificationIdBackUploadScreen =
       "/verificationIdBackUploadScreen";
   static const String verificationPendingScreen = "/verificationPendingScreen";
+  static const String verifiedSuccessScreen = "/verifiedSuccessScreen";
   static const String settingsScreen = "/settingsScreen";
   static const String helpCenterScreen = "/helpCenterScreen";
+  static const String aboutUsScreen = "/aboutUsScreen";
 
   // Profile
   static const String profileScreen = "/profileScreen";

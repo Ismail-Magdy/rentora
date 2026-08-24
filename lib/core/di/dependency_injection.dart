@@ -11,6 +11,7 @@ import 'package:rentora/core/network/firebase/verifications_firestore_service.da
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/features/add_item/data/repos/add_item_repository_impl.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/archive/manager/archive_cubit.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
 import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
@@ -112,6 +113,7 @@ Future<void> initGetIt() async {
   );
 
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+  getIt.registerFactory<ArchiveCubit>(() => ArchiveCubit(getIt<HomeRepo>()));
 
   /// View Map
   getIt.registerFactory<ViewMapCubit>(() => ViewMapCubit(getIt<HomeRepo>()));
