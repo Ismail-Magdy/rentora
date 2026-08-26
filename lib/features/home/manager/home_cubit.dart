@@ -22,12 +22,14 @@ class HomeCubit extends Cubit<HomeState> {
     ) async {
       _categories = categories;
 
-      final productsResult = await _homeRepo.getProducts();
+      final productsResult = await _homeRepo.getProducts(
+        excludeCurrentUser: true,
+      );
       final locationResult = await _homeRepo.getUserLocation();
-      
+
       double? userLat;
       double? userLng;
-      
+
       locationResult.fold((_) {}, (geoPoint) {
         if (geoPoint != null) {
           userLat = geoPoint.latitude;

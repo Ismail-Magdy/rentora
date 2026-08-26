@@ -11,6 +11,7 @@ import 'package:rentora/core/network/firebase/verifications_firestore_service.da
 import 'package:rentora/core/network/manager/network_cubit.dart';
 import 'package:rentora/features/add_item/data/repos/add_item_repository_impl.dart';
 import 'package:rentora/features/add_item/manager/add_item_cubit.dart';
+import 'package:rentora/features/archive/manager/archive_cubit.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo.dart';
 import 'package:rentora/features/category_details/data/repos/category_details_repo_impl.dart';
 import 'package:rentora/features/category_details/manager/category_details_cubit.dart';
@@ -24,7 +25,7 @@ import 'package:rentora/features/item_details/data/repos/item_details_repo.dart'
 import 'package:rentora/features/item_details/data/repos/item_details_repo_impl.dart';
 import 'package:rentora/features/item_details/manager/item_details_cubit.dart';
 import 'package:rentora/features/profile/data/repo/profile_repo.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
+import 'package:rentora/features/profile/manager/profile_cubit.dart';
 import 'package:rentora/features/search/data/repos/search_repo.dart';
 import 'package:rentora/features/search/data/repos/search_repo_impl.dart';
 import 'package:rentora/features/search/manager/search_cubit.dart';
@@ -110,7 +111,9 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<HomeRepo>(
     () => HomeRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
   );
+
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepo>()));
+  getIt.registerFactory<ArchiveCubit>(() => ArchiveCubit(getIt<HomeRepo>()));
 
   /// View Map
   getIt.registerFactory<ViewMapCubit>(() => ViewMapCubit(getIt<HomeRepo>()));
@@ -126,6 +129,7 @@ Future<void> initGetIt() async {
 
   // Notifications
   getIt.registerLazySingleton<NotificationsRepo>(() => NotificationsRepoImpl());
+
   getIt.registerFactory<NotificationsCubit>(
     () => NotificationsCubit(getIt<NotificationsRepo>()),
   );
@@ -143,6 +147,7 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<BookingRepository>(
     () => BookingRepository(getIt<BookingsFirestoreService>()),
   );
+
   getIt.registerFactory<BookingCubit>(
     () => BookingCubit(bookingRepository: getIt<BookingRepository>()),
   );
@@ -155,6 +160,7 @@ Future<void> initGetIt() async {
       getIt<CloudinaryService>(),
     ),
   );
+
   getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt<ChatRepo>()));
 
   /// Verification
@@ -165,6 +171,7 @@ Future<void> initGetIt() async {
       getIt<FirebaseFirestore>(),
     ),
   );
+
   getIt.registerFactory<VerificationCubit>(
     () => VerificationCubit(
       getIt<VerificationRepo>(),
@@ -193,6 +200,7 @@ Future<void> initGetIt() async {
     ),
   );
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileRepo>()));
+
   /// Search
   getIt.registerLazySingleton<SearchRepo>(
     () => SearchRepoImpl(getIt<FirebaseFirestore>()),
@@ -204,6 +212,7 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton<FavoritesRepo>(
     () => FavoritesRepoImpl(getIt<FirebaseFirestore>(), getIt<FirebaseAuth>()),
   );
+
   getIt.registerLazySingleton<FavoritesCubit>(
     () => FavoritesCubit(getIt<SharedPreferences>()),
   );

@@ -28,18 +28,21 @@ class SettingsTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 14.sp, fontWeight: .w500),
       ),
       subtitle: subtitle != null
           ? Text(
               subtitle!,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: AppColors.grey.withValues(alpha: 0.7),
+              ),
             )
           : null,
       trailing:
           trailing ??
           (onTap != null
-              ? Icon(Icons.chevron_right, color: Colors.grey, size: 20.w)
+              ? Icon(Icons.chevron_right, color: AppColors.grey, size: 20.w)
               : null),
       onTap: onTap,
     );

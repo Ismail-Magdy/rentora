@@ -1,4 +1,4 @@
-# Rentora : AI Powered P2P Rental Marketplace
+# Rentora : P2P Rental Marketplace
 
 Rentora is a smart Peer-to-Peer (P2P) rental platform designed to promote the sharing economy. It allows users to securely rent out items they rarely use and helps others find affordable short term rentals. Powered by AI, Rentora offers a seamless, secure, and intuitive user experience.
 
@@ -6,13 +6,24 @@ Rentora is a smart Peer-to-Peer (P2P) rental platform designed to promote the sh
 
 ## Development Roadmap
 
-To ensure a streamlined development process and deliver a robust product, development is divided into two main phases, prioritizing Core/MVP functionality first.
+To ensure a streamlined development process and deliver a robust product, development is divided into two main phases, prioritizing Core & MVP functionality first.
 
 ---
+## ScreenShots
+<img width="1600" height="1600" alt="WhatsApp Image 2026-08-26 at 3 29 59 PM" src="https://github.com/user-attachments/assets/9879ecf8-38f6-4274-a0c2-5b6623860861" />
+<img width="1600" height="1600" alt="WhatsApp Image 2026-08-26 at 3 32 54 PM" src="https://github.com/user-attachments/assets/628bb72c-03e3-4115-95c2-ab3e185ce665" />
 
+---
+## Perview
+
+
+https://github.com/user-attachments/assets/09aca9b7-437b-4a0a-b29c-d0c511c4d0eb
+
+
+---
 ### Phase 1: Core App & MVP (Building the Foundation)
 
-**Goal:** Establish the essential rental cycle. Focus on user onboarding, security through verification, and the basic listing/booking flow.
+**Goal:** Establish the essential rental cycle. Focus on user onboarding, security through verification, and the basic listing & booking flow.
 
 1. **Core App + Splash:** Initial project setup, theming, and dependency injection layer.
 2. **Onboarding:** Initial user introduction screens.
@@ -21,23 +32,22 @@ To ensure a streamlined development process and deliver a robust product, develo
 5. **Verification System (Manual Flow):** **(Blocker Feature)** Implement the flow for uploading Selfie and ID (Front/Back) for admin review. Essential for security rules.
 6. **Home:** Displaying products based on categories.
 7. **Item Details:** Detailed view of listed items and images.
-8. **Add Item (Manual Flow):** Camera/Gallery integration, manual data entry for listing details, date selection via calendar, and publishing.
+8. **Add Item (Manual Flow):** Camera & Gallery integration, manual data entry for listing details, date selection via calendar, and publishing.
 9. **Rental Details:** Date selection, booking summary, and handover details.
 10. **Payment:** Standardizing the 'Cash on Delivery' selection flow.
 11. **Rental Request:** Flow for sending requests, owner acceptance, and rejection screens.
 
-### Phase 2: Advanced Features, AI Integration & Engagement
+### Phase 2: Advanced Features
 
 **Goal:** Enhance user experience, introduce AI capabilities for automation, and build engagement tools.
 
-1.  **Smart Search + AI:** Implementing NLP-based search to find items based on natural language queries.
-2.  **Add Item (AI Auto-fill):** Integrating AI to automatically populate listing details (title, description, price) from the main image.
-3.  **Verification (AI Integration):** Adding Face Matching or ID OCR capabilities to automate the verification process.
-4.  **Show Map:** Interactive map view using GeoQueries to find nearby items.
-5.  **Real-Time Chat:** Implementing direct messaging between parties after a booking is accepted.
-6.  **Notifications:** Integrating Firebase Cloud Messaging (FCM) for real-time alerts (booking requests, chat messages).
-7.  **Favorite:** Ability to save items for later.
-8.  **Settings:** Detailed profile editing, Help center, and 'About Us' section.
+1.  **Smart Search :** search to find items based on natural language queries.
+2.  **Verification (AI Integration):** Adding Face Matching or ID OCR capabilities to automate the verification process.
+3.  **Show Map:** Interactive map view using GeoQueries to find nearby items.
+4.  **Real-Time Chat:** Implementing direct messaging between parties after a booking is accepted.
+5.  **Notifications:** Integrating Firebase Cloud Messaging (FCM) for real-time alerts (booking requests, chat messages).
+6.  **Favorite:** Ability to save items for later.
+7.  **Settings:** Detailed profile editing, Help center, and 'About Us' section.
 
 ---
 
@@ -114,7 +124,7 @@ ChatsFirestoreService: Handles real-time chat room creation and message streams.
 ### 5. Adding a Listing (For Owners)
 
 - **Pre-requisite:** The owner must be fully verified.
-- **AI Auto-Fill vs. Manual:** The owner uploads the main image. They can choose to fill details manually or let the AI automatically extract and suggest the Title, Description, Daily Price, Category, and Security Deposit.
+- **Manual:** The owner uploads the main image, and fill details manually : the Title, Description, Daily Price, Category, and Security Deposit.
 - **Additional Images:** Upload up to 4 extra images.
 - **Review & Availability:** Review the details, agree to terms, select available dates from a calendar, and publish.
 

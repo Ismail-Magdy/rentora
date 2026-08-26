@@ -31,7 +31,7 @@ class ReviewCard extends StatelessWidget {
           BoxShadow(
             color: isDark
                 ? AppColors.darkShadow
-                : Colors.black.withOpacity(.025),
+                : Colors.black.withValues(alpha: 0.025),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

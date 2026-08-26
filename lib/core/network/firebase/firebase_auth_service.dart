@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth;
@@ -7,8 +8,7 @@ class FirebaseAuthService {
 
   FirebaseAuthService(this._firebaseAuth)
     : _googleSignIn = GoogleSignIn(
-        serverClientId:
-            '653688654264-sgu8533arm0ocvt1rtv8sg7t9efv285j.apps.googleusercontent.com',
+        serverClientId: dotenv.env['GOOGLE_SERVER_CLIENT_ID'],
       );
 
   /// Creates a new user account using email and password
@@ -62,7 +62,6 @@ class FirebaseAuthService {
       );
     }
 
-    //
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 

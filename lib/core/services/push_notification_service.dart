@@ -6,9 +6,7 @@ import 'package:rentora/core/routing/routes.dart';
 import 'package:rentora/rentora.dart';
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
 void handleMessage(RemoteMessage message) {
   if (navigatorKey.currentState == null) return;
@@ -41,8 +39,6 @@ class PushNotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-
       // Initialize local notifications for foreground display
       const AndroidInitializationSettings initializationSettingsAndroid =
           AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -92,16 +88,11 @@ class PushNotificationService {
 
       // Handle foreground messages
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print('Got a message whilst in the foreground!');
-        print('Message data: ${message.data}');
-
         if (message.notification != null) {
           _showLocalNotification(message);
         }
       });
-    } else {
-      print('User declined or has not accepted permission');
-    }
+    } else {}
   }
 
   static Future<void> _saveTokenToDatabase() async {

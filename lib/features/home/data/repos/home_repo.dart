@@ -6,7 +6,11 @@ import 'package:rentora/features/home/data/models/product_model.dart';
 abstract class HomeRepo {
   Future<Either<Failure, List<String>>> getUserCategories();
 
-  Future<Either<Failure, List<ProductModel>>> getProducts({String? category});
+  Future<Either<Failure, List<ProductModel>>> getProducts({
+    String? category,
+    bool excludeCurrentUser = false,
+    bool onlyCurrentUser = false,
+  });
 
   Future<Either<Failure, GeoPoint?>> getUserLocation();
 }

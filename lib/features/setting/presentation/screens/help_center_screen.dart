@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
+import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class HelpCenterScreen extends StatefulWidget {
@@ -11,8 +14,7 @@ class HelpCenterScreen extends StatefulWidget {
 }
 
 class _HelpCenterScreenState extends State<HelpCenterScreen> {
-  final searchController = TextEditingController();
-  String _query = '';
+  final String _query = '';
   String? _selectedCategory;
 
   static const List<_HelpCategory> _categories = [
@@ -87,12 +89,6 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     }).toList();
   }
 
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
   String _getLocalizedCategory(String title, AppLocalizations l10n) {
     switch (title) {
       case 'Renting':
@@ -118,98 +114,39 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        title: Text(
-          l10n.helpCenter,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(text: l10n.helpCenter),
       floatingActionButton: FloatingActionButton(
         heroTag: 'support_fab',
-        backgroundColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+        backgroundColor: isDark
+            ? AppColors.secondaryColor
+            : AppColors.primaryColor,
         onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.supportChatSoon)),
+          showFeedbackDialog(
+            context,
+            icon: Icons.headset_mic,
+            color: AppColors.primaryColor,
+            title: l10n.oops,
+            message: l10n.supportChatSoon,
           );
         },
         child: const Icon(Icons.headset_mic, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: ListView(
-        padding: EdgeInsets.all(16.w),
+        padding: .all(16.w),
         children: [
-          SizedBox(height: 8.h),
+          verticalSpace(8),
           Text(
             l10n.howCanWeHelp,
-            textAlign: TextAlign.center,
+            textAlign: .center,
             style: TextStyle(
               fontSize: 22.sp,
-              fontWeight: FontWeight.bold,
+              fontWeight: .bold,
               color: isDark ? AppColors.darkTextPrimary : AppColors.black,
             ),
           ),
-          SizedBox(height: 6.h),
-          Text(
-            l10n.searchHelpSubtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade600,
-            ),
-          ),
-          SizedBox(height: 16.h),
+          verticalSpace(20),
 
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.darkSurface : Colors.white,
-              borderRadius: BorderRadius.circular(24.r),
-              border: Border.all(
-                color: isDark ? AppColors.darkBorder : Colors.grey.shade300,
-              ),
-            ),
-            child: TextField(
-              controller: searchController,
-              onChanged: (value) => setState(() => _query = value),
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: l10n.searchHelp,
-                hintStyle: TextStyle(
-                  fontSize: 12.sp,
-                  color: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
-                ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
-                  size: 20.w,
-                ),
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-          SizedBox(height: 20.h),
-
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              l10n.categories,
-              style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: isDark ? AppColors.darkTextPrimary : AppColors.black,
-              ),
-            ),
-          ),
-          SizedBox(height: 12.h),
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -228,11 +165,15 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: isDark ? AppColors.darkSurface : Colors.white,
-                    borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(
+                    borderRadius: .circular(12.r),
+                    border: .all(
                       color: selected
-                          ? (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
-                          : (isDark ? AppColors.darkBorder : Colors.transparent),
+                          ? (isDark
+                                ? AppColors.secondaryColor
+                                : AppColors.primaryColor)
+                          : (isDark
+                                ? AppColors.darkBorder
+                                : Colors.transparent),
                       width: 1.5,
                     ),
                   ),
@@ -240,27 +181,32 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        radius: 20.r,
-                        backgroundColor: (isDark
-                                ? AppColors.secondaryColor
-                                : AppColors.primaryColor)
-                            .withValues(alpha: 0.15),
+                        radius: 30.r,
+                        backgroundColor:
+                            (isDark
+                                    ? AppColors.secondaryColor
+                                    : AppColors.primaryColor)
+                                .withValues(alpha: 0.15),
                         child: Icon(
                           category.icon,
-                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
-                          size: 20.w,
+                          color: isDark
+                              ? AppColors.secondaryColor
+                              : AppColors.primaryColor,
+                          size: 27.w,
                         ),
                       ),
-                      SizedBox(height: 8.h),
+                      verticalSpace(8),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        padding: .symmetric(horizontal: 8.w),
                         child: Text(
                           _getLocalizedCategory(category.title, l10n),
-                          textAlign: TextAlign.center,
+                          textAlign: .center,
                           style: TextStyle(
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                            fontSize: 13.sp,
+                            fontWeight: .w700,
+                            color: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.black,
                           ),
                         ),
                       ),
@@ -270,7 +216,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               );
             }).toList(),
           ),
-          SizedBox(height: 20.h),
+          verticalSpace(20),
 
           Align(
             alignment: AlignmentDirectional.centerStart,
@@ -293,7 +239,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12.sp,
-                  color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade600,
+                  color: isDark
+                      ? AppColors.darkTextSecondary
+                      : Colors.grey.shade600,
                 ),
               ),
             )
@@ -317,14 +265,20 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   collapsedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
-                  iconColor: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
-                  collapsedIconColor: isDark ? AppColors.darkTextMuted : Colors.grey.shade500,
+                  iconColor: isDark
+                      ? AppColors.secondaryColor
+                      : AppColors.primaryColor,
+                  collapsedIconColor: isDark
+                      ? AppColors.darkTextMuted
+                      : Colors.grey.shade500,
                   title: Text(
                     faq.question,
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.black,
                     ),
                   ),
                   children: [
@@ -332,7 +286,9 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                       faq.answer,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade700,
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : Colors.grey.shade700,
                         height: 1.6,
                       ),
                     ),

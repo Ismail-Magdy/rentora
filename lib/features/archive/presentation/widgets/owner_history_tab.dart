@@ -1,11 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/di/dependency_injection.dart';
 import 'package:rentora/core/themes/app_colors.dart';
-import 'package:rentora/features/archive/presentation/widgets/owner_earnings_summary_card.dart';
-import 'package:rentora/features/archive/presentation/widgets/owner_history_card.dart';
-import 'package:rentora/features/booking/data/model/booking_model.dart';
+import 'package:rentora/core/widgets/error_screen.dart';
+import 'package:rentora/features/archive/manager/archive_cubit.dart';
+import 'package:rentora/features/archive/manager/archive_state.dart';
 import 'package:rentora/features/booking/presentation/widgets/custom_empty_state.dart';
+import 'package:rentora/features/home/presentation/widgets/product_card.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 
 class OwnerHistoryTab extends StatelessWidget {
@@ -16,77 +18,51 @@ class OwnerHistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: FirebaseFirestore.instance
-          .collection('bookings')
-          .where('ownerId', isEqualTo: userId)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.primaryColor),
-          );
-        }
 
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              'Error loading listings: ${snapshot.error}',
-              style: TextStyle(color: AppColors.error, fontSize: 14.sp),
-            ),
-          );
-        }
-
-        final docs = snapshot.data?.docs ?? [];
-        final bookings = docs
-            .map((d) => BookingModel.fromJson(d.data()))
-            .toList();
-
-        double totalEarnings = 0;
-        int activeCount = 0;
-        for (var b in bookings) {
-          final s = b.status.toLowerCase();
-          if (s == 'completed' || s == 'approved' || s == 'active') {
-            totalEarnings += b.totalAmount;
+    return BlocProvider(
+      create: (context) => getIt<ArchiveCubit>()..getMyProducts(),
+      child: BlocBuilder<ArchiveCubit, ArchiveState>(
+        builder: (context, state) {
+          if (state is ArchiveLoading || state is ArchiveInitial) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.primaryColor),
+            );
           }
-          if (s == 'active' || s == 'approved' || s == 'pending') {
-            activeCount++;
-          }
-        }
 
-        return CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: OwnerEarningsSummaryCard(
-                totalEarnings: totalEarnings,
-                totalRentals: bookings.length,
-                activeRentals: activeCount,
+          if (state is ArchiveError) {
+            return ErrorScreen();
+          }
+
+          if (state is ArchiveLoaded) {
+            final products = state.myProducts;
+
+            if (products.isEmpty) {
+              return CustomEmptyState(
+                icon: Icons.inventory_2_outlined,
+                title: l10n.noListingRentals,
+                message: l10n
+                    .noListingRentalsMessage, // Consider updating localization string key if needed
+              );
+            }
+
+            return GridView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16.w,
+                mainAxisSpacing: 16.h,
+                childAspectRatio: 0.75,
               ),
-            ),
-            if (bookings.isEmpty)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: CustomEmptyState(
-                  icon: Icons.inventory_2_outlined,
-                  title: l10n.noListingRentals,
-                  message: l10n.noListingRentalsMessage,
-                ),
-              )
-            else
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 12.h),
-                      child: OwnerHistoryCard(booking: bookings[index]),
-                    );
-                  }, childCount: bookings.length),
-                ),
-              ),
-          ],
-        );
-      },
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return ProductCard(product: products[index]);
+              },
+            );
+          }
+
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

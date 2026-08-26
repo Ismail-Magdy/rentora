@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rentora/core/helpers/spacing.dart';
 import 'package:rentora/core/themes/app_colors.dart';
+import 'package:rentora/core/widgets/custom_app_bar.dart';
 import 'package:rentora/core/widgets/custom_feedback_dialog.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_cubit.dart';
-import 'package:rentora/features/profile/manager/cubit/profile_state.dart';
+import 'package:rentora/features/profile/manager/profile_cubit.dart';
+import 'package:rentora/features/profile/manager/profile_state.dart';
 import 'package:rentora/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:rentora/l10n/generated/app_localizations.dart';
 
@@ -22,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline,
-            color: Colors.red,
+            color: AppColors.error,
             title: l10n.error,
             message: state.message,
           );
@@ -30,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
           showFeedbackDialog(
             context,
             icon: Icons.check_circle,
-            color: Colors.green,
+            color: AppColors.primaryColor,
             title: l10n.success,
             message: l10n.profileUpdated,
           );
@@ -38,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
           showFeedbackDialog(
             context,
             icon: Icons.error_outline,
-            color: Colors.red,
+            color: AppColors.error,
             title: l10n.error,
             message: state.message,
           );
@@ -51,19 +54,14 @@ class ProfileScreen extends StatelessWidget {
         if (user == null) {
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: AppBar(
-              title: Text(l10n.myProfile),
-              centerTitle: true,
-              backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
-              elevation: 0,
-            ),
+            appBar: CustomAppBar(text: l10n.myProfile),
             body: state is ProfileError
                 ? Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(state.message),
-                        SizedBox(height: 12.h),
+                        verticalSpace(12),
                         FilledButton(
                           onPressed: () =>
                               context.read<ProfileCubit>().loadProfile(),
@@ -72,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   )
-                : const Center(child: CircularProgressIndicator()),
+                : const Center(child: CupertinoActivityIndicator()),
           );
         }
 
@@ -80,16 +78,15 @@ class ProfileScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
-            title: Text(l10n.myProfile),
-            centerTitle: true,
-            backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF1F3F4),
-            elevation: 0,
+          appBar: CustomAppBar(
+            text: l10n.myProfile,
             actions: [
               IconButton(
                 icon: Icon(
                   Icons.edit_outlined,
-                  color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                  color: isDark
+                      ? AppColors.secondaryColor
+                      : AppColors.primaryColor,
                 ),
                 onPressed: () => Navigator.push(
                   context,
@@ -103,6 +100,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
           ),
+
           body: ListView(
             padding: EdgeInsets.all(16.w),
             children: [
@@ -127,7 +125,9 @@ class ProfileScreen extends StatelessWidget {
                             backgroundColor: AppColors.primaryColor.withValues(
                               alpha: 0.15,
                             ),
-                            child: const CircularProgressIndicator(strokeWidth: 2),
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
                           ),
                           errorWidget: (context, url, error) => CircleAvatar(
                             radius: 44.r,
@@ -158,7 +158,9 @@ class ProfileScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.black,
                     ),
                   ),
                   SizedBox(height: 4.h),
@@ -166,7 +168,9 @@ class ProfileScreen extends StatelessWidget {
                     user.email,
                     style: TextStyle(
                       fontSize: 13.sp,
-                      color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade600,
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : Colors.grey.shade600,
                     ),
                   ),
                   SizedBox(height: 10.h),
@@ -204,7 +208,9 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.interests_outlined,
-                          color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
+                          color: isDark
+                              ? AppColors.secondaryColor
+                              : AppColors.primaryColor,
                           size: 20.w,
                         ),
                         SizedBox(width: 8.w),
@@ -213,7 +219,9 @@ class ProfileScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.black,
+                            color: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.black,
                           ),
                         ),
                       ],
@@ -224,7 +232,9 @@ class ProfileScreen extends StatelessWidget {
                         l10n.noInterestsSelected,
                         style: TextStyle(
                           fontSize: 12.sp,
-                          color: isDark ? AppColors.darkTextMuted : Colors.grey.shade600,
+                          color: isDark
+                              ? AppColors.darkTextMuted
+                              : Colors.grey.shade600,
                         ),
                       )
                     else
@@ -320,10 +330,9 @@ class ProfileScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 18.r,
-            backgroundColor: (isDark
-                    ? AppColors.secondaryColor
-                    : AppColors.primaryColor)
-                .withValues(alpha: 0.15),
+            backgroundColor:
+                (isDark ? AppColors.secondaryColor : AppColors.primaryColor)
+                    .withValues(alpha: 0.15),
             child: Icon(
               icon,
               color: isDark ? AppColors.secondaryColor : AppColors.primaryColor,
@@ -339,7 +348,9 @@ class ProfileScreen extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: isDark ? AppColors.darkTextSecondary : Colors.grey.shade600,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : Colors.grey.shade600,
                   ),
                 ),
                 SizedBox(height: 4.h),
@@ -359,3 +370,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+// 381
