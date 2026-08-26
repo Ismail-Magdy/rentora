@@ -1,18 +1,17 @@
 import 'dart:io';
 import 'package:dio/dio.dart' as dio;
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class CloudinaryService {
   final dio.Dio _dio = dio.Dio();
 
-  // It is highly recommended to use environment variables (.env) for security
-  final String cloudName = "xcjs2n7s";
-  final String uploadPreset = "rentora";
+  final String cloudName = dotenv.env['CLOUDINARY_CLOUD_NAME'] ?? '';
+  final String uploadPreset = dotenv.env['CLOUDINARY_UPLOAD_PRESET'] ?? '';
 
   /// Function to upload an image to Cloudinary and return the secure URL
   /// Throws an Exception with a user-friendly message on failure
-  /// 
-    Future<List<String>> uploadMultipleImages(List<XFile> images) async {
+  Future<List<String>> uploadMultipleImages(List<XFile> images) async {
     List<String> urls = [];
     for (var image in images) {
       final url = await uploadImage(File(image.path));
@@ -20,10 +19,6 @@ class CloudinaryService {
     }
     return urls;
   }
-
-
-
-
 
   Future<String?> uploadImage(File imageFile) async {
     try {
