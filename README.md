@@ -9,7 +9,18 @@ Rentora is a smart Peer-to-Peer (P2P) rental platform designed to promote the sh
 To ensure a streamlined development process and deliver a robust product, development is divided into two main phases, prioritizing Core & MVP functionality first.
 
 ---
+## ScreenShots
+<img width="1600" height="1600" alt="WhatsApp Image 2026-08-26 at 3 29 59 PM" src="https://github.com/user-attachments/assets/9879ecf8-38f6-4274-a0c2-5b6623860861" />
+<img width="1600" height="1600" alt="WhatsApp Image 2026-08-26 at 3 32 54 PM" src="https://github.com/user-attachments/assets/628bb72c-03e3-4115-95c2-ab3e185ce665" />
 
+---
+## Perview
+
+
+https://github.com/user-attachments/assets/09aca9b7-437b-4a0a-b29c-d0c511c4d0eb
+
+
+---
 ### Phase 1: Core App & MVP (Building the Foundation)
 
 **Goal:** Establish the essential rental cycle. Focus on user onboarding, security through verification, and the basic listing & booking flow.
