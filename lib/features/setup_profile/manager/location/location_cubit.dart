@@ -54,7 +54,7 @@ class LocationCubit extends Cubit<LocationState> {
 
       // Fetch the actual position
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: .high,
       );
 
       // Extract address using Geocoding
