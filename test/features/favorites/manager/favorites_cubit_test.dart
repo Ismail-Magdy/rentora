@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:rentora/features/favorites/manager/favorites_cubit.dart';
 import 'package:rentora/features/favorites/manager/favorites_state.dart';
 import 'package:rentora/features/home/data/models/product_model.dart';

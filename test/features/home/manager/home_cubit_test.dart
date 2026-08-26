@@ -19,7 +19,9 @@ void main() {
       when(
         () => repo.getUserCategories(),
       ).thenAnswer((_) async => const Right(['Camera']));
-      when(() => repo.getProducts()).thenAnswer(
+      when(
+        () => repo.getProducts(excludeCurrentUser: any(named: 'excludeCurrentUser')),
+      ).thenAnswer(
         (_) async => Right([
           ProductModel(
             id: '1',
